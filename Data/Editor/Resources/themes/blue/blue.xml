@@ -1,0 +1,30 @@
+<Maratis version="3.3">
+
+<Preferences>
+    
+    <Theme guiPath="blue_gui" fontFilename="fonts/GenR102.TTF" fontSize="16">
+
+        <Color name="Head"                          value="45 45 45 255"        />
+        <Color name="Head Button"                   value="0 0 0 0"             />
+        <Color name="Head Button Highlight"         value="56 128 180 255"      />
+        <Color name="Head Button Text"              value="255 255 255 255"     />
+        <Color name="Menu"                          value="62 62 62 216"        />
+        <Color name="Menu Highlight"                value="213 221 146 191"     />
+        <Color name="Menu Text"                     value="255 255 255 255"     />
+        <Color name="Edit Background"               value="26 37 48 255"        />
+        <Color name="Edit Head"                     value="57 130 182 255"      />
+        <Color name="Edit Text"                     value="255 255 255 255"     />
+        <Color name="Edit Variable Text"            value="163 190 219 255"     />
+        <Color name="Edit Component Text"           value="213 221 146 255"     />
+        <Color name="Console"                       value="45 45 45 255"        />
+        <Color name="Divider"                       value="26 37 48 255"        />
+        <Color name="3d Background"                 value="51 76 102 255"       />
+        <Color name="3d Object On"                  value="255 255 255 128"     />
+        <Color name="3d Object Off"                 value="128 128 128 128"     />
+        <Color name="3d Object Highlight"           value="255 255 0 128"       />
+			
+    </Theme>
+
+</Preferences>
+
+</Maratis>

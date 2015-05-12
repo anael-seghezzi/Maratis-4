@@ -1,0 +1,32 @@
+# coding: utf-8
+# freetype build Sconscript
+# $LastChangedDate: 2008-05-12 12:03:21 +0200 (Mon, 12 May 2008) $
+# $LastChangedBy: dbacc $
+
+
+import os, sys, fnmatch
+import pyutils
+
+Import('env')
+env_local = env.Clone()
+
+# include dirs
+env_local.AppendUnique(CPPPATH = ['.',
+                                  './include',
+								  './include/freetype',
+								  './depend',
+								  './mac'] )
+# additional defines
+env_local.AppendUnique(CPPDEFINES = ['FT2_BUILD_LIBRARY'])
+
+# specific osx frameworks
+if sys.platform=='darwin':
+	env_local.AppendUnique(FRAMEWORKS=Split('Cocoa'))
+
+# get list of files
+files = Glob('./*.c*')
+
+# build library
+freetype_lib  = env_local.StaticLibrary('freetype',files)
+Return('freetype_lib')
+

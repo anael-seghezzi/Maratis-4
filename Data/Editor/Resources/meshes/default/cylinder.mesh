@@ -1,0 +1,665 @@
+<Maratis>
+
+<Mesh>
+
+<Materials num="1">
+	<Material id="0" type="1">
+		<blend type="0" />
+		<opacity value="1.000000" />
+		<shininess value="100.000000" />
+		<customValue value="0.000000" />
+		<diffuseColor r="0.800000" g="0.800000" b="0.050000" />
+		<specularColor r="1.000000" g="1.000000" b="1.000000" />
+		<emitColor r="0.200000" g="0.200000" b="0.012500" />
+		<customColor r="0.000000" g="0.000000" b="0.000000" />
+	</Material>
+</Materials>
+
+<BoundingBox minx="-1.000000" miny="-1.000001" minz="-1.000001" maxx="1.000000" maxy="1.000001" maxz="1.000001" />
+
+<SubMeshs num="1">
+	<SubMesh id="0">
+		<BoundingBox minx="-1.000000" miny="-1.000001" minz="-1.000001" maxx="1.000000" maxy="1.000001" maxz="1.000001" />
+		<Vertices num="128">
+			<vertex x="0.000000" y="-1.000001" z="-0.999999" />
+			<vertex x="0.000000" y="0.999999" z="-1.000001" />
+			<vertex x="0.195090" y="0.999999" z="-0.980786" />
+			<vertex x="0.195090" y="-1.000001" z="-0.980785" />
+			<vertex x="0.382683" y="0.999999" z="-0.923880" />
+			<vertex x="0.382683" y="-1.000001" z="-0.923879" />
+			<vertex x="0.555570" y="0.999999" z="-0.831470" />
+			<vertex x="0.555570" y="-1.000000" z="-0.831469" />
+			<vertex x="0.707107" y="1.000000" z="-0.707107" />
+			<vertex x="0.707107" y="-1.000000" z="-0.707106" />
+			<vertex x="0.831470" y="1.000000" z="-0.555571" />
+			<vertex x="0.831470" y="-1.000000" z="-0.555570" />
+			<vertex x="0.923880" y="1.000000" z="-0.382684" />
+			<vertex x="0.923880" y="-1.000000" z="-0.382683" />
+			<vertex x="0.980785" y="1.000000" z="-0.195091" />
+			<vertex x="0.980785" y="-1.000000" z="-0.195090" />
+			<vertex x="1.000000" y="1.000000" z="-0.000001" />
+			<vertex x="1.000000" y="-1.000000" z="0.000001" />
+			<vertex x="0.980785" y="1.000000" z="0.195090" />
+			<vertex x="0.980785" y="-1.000000" z="0.195091" />
+			<vertex x="0.923880" y="1.000000" z="0.382683" />
+			<vertex x="0.923880" y="-1.000000" z="0.382684" />
+			<vertex x="0.831470" y="1.000000" z="0.555570" />
+			<vertex x="0.831470" y="-1.000000" z="0.555571" />
+			<vertex x="0.707107" y="1.000000" z="0.707106" />
+			<vertex x="0.707107" y="-1.000000" z="0.707107" />
+			<vertex x="0.555570" y="1.000000" z="0.831469" />
+			<vertex x="0.555570" y="-0.999999" z="0.831470" />
+			<vertex x="0.382683" y="1.000001" z="0.923879" />
+			<vertex x="0.382683" y="-0.999999" z="0.923880" />
+			<vertex x="0.195090" y="1.000001" z="0.980785" />
+			<vertex x="0.195090" y="-0.999999" z="0.980786" />
+			<vertex x="-0.000000" y="1.000001" z="0.999999" />
+			<vertex x="-0.000000" y="-0.999999" z="1.000001" />
+			<vertex x="-0.195091" y="1.000001" z="0.980785" />
+			<vertex x="-0.195091" y="-0.999999" z="0.980786" />
+			<vertex x="-0.382684" y="1.000001" z="0.923879" />
+			<vertex x="-0.382684" y="-0.999999" z="0.923880" />
+			<vertex x="-0.555571" y="1.000000" z="0.831469" />
+			<vertex x="-0.555571" y="-0.999999" z="0.831470" />
+			<vertex x="-0.707107" y="1.000000" z="0.707106" />
+			<vertex x="-0.707107" y="-1.000000" z="0.707107" />
+			<vertex x="-0.831470" y="1.000000" z="0.555569" />
+			<vertex x="-0.831470" y="-1.000000" z="0.555570" />
+			<vertex x="-0.923880" y="1.000000" z="0.382682" />
+			<vertex x="-0.923880" y="-1.000000" z="0.382683" />
+			<vertex x="-0.980785" y="1.000000" z="0.195089" />
+			<vertex x="-0.980785" y="-1.000000" z="0.195090" />
+			<vertex x="-1.000000" y="1.000000" z="-0.000002" />
+			<vertex x="-1.000000" y="-1.000000" z="-0.000000" />
+			<vertex x="-0.980785" y="1.000000" z="-0.195092" />
+			<vertex x="-0.980785" y="-1.000000" z="-0.195091" />
+			<vertex x="-0.923879" y="1.000000" z="-0.382685" />
+			<vertex x="-0.923879" y="-1.000000" z="-0.382684" />
+			<vertex x="-0.831469" y="1.000000" z="-0.555572" />
+			<vertex x="-0.831469" y="-1.000000" z="-0.555571" />
+			<vertex x="-0.707106" y="1.000000" z="-0.707108" />
+			<vertex x="-0.707106" y="-1.000000" z="-0.707107" />
+			<vertex x="-0.555569" y="0.999999" z="-0.831471" />
+			<vertex x="-0.555569" y="-1.000000" z="-0.831470" />
+			<vertex x="-0.382682" y="0.999999" z="-0.923881" />
+			<vertex x="-0.382682" y="-1.000001" z="-0.923879" />
+			<vertex x="0.195090" y="0.999999" z="-0.980786" />
+			<vertex x="0.000000" y="0.999999" z="-1.000001" />
+			<vertex x="-0.195089" y="0.999999" z="-0.980786" />
+			<vertex x="-0.382682" y="0.999999" z="-0.923881" />
+			<vertex x="0.382683" y="0.999999" z="-0.923880" />
+			<vertex x="-0.555569" y="0.999999" z="-0.831471" />
+			<vertex x="0.555570" y="0.999999" z="-0.831470" />
+			<vertex x="-0.707106" y="1.000000" z="-0.707108" />
+			<vertex x="0.707107" y="1.000000" z="-0.707107" />
+			<vertex x="-0.831469" y="1.000000" z="-0.555572" />
+			<vertex x="0.831470" y="1.000000" z="-0.555571" />
+			<vertex x="-0.923879" y="1.000000" z="-0.382685" />
+			<vertex x="0.923880" y="1.000000" z="-0.382684" />
+			<vertex x="-0.980785" y="1.000000" z="-0.195092" />
+			<vertex x="0.980785" y="1.000000" z="-0.195091" />
+			<vertex x="-1.000000" y="1.000000" z="-0.000002" />
+			<vertex x="1.000000" y="1.000000" z="-0.000001" />
+			<vertex x="-0.980785" y="1.000000" z="0.195089" />
+			<vertex x="0.980785" y="1.000000" z="0.195090" />
+			<vertex x="-0.923880" y="1.000000" z="0.382682" />
+			<vertex x="0.923880" y="1.000000" z="0.382683" />
+			<vertex x="-0.831470" y="1.000000" z="0.555569" />
+			<vertex x="0.831470" y="1.000000" z="0.555570" />
+			<vertex x="-0.707107" y="1.000000" z="0.707106" />
+			<vertex x="0.707107" y="1.000000" z="0.707106" />
+			<vertex x="-0.555571" y="1.000000" z="0.831469" />
+			<vertex x="0.555570" y="1.000000" z="0.831469" />
+			<vertex x="-0.382684" y="1.000001" z="0.923879" />
+			<vertex x="0.382683" y="1.000001" z="0.923879" />
+			<vertex x="-0.195091" y="1.000001" z="0.980785" />
+			<vertex x="0.195090" y="1.000001" z="0.980785" />
+			<vertex x="-0.000000" y="1.000001" z="0.999999" />
+			<vertex x="-0.195089" y="-1.000001" z="-0.980785" />
+			<vertex x="-0.195089" y="0.999999" z="-0.980786" />
+			<vertex x="0.195090" y="-0.999999" z="0.980786" />
+			<vertex x="-0.000000" y="-0.999999" z="1.000001" />
+			<vertex x="-0.195091" y="-0.999999" z="0.980786" />
+			<vertex x="0.382683" y="-0.999999" z="0.923880" />
+			<vertex x="-0.382684" y="-0.999999" z="0.923880" />
+			<vertex x="0.555570" y="-0.999999" z="0.831470" />
+			<vertex x="-0.555571" y="-0.999999" z="0.831470" />
+			<vertex x="0.707107" y="-1.000000" z="0.707107" />
+			<vertex x="-0.707107" y="-1.000000" z="0.707107" />
+			<vertex x="0.831470" y="-1.000000" z="0.555571" />
+			<vertex x="-0.831470" y="-1.000000" z="0.555570" />
+			<vertex x="0.923880" y="-1.000000" z="0.382684" />
+			<vertex x="-0.923880" y="-1.000000" z="0.382683" />
+			<vertex x="0.980785" y="-1.000000" z="0.195091" />
+			<vertex x="-0.980785" y="-1.000000" z="0.195090" />
+			<vertex x="1.000000" y="-1.000000" z="0.000001" />
+			<vertex x="-1.000000" y="-1.000000" z="-0.000000" />
+			<vertex x="0.980785" y="-1.000000" z="-0.195090" />
+			<vertex x="-0.980785" y="-1.000000" z="-0.195091" />
+			<vertex x="0.923880" y="-1.000000" z="-0.382683" />
+			<vertex x="-0.923879" y="-1.000000" z="-0.382684" />
+			<vertex x="0.831470" y="-1.000000" z="-0.555570" />
+			<vertex x="-0.831469" y="-1.000000" z="-0.555571" />
+			<vertex x="0.707107" y="-1.000000" z="-0.707106" />
+			<vertex x="-0.707106" y="-1.000000" z="-0.707107" />
+			<vertex x="0.555570" y="-1.000000" z="-0.831469" />
+			<vertex x="-0.555569" y="-1.000000" z="-0.831470" />
+			<vertex x="0.382683" y="-1.000001" z="-0.923879" />
+			<vertex x="-0.382682" y="-1.000001" z="-0.923879" />
+			<vertex x="0.195090" y="-1.000001" z="-0.980785" />
+			<vertex x="-0.195089" y="-1.000001" z="-0.980785" />
+			<vertex x="0.000000" y="-1.000001" z="-0.999999" />
+		</Vertices>
+		<Normals num="128">
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+			<normal x="0.000000" y="0.000000" z="-0.999969" />
+			<normal x="0.195074" y="0.000000" z="-0.980773" />
+			<normal x="0.195074" y="0.000000" z="-0.980773" />
+			<normal x="0.382672" y="0.000000" z="-0.923856" />
+			<normal x="0.382672" y="0.000000" z="-0.923856" />
+			<normal x="0.555559" y="0.000000" z="-0.831446" />
+			<normal x="0.555559" y="0.000000" z="-0.831446" />
+			<normal x="0.707083" y="0.000000" z="-0.707083" />
+			<normal x="0.707083" y="0.000000" z="-0.707083" />
+			<normal x="0.831446" y="0.000000" z="-0.555559" />
+			<normal x="0.831446" y="0.000000" z="-0.555559" />
+			<normal x="0.923856" y="0.000000" z="-0.382672" />
+			<normal x="0.923856" y="0.000000" z="-0.382672" />
+			<normal x="0.980773" y="0.000000" z="-0.195074" />
+			<normal x="0.980773" y="0.000000" z="-0.195074" />
+			<normal x="0.999969" y="0.000000" z="0.000000" />
+			<normal x="0.999969" y="0.000000" z="0.000000" />
+			<normal x="0.980773" y="0.000000" z="0.195074" />
+			<normal x="0.980773" y="0.000000" z="0.195074" />
+			<normal x="0.923856" y="0.000000" z="0.382672" />
+			<normal x="0.923856" y="0.000000" z="0.382672" />
+			<normal x="0.831446" y="0.000000" z="0.555559" />
+			<normal x="0.831446" y="0.000000" z="0.555559" />
+			<normal x="0.707083" y="0.000000" z="0.707083" />
+			<normal x="0.707083" y="0.000000" z="0.707083" />
+			<normal x="0.555559" y="0.000000" z="0.831446" />
+			<normal x="0.555559" y="0.000000" z="0.831446" />
+			<normal x="0.382672" y="0.000000" z="0.923856" />
+			<normal x="0.382672" y="0.000000" z="0.923856" />
+			<normal x="0.195074" y="0.000000" z="0.980773" />
+			<normal x="0.195074" y="0.000000" z="0.980773" />
+			<normal x="0.000000" y="0.000000" z="1.000000" />
+			<normal x="0.000000" y="0.000000" z="0.999969" />
+			<normal x="-0.195074" y="0.000000" z="0.980773" />
+			<normal x="-0.195074" y="0.000000" z="0.980773" />
+			<normal x="-0.382672" y="0.000000" z="0.923856" />
+			<normal x="-0.382672" y="0.000000" z="0.923856" />
+			<normal x="-0.555559" y="0.000000" z="0.831446" />
+			<normal x="-0.555559" y="0.000000" z="0.831446" />
+			<normal x="-0.707083" y="0.000000" z="0.707083" />
+			<normal x="-0.707083" y="0.000000" z="0.707083" />
+			<normal x="-0.831446" y="0.000000" z="0.555559" />
+			<normal x="-0.831446" y="0.000000" z="0.555559" />
+			<normal x="-0.923856" y="0.000000" z="0.382672" />
+			<normal x="-0.923856" y="0.000000" z="0.382672" />
+			<normal x="-0.980773" y="0.000000" z="0.195074" />
+			<normal x="-0.980773" y="0.000000" z="0.195074" />
+			<normal x="-0.999969" y="0.000000" z="0.000000" />
+			<normal x="-0.999969" y="0.000000" z="0.000000" />
+			<normal x="-0.980773" y="0.000000" z="-0.195074" />
+			<normal x="-0.980773" y="0.000000" z="-0.195074" />
+			<normal x="-0.923856" y="0.000000" z="-0.382672" />
+			<normal x="-0.923856" y="0.000000" z="-0.382672" />
+			<normal x="-0.831446" y="0.000000" z="-0.555559" />
+			<normal x="-0.831446" y="0.000000" z="-0.555559" />
+			<normal x="-0.707083" y="0.000000" z="-0.707083" />
+			<normal x="-0.707083" y="0.000000" z="-0.707083" />
+			<normal x="-0.555559" y="0.000000" z="-0.831446" />
+			<normal x="-0.555559" y="0.000000" z="-0.831446" />
+			<normal x="-0.382672" y="0.000000" z="-0.923856" />
+			<normal x="-0.382672" y="0.000000" z="-0.923856" />
+			<normal x="0.000000" y="0.999969" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="0.999969" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="0.999969" z="0.000000" />
+			<normal x="0.000000" y="0.999969" z="0.000000" />
+			<normal x="0.000000" y="0.999969" z="0.000000" />
+			<normal x="0.000000" y="0.999969" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="0.999969" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="0.999969" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="0.999969" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="0.999969" z="0.000000" />
+			<normal x="0.000000" y="0.999969" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="0.999969" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="0.000000" y="1.000000" z="0.000000" />
+			<normal x="-0.195074" y="0.000000" z="-0.980773" />
+			<normal x="-0.195074" y="0.000000" z="-0.980773" />
+			<normal x="0.000000" y="-0.999969" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-0.999969" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-0.999969" z="0.000000" />
+			<normal x="0.000000" y="-0.999969" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-0.999969" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-0.999969" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-0.999969" z="0.000000" />
+			<normal x="0.000000" y="-0.999969" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-0.999969" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-0.999969" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-0.999969" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-0.999969" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+			<normal x="0.000000" y="-1.000000" z="0.000000" />
+		</Normals>
+		<Indices num="372">
+			<index value="0" />
+			<index value="1" />
+			<index value="2" />
+			<index value="2" />
+			<index value="3" />
+			<index value="0" />
+			<index value="3" />
+			<index value="2" />
+			<index value="4" />
+			<index value="4" />
+			<index value="5" />
+			<index value="3" />
+			<index value="5" />
+			<index value="4" />
+			<index value="6" />
+			<index value="6" />
+			<index value="7" />
+			<index value="5" />
+			<index value="7" />
+			<index value="6" />
+			<index value="8" />
+			<index value="8" />
+			<index value="9" />
+			<index value="7" />
+			<index value="9" />
+			<index value="8" />
+			<index value="10" />
+			<index value="10" />
+			<index value="11" />
+			<index value="9" />
+			<index value="11" />
+			<index value="10" />
+			<index value="12" />
+			<index value="12" />
+			<index value="13" />
+			<index value="11" />
+			<index value="13" />
+			<index value="12" />
+			<index value="14" />
+			<index value="14" />
+			<index value="15" />
+			<index value="13" />
+			<index value="15" />
+			<index value="14" />
+			<index value="16" />
+			<index value="16" />
+			<index value="17" />
+			<index value="15" />
+			<index value="17" />
+			<index value="16" />
+			<index value="18" />
+			<index value="18" />
+			<index value="19" />
+			<index value="17" />
+			<index value="19" />
+			<index value="18" />
+			<index value="20" />
+			<index value="20" />
+			<index value="21" />
+			<index value="19" />
+			<index value="21" />
+			<index value="20" />
+			<index value="22" />
+			<index value="22" />
+			<index value="23" />
+			<index value="21" />
+			<index value="23" />
+			<index value="22" />
+			<index value="24" />
+			<index value="24" />
+			<index value="25" />
+			<index value="23" />
+			<index value="25" />
+			<index value="24" />
+			<index value="26" />
+			<index value="26" />
+			<index value="27" />
+			<index value="25" />
+			<index value="27" />
+			<index value="26" />
+			<index value="28" />
+			<index value="28" />
+			<index value="29" />
+			<index value="27" />
+			<index value="29" />
+			<index value="28" />
+			<index value="30" />
+			<index value="30" />
+			<index value="31" />
+			<index value="29" />
+			<index value="31" />
+			<index value="30" />
+			<index value="32" />
+			<index value="32" />
+			<index value="33" />
+			<index value="31" />
+			<index value="33" />
+			<index value="32" />
+			<index value="34" />
+			<index value="34" />
+			<index value="35" />
+			<index value="33" />
+			<index value="35" />
+			<index value="34" />
+			<index value="36" />
+			<index value="36" />
+			<index value="37" />
+			<index value="35" />
+			<index value="37" />
+			<index value="36" />
+			<index value="38" />
+			<index value="38" />
+			<index value="39" />
+			<index value="37" />
+			<index value="39" />
+			<index value="38" />
+			<index value="40" />
+			<index value="40" />
+			<index value="41" />
+			<index value="39" />
+			<index value="41" />
+			<index value="40" />
+			<index value="42" />
+			<index value="42" />
+			<index value="43" />
+			<index value="41" />
+			<index value="43" />
+			<index value="42" />
+			<index value="44" />
+			<index value="44" />
+			<index value="45" />
+			<index value="43" />
+			<index value="45" />
+			<index value="44" />
+			<index value="46" />
+			<index value="46" />
+			<index value="47" />
+			<index value="45" />
+			<index value="47" />
+			<index value="46" />
+			<index value="48" />
+			<index value="48" />
+			<index value="49" />
+			<index value="47" />
+			<index value="49" />
+			<index value="48" />
+			<index value="50" />
+			<index value="50" />
+			<index value="51" />
+			<index value="49" />
+			<index value="51" />
+			<index value="50" />
+			<index value="52" />
+			<index value="52" />
+			<index value="53" />
+			<index value="51" />
+			<index value="53" />
+			<index value="52" />
+			<index value="54" />
+			<index value="54" />
+			<index value="55" />
+			<index value="53" />
+			<index value="55" />
+			<index value="54" />
+			<index value="56" />
+			<index value="56" />
+			<index value="57" />
+			<index value="55" />
+			<index value="57" />
+			<index value="56" />
+			<index value="58" />
+			<index value="58" />
+			<index value="59" />
+			<index value="57" />
+			<index value="59" />
+			<index value="58" />
+			<index value="60" />
+			<index value="60" />
+			<index value="61" />
+			<index value="59" />
+			<index value="62" />
+			<index value="63" />
+			<index value="64" />
+			<index value="62" />
+			<index value="64" />
+			<index value="65" />
+			<index value="62" />
+			<index value="65" />
+			<index value="66" />
+			<index value="65" />
+			<index value="67" />
+			<index value="66" />
+			<index value="67" />
+			<index value="68" />
+			<index value="66" />
+			<index value="67" />
+			<index value="69" />
+			<index value="68" />
+			<index value="69" />
+			<index value="70" />
+			<index value="68" />
+			<index value="69" />
+			<index value="71" />
+			<index value="70" />
+			<index value="71" />
+			<index value="72" />
+			<index value="70" />
+			<index value="71" />
+			<index value="73" />
+			<index value="72" />
+			<index value="73" />
+			<index value="74" />
+			<index value="72" />
+			<index value="73" />
+			<index value="75" />
+			<index value="74" />
+			<index value="75" />
+			<index value="76" />
+			<index value="74" />
+			<index value="75" />
+			<index value="77" />
+			<index value="76" />
+			<index value="77" />
+			<index value="78" />
+			<index value="76" />
+			<index value="77" />
+			<index value="79" />
+			<index value="78" />
+			<index value="79" />
+			<index value="80" />
+			<index value="78" />
+			<index value="79" />
+			<index value="81" />
+			<index value="80" />
+			<index value="81" />
+			<index value="82" />
+			<index value="80" />
+			<index value="81" />
+			<index value="83" />
+			<index value="82" />
+			<index value="83" />
+			<index value="84" />
+			<index value="82" />
+			<index value="83" />
+			<index value="85" />
+			<index value="84" />
+			<index value="85" />
+			<index value="86" />
+			<index value="84" />
+			<index value="85" />
+			<index value="87" />
+			<index value="86" />
+			<index value="87" />
+			<index value="88" />
+			<index value="86" />
+			<index value="87" />
+			<index value="89" />
+			<index value="88" />
+			<index value="89" />
+			<index value="90" />
+			<index value="88" />
+			<index value="89" />
+			<index value="91" />
+			<index value="90" />
+			<index value="91" />
+			<index value="92" />
+			<index value="90" />
+			<index value="91" />
+			<index value="93" />
+			<index value="92" />
+			<index value="1" />
+			<index value="0" />
+			<index value="94" />
+			<index value="94" />
+			<index value="95" />
+			<index value="1" />
+			<index value="61" />
+			<index value="60" />
+			<index value="95" />
+			<index value="95" />
+			<index value="94" />
+			<index value="61" />
+			<index value="96" />
+			<index value="97" />
+			<index value="98" />
+			<index value="99" />
+			<index value="96" />
+			<index value="98" />
+			<index value="99" />
+			<index value="98" />
+			<index value="100" />
+			<index value="101" />
+			<index value="99" />
+			<index value="100" />
+			<index value="101" />
+			<index value="100" />
+			<index value="102" />
+			<index value="103" />
+			<index value="101" />
+			<index value="102" />
+			<index value="103" />
+			<index value="102" />
+			<index value="104" />
+			<index value="105" />
+			<index value="103" />
+			<index value="104" />
+			<index value="105" />
+			<index value="104" />
+			<index value="106" />
+			<index value="107" />
+			<index value="105" />
+			<index value="106" />
+			<index value="107" />
+			<index value="106" />
+			<index value="108" />
+			<index value="109" />
+			<index value="107" />
+			<index value="108" />
+			<index value="109" />
+			<index value="108" />
+			<index value="110" />
+			<index value="111" />
+			<index value="109" />
+			<index value="110" />
+			<index value="111" />
+			<index value="110" />
+			<index value="112" />
+			<index value="113" />
+			<index value="111" />
+			<index value="112" />
+			<index value="113" />
+			<index value="112" />
+			<index value="114" />
+			<index value="115" />
+			<index value="113" />
+			<index value="114" />
+			<index value="115" />
+			<index value="114" />
+			<index value="116" />
+			<index value="117" />
+			<index value="115" />
+			<index value="116" />
+			<index value="117" />
+			<index value="116" />
+			<index value="118" />
+			<index value="119" />
+			<index value="117" />
+			<index value="118" />
+			<index value="119" />
+			<index value="118" />
+			<index value="120" />
+			<index value="121" />
+			<index value="119" />
+			<index value="120" />
+			<index value="121" />
+			<index value="120" />
+			<index value="122" />
+			<index value="123" />
+			<index value="121" />
+			<index value="122" />
+			<index value="123" />
+			<index value="122" />
+			<index value="124" />
+			<index value="125" />
+			<index value="123" />
+			<index value="124" />
+			<index value="125" />
+			<index value="124" />
+			<index value="126" />
+			<index value="127" />
+			<index value="125" />
+			<index value="126" />
+		</Indices>
+		<Displays num="1">
+			<display primType="triangles" begin="0" size="372" material="0" cullFace="2" />
+		</Displays>
+	</SubMesh>
+</SubMeshs>
+
+</Mesh>
+
+</Maratis>

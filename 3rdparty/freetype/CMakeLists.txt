@@ -1,0 +1,21 @@
+## Find source and headers
+FILE(GLOB HEADERS *.h)
+FILE(GLOB SOURCES *.c*)
+
+IF(CMAKE_HAS_SORT)
+  LIST(SORT HEADERS)
+  LIST(SORT SOURCES)
+ENDIF(CMAKE_HAS_SORT)
+
+## Build
+ADD_DEFINITIONS(-DFT2_BUILD_LIBRARY)
+
+INCLUDE_DIRECTORIES(
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  include
+  include/freetype
+  depend
+  mac
+)
+
+ADD_LIBRARY(freetype ${SOURCES} ${HEADERS})

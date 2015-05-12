@@ -1,0 +1,33 @@
+<Maratis version="3.3">
+
+<Preferences>
+
+    <Shortcuts>
+    
+        <Shortcut name="Orthogonal View"            key1="Num5"                            />
+        <Shortcut name="Face View"                  key1="Num1"                            />
+        <Shortcut name="Right View"                 key1="Num3"                            />
+        <Shortcut name="Top View"                   key1="Num7"                            />
+        <Shortcut name="Bottom View"                key1="Num9"                            />
+        <Shortcut name="Transform Mouse"            key1="M"                               />
+        <Shortcut name="Transform Position"         key1="T"                               />
+        <Shortcut name="Transform Rotation"         key1="R"                               />
+        <Shortcut name="Transform Scale"            key1="S"                               />
+        <Shortcut name="Focus Selection"            key1="F"                               />
+        <Shortcut name="Delete"                     key1="Backspace"                       />
+        <Shortcut name="Delete2"                    key1="Delete"                          />
+        <Shortcut name="Save"                       key1="S"             key2="Ctrl"       />
+        <Shortcut name="Undo"                       key1="Z"             key2="Ctrl"       />
+        <Shortcut name="Redo"                       key1="Y"             key2="Ctrl"       />
+        <Shortcut name="Load Level"                 key1="O"             key2="Ctrl"       />
+        <Shortcut name="Quit"                       key1="Q"             key2="Ctrl"       />
+        <Shortcut name="Duplicate"                  key1="D"             key2="Ctrl"       />
+        <Shortcut name="Select All"                 key1="A"             key2="Ctrl"       />
+        <Shortcut name="Pan View"                                        key2="Ctrl"       />
+        <Shortcut name="Multiple Selection"                              key2="Ctrl"       />
+    
+    </Shortcuts>
+
+</Preferences>
+
+</Maratis>

@@ -1,0 +1,225 @@
+<Maratis>
+
+<Mesh>
+
+<Materials num="1">
+	<Material id="0" type="1">
+		<blend type="1"/>
+		<opacity value="1.000000"/>
+		<shininess value="10.000000"/>
+		<customValue value="0.000000"/>
+		<diffuseColor r="1.000000" g="1.000000" b="1.000000"/>
+		<specularColor r="0.000000" g="0.000000" b="0.000000"/>
+		<emitColor r="0.000000" g="0.000000" b="0.000000"/>
+		<customColor r="0.000000" g="0.000000" b="0.000000"/>
+	</Material>
+</Materials>
+
+<BoundingBox minx="-1.039042" miny="-1.305030" minz="-0.035303" maxx="1.038976" maxy="1.304972" maxz="-0.035303" />
+
+<SubMeshs num="1">
+	<SubMesh id="0">
+		<BoundingBox minx="-1.039042" miny="-1.305030" minz="-0.035303" maxx="1.038976" maxy="1.304972" maxz="-0.035303" />
+		<Vertices num="32">
+			<vertex x="0.472244" y="1.304972" z="-0.035303" />
+			<vertex x="0.472244" y="1.304972" z="-0.035303" />
+			<vertex x="0.472244" y="-1.305030" z="-0.035303" />
+			<vertex x="0.472244" y="-1.305030" z="-0.035303" />
+			<vertex x="-0.283400" y="0.754850" z="-0.035303" />
+			<vertex x="-0.283398" y="-0.754835" z="-0.035303" />
+			<vertex x="-0.283400" y="0.754850" z="-0.035303" />
+			<vertex x="-0.283398" y="-0.754835" z="-0.035303" />
+			<vertex x="-1.039042" y="0.754850" z="-0.035303" />
+			<vertex x="-1.039042" y="-0.754835" z="-0.035303" />
+			<vertex x="-1.039042" y="-0.754835" z="-0.035303" />
+			<vertex x="-1.039042" y="0.754850" z="-0.035303" />
+			<vertex x="1.038976" y="-0.000402" z="-0.035303" />
+			<vertex x="0.472244" y="-0.000371" z="-0.035303" />
+			<vertex x="0.472244" y="-0.000371" z="-0.035303" />
+			<vertex x="1.038976" y="-0.000402" z="-0.035303" />
+			<vertex x="1.038976" y="-0.000415" z="-0.035303" />
+			<vertex x="1.038976" y="-0.000415" z="-0.035303" />
+			<vertex x="0.472244" y="-0.000373" z="-0.035303" />
+			<vertex x="0.472244" y="-0.000373" z="-0.035303" />
+			<vertex x="1.038976" y="-0.000402" z="-0.035303" />
+			<vertex x="1.038976" y="-0.000402" z="-0.035303" />
+			<vertex x="1.038976" y="-0.000415" z="-0.035303" />
+			<vertex x="1.038976" y="-0.000415" z="-0.035303" />
+			<vertex x="1.038976" y="-0.000402" z="-0.035303" />
+			<vertex x="0.472244" y="-0.000371" z="-0.035303" />
+			<vertex x="0.472244" y="-0.000373" z="-0.035303" />
+			<vertex x="1.038976" y="-0.000415" z="-0.035303" />
+			<vertex x="0.472244" y="-0.000371" z="-0.035303" />
+			<vertex x="1.038976" y="-0.000402" z="-0.035303" />
+			<vertex x="1.038976" y="-0.000415" z="-0.035303" />
+			<vertex x="0.472244" y="-0.000373" z="-0.035303" />
+		</Vertices>
+		<Normals num="32">
+			<normal x="0.000000" y="-0.000000" z="-1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="0.000000" y="-0.000000" z="-1.000000" />
+			<normal x="0.000000" y="-0.000000" z="-1.000000" />
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+			<normal x="0.000000" y="-0.000000" z="-1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="-0.000000" y="0.000000" z="1.000000" />
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+			<normal x="0.000000" y="0.000000" z="-1.000000" />
+		</Normals>
+		<TexCoords num="32">
+			<texCoord x="-2.090743" y="-1.090824" />
+			<texCoord x="2.090906" y="-1.090824" />
+			<texCoord x="2.090906" y="3.090824" />
+			<texCoord x="-2.090743" y="3.090824" />
+			<texCoord x="1.000082" y="0.001060" />
+			<texCoord x="1.000082" y="1.998940" />
+			<texCoord x="-0.999918" y="0.001060" />
+			<texCoord x="-0.999918" y="1.998940" />
+			<texCoord x="-0.999918" y="0.001060" />
+			<texCoord x="-0.999918" y="1.998940" />
+			<texCoord x="1.000082" y="1.998940" />
+			<texCoord x="1.000082" y="0.001060" />
+			<texCoord x="1.000000" y="1.000000" />
+			<texCoord x="1.000000" y="0.000000" />
+			<texCoord x="0.000000" y="0.000000" />
+			<texCoord x="0.000000" y="1.000000" />
+			<texCoord x="0.000000" y="1.000000" />
+			<texCoord x="1.000000" y="1.000000" />
+			<texCoord x="1.000000" y="0.000000" />
+			<texCoord x="0.000000" y="0.000000" />
+			<texCoord x="0.000000" y="1.000000" />
+			<texCoord x="1.000000" y="1.000000" />
+			<texCoord x="1.000000" y="0.000000" />
+			<texCoord x="0.000000" y="0.000000" />
+			<texCoord x="0.000000" y="1.000000" />
+			<texCoord x="1.000000" y="1.000000" />
+			<texCoord x="1.000000" y="0.000000" />
+			<texCoord x="0.000000" y="0.000000" />
+			<texCoord x="0.000000" y="1.000000" />
+			<texCoord x="1.000000" y="1.000000" />
+			<texCoord x="1.000000" y="0.000000" />
+			<texCoord x="0.000000" y="0.000000" />
+		</TexCoords>
+		<Indices num="90">
+			<index value="0" />
+			<index value="1" />
+			<index value="2" />
+			<index value="2" />
+			<index value="3" />
+			<index value="0" />
+			<index value="4" />
+			<index value="5" />
+			<index value="2" />
+			<index value="2" />
+			<index value="1" />
+			<index value="4" />
+			<index value="6" />
+			<index value="4" />
+			<index value="1" />
+			<index value="1" />
+			<index value="0" />
+			<index value="6" />
+			<index value="7" />
+			<index value="6" />
+			<index value="0" />
+			<index value="0" />
+			<index value="3" />
+			<index value="7" />
+			<index value="5" />
+			<index value="7" />
+			<index value="3" />
+			<index value="3" />
+			<index value="2" />
+			<index value="5" />
+			<index value="8" />
+			<index value="9" />
+			<index value="10" />
+			<index value="10" />
+			<index value="11" />
+			<index value="8" />
+			<index value="11" />
+			<index value="10" />
+			<index value="5" />
+			<index value="5" />
+			<index value="4" />
+			<index value="11" />
+			<index value="8" />
+			<index value="11" />
+			<index value="4" />
+			<index value="4" />
+			<index value="6" />
+			<index value="8" />
+			<index value="9" />
+			<index value="8" />
+			<index value="6" />
+			<index value="6" />
+			<index value="7" />
+			<index value="9" />
+			<index value="10" />
+			<index value="9" />
+			<index value="7" />
+			<index value="7" />
+			<index value="5" />
+			<index value="10" />
+			<index value="12" />
+			<index value="13" />
+			<index value="14" />
+			<index value="14" />
+			<index value="15" />
+			<index value="12" />
+			<index value="16" />
+			<index value="17" />
+			<index value="18" />
+			<index value="18" />
+			<index value="19" />
+			<index value="16" />
+			<index value="20" />
+			<index value="21" />
+			<index value="22" />
+			<index value="22" />
+			<index value="23" />
+			<index value="20" />
+			<index value="24" />
+			<index value="25" />
+			<index value="26" />
+			<index value="26" />
+			<index value="27" />
+			<index value="24" />
+			<index value="28" />
+			<index value="29" />
+			<index value="30" />
+			<index value="30" />
+			<index value="31" />
+			<index value="28" />
+		</Indices>
+		<Displays num="1">
+			<display primType="triangles" begin="0" size="90" material="0" />
+		</Displays>
+	</SubMesh>
+</SubMeshs>
+
+</Mesh>
+
+</Maratis>
