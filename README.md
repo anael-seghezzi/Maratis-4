@@ -1,5 +1,5 @@
 Maratis 4
-======
+=========
 
 Maratis is a simple cross-platform 3d engine and visual game development tool
 
@@ -8,7 +8,7 @@ To get the last stable version of Maratis (version 3.x) please visit http://mara
 
 
 License
---------
+-------
 
 Maratis is free and open source.
 
@@ -21,13 +21,13 @@ Dependencies
 https://github.com/anael-seghezzi/Maratis-Tiny-C-library
 
 Getting source
-----------------
+--------------
 
     git clone https://github.com/anael-seghezzi/Maratis-Tiny-C-library.git
     git clone https://github.com/anael-seghezzi/Maratis-4.git
 
 Building
---------------------------
+--------
 
 **Unix:**
 
@@ -58,14 +58,14 @@ or:
     make install
   
 Contact
----------
+-------
 
-Anaël Seghezzi, France
+Anaël Seghezzi
 anael (a) maratis3d.com
 
 
 Contributors
---------------
+------------
 
 Davide Bacchet
 Skumancer
