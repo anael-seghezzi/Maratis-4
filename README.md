@@ -3,7 +3,7 @@ Maratis 4
 
 Maratis is a simple cross-platform 3d engine and visual game development tool
 
-Warning: This repository is experimental and in-progress.
+Warning: This repository is experimental and in-progress.<br>
 To get the last stable version of Maratis (version 3.x) please visit http://maratis3d.org
 
 
