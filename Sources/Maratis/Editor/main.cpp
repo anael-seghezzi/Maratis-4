@@ -175,7 +175,12 @@ void winEvents(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 			MGUI_closeWindow(rootWindow);
 		}
 		break;
-		
+
+	case MWIN_EVENT_RESIZE:
+		if(my3dView)
+			my3dView->resize(MVector2(0, 0), MVector2(rootWindow->getWidth(), rootWindow->getHeight()));
+		break;
+
 	case MWIN_EVENT_DESTROY:
 		{
 			SAFE_DELETE(my3dView);
@@ -201,8 +206,6 @@ void drawCallback(MWindow * rootWindow)
 {
 	level->getCurrentScene()->update();
 	level->getCurrentScene()->updateObjectsMatrices();
-
-	level->getCurrentScene()->getEntityByIndex(0)->addAxisAngleRotation(MVector3(0, 0, 1), 1);
 }
 
 

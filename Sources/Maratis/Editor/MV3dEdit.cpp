@@ -37,6 +37,28 @@ m_tools(NULL)
 MV3dEdit::~MV3dEdit(void)
 {}
 
+bool MV3dEdit::isTransformLocal(void)
+{
+	MEditor * editor = MEditor::getInstance();
+	MSelectionManager * selection = editor->getSelectionManager();
+
+	unsigned int sSize = selection->getSelectionSize();
+	M_TRANSFORM_MODE transfMode = getTransformMode();
+	M_ORIENTATION_MODE oriMode = getOrientationMode();
+
+	switch(transfMode)
+	{
+		case M_TRANSFORM_ROTATION:
+			return (oriMode == M_ORIENTATION_LOCAL && sSize == 1);
+		case M_TRANSFORM_POSITION:
+			return (oriMode == M_ORIENTATION_LOCAL && sSize == 1);
+		case M_TRANSFORM_SCALE:
+			return (sSize == 1);
+        default:
+            return false;
+	}
+}
+
 void MV3dEdit::drawCallback(MGuiWindow * window)
 {
 	MEngine * engine = MEngine::getInstance();
@@ -49,7 +71,9 @@ void MV3dEdit::drawCallback(MGuiWindow * window)
 	
 	MV3dView::drawCallback(window);
 	
-	if(selection->getSelectionSize() > 0)
+	unsigned int sSize = selection->getSelectionSize();
+
+	if(sSize > 0)
 	{
 		// init depth
 		render->enableDepthTest();
@@ -68,7 +92,7 @@ void MV3dEdit::drawCallback(MGuiWindow * window)
 				break;
 			case M_TRANSFORM_SCALE:
 				selection->updateSelectionCenter();
-				viewport->drawEdit(M_TRANSFORM_SCALE, camera, 1);
+				viewport->drawEdit(M_TRANSFORM_SCALE, camera);
 				break;
 
             default:
@@ -245,7 +269,7 @@ void MV3dEdit::computeTransformSizeAndPos(MOCamera * camera, MVector3 * position
 	}
 }
 
-void MV3dEdit::drawEdit(M_TRANSFORM_MODE mode, MOCamera * camera, bool local)
+void MV3dEdit::drawEdit(M_TRANSFORM_MODE mode, MOCamera * camera)
 {
 	MEngine * engine = MEngine::getInstance();
 	MEditor * editor = MEditor::getInstance();
@@ -255,6 +279,8 @@ void MV3dEdit::drawEdit(M_TRANSFORM_MODE mode, MOCamera * camera, bool local)
 	MRenderingContext * render = engine->getRenderingContext();
 	MLevel * guiData = editor->getGuiData();
 	
+	bool local = isTransformLocal();
+
 	// selection
 	unsigned int sSize = selection->getSelectionSize();
 
@@ -439,7 +465,154 @@ void MV3dEdit::computeTransformPlane(MOCamera * camera, const MVector3 & positio
 	m_tOffsetDirection = m_tMousePosition - m_tCenterPosition;
 }
 
-M_AXIS MV3dEdit::getSelectedAxis(M_TRANSFORM_MODE mode, MOCamera * camera, const MVector3 & rayO, const MVector3 & rayD, const MVector3 & position, const float radius, bool local)
+void MV3dEdit::transformPosition(MVector2 point)
+{
+	MEngine * engine = MEngine::getInstance();
+	MEditor * editor = MEditor::getInstance();
+	MWindow * rootWindow = m_window->getRootWindow();
+	MLevel * level = engine->getLevel();
+	MScene * scene = level->getCurrentScene();
+	MSelectionManager * selection = editor->getSelectionManager();
+	MPreferences * prefs = editor->getPreferences();
+
+
+	// selection
+	unsigned int oSize = selection->getSelectionSize();
+	selection->updateSelectionCenter();
+	MVector3 selectionCenter = selection->getSelectionCenter();
+
+	// camera
+	MOCamera * camera = &m_view.m_camera;
+	MVector3 viewAxis = camera->getRotatedVector(MVector3(0, 0, -1));
+
+
+	// view
+	if(m_currentAxis == M_AXIS_VIEW)
+	{
+		// ray
+		MVector3 ray_origin, ray_dir;
+		getRayFromPoint(point - m_tOffsetDirection, &ray_origin, &ray_dir);
+
+		// intersection
+		MVector3 inter = ray_origin + ray_dir * rayPlaneIntersection(ray_origin, ray_dir, selectionCenter, viewAxis);
+
+		unsigned int i;
+		for(i=0; i<oSize; i++)
+		{
+			MObject3d * object = selection->getSelectedObject(i);
+			MVector3 worldPos = object->getTransformedPosition();
+
+			if(object->hasParent())
+			{
+				MObject3d * parent = object->getParent();
+				if(! selection->isObjectSelected(parent))
+				{
+					MVector3 localPos = parent->getInversePosition(inter + (worldPos - selectionCenter));
+					object->setPosition(localPos);
+				}
+			}
+			else
+			{
+				object->setPosition(inter + (worldPos - selectionCenter));
+			}
+
+			object->updateMatrix();
+		}
+
+		return;
+	}
+
+
+	// axis
+	MVector3 axis;
+
+	if((getOrientationMode() == M_ORIENTATION_WORLD) || (oSize > 1))
+	{
+		switch(m_currentAxis)
+		{
+            case M_AXIS_X:
+                axis = MVector3(1, 0, 0);
+                break;
+
+            case M_AXIS_Y:
+                axis = MVector3(0, 1, 0);
+                break;
+
+            case M_AXIS_Z:
+                axis = MVector3(0, 0, 1);
+                break;
+
+            default:
+                break;
+		}
+	}
+	else
+	{
+		MObject3d * object = selection->getSelectedObject(0);
+
+		MVector3 scale = object->getTransformedScale();
+		MMatrix4x4 iScaleMatrix;
+		iScaleMatrix.setScale(MVector3(1.0f / scale.x, 1.0f / scale.y, 1.0f / scale.z));
+		MMatrix4x4 matrix = (*object->getMatrix()) * iScaleMatrix;
+
+		switch(m_currentAxis)
+		{
+            case M_AXIS_X:
+                axis = matrix.getRotatedVector3(MVector3(1, 0, 0));
+                break;
+
+            case M_AXIS_Y:
+                axis = matrix.getRotatedVector3(MVector3(0, 1, 0));
+                break;
+
+            case M_AXIS_Z:
+                axis = matrix.getRotatedVector3(MVector3(0, 0, 1));
+                break;
+
+            default:
+                break;
+		}
+	}
+
+	// position on axis
+	MVector2 axisNormal(-m_tVectorDirection.y, m_tVectorDirection.x);
+	float axisMouseDist = (point - m_tOffsetDirection - m_tCenterPosition).dotProduct(axisNormal);
+
+	MVector2 axisPoint = point - m_tOffsetDirection - (axisNormal * axisMouseDist);
+
+	// ray
+	MVector3 ray_origin, ray_dir;
+	getRayFromPoint(axisPoint, &ray_origin, &ray_dir);
+
+	// intersection
+	MVector3 inter = ray_origin + ray_dir * rayPlaneIntersection(ray_origin, ray_dir, selectionCenter, m_tPlane);
+	float distance = axis.dotProduct(inter - selectionCenter);
+
+	unsigned int i;
+	for(i=0; i<oSize; i++)
+	{
+		MObject3d * object = selection->getSelectedObject(i);
+		MVector3 worldPos = object->getTransformedPosition();
+
+		if(object->hasParent())
+		{
+			MObject3d * parent = object->getParent();
+			if(! selection->isObjectSelected(parent))
+			{
+				MVector3 localPos = parent->getInversePosition(worldPos + (axis * distance));
+				object->setPosition(localPos);
+			}
+		}
+		else
+		{
+			object->setPosition(worldPos + (axis * distance));
+		}
+
+		object->updateMatrix();
+	}
+}
+
+M_AXIS MV3dEdit::getSelectedAxis(M_TRANSFORM_MODE mode, MOCamera * camera, const MVector3 & rayO, const MVector3 & rayD, const MVector3 & position, const float radius)
 {
 	MEditor * editor = MEditor::getInstance();
 
@@ -453,6 +626,8 @@ M_AXIS MV3dEdit::getSelectedAxis(M_TRANSFORM_MODE mode, MOCamera * camera, const
 		MVector3(0, 1, 0),
 		MVector3(0, 0, 1)
 		};
+
+	bool local = isTransformLocal();
 
 	// objects
 	unsigned int oSize = selection->getSelectionSize();
@@ -519,8 +694,6 @@ M_AXIS MV3dEdit::getSelectedAxis(M_TRANSFORM_MODE mode, MOCamera * camera, const
 						computeTransformDirection(camera, rayO, rayD, position, dist, axisVec[i]);
 					else
 						computeTransformPlane(camera, position, axisVec[i]);
-						
-					printf("AXIS %d\n", i);
 				}
 			}
 		}
@@ -536,7 +709,6 @@ M_AXIS MV3dEdit::getSelectedAxis(M_TRANSFORM_MODE mode, MOCamera * camera, const
 			if(getObjectRayNearestIntersectionDistance(object, rayO, rayD) > 0)
 			{
 				computeTransformPlane(camera, position, MVector3(0, 0, 0));
-				printf("VIEW\n");
 				return M_AXIS_VIEW;
 			}
 		}
@@ -666,10 +838,23 @@ void MV3dEdit::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 	if(m_tools->isMouseInside())
 		return;
 		
-	if(event == MWIN_EVENT_MOUSE_BUTTON_UP && rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
+	if(event == MWIN_EVENT_MOUSE_BUTTON_DOWN && rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
+	{
+		pointSelectAxis(rootWindow->getMousePosition());
+	}
+
+	if(m_currentAxis != M_AXIS_NONE && event == MWIN_EVENT_MOUSE_MOVE && rootWindow->isMouseButtonPressed(MMOUSE_BUTTON_LEFT))
+	{
+		M_TRANSFORM_MODE tmode = getTransformMode();
+		if(tmode == M_TRANSFORM_POSITION)
+			transformPosition(rootWindow->getMousePosition());
+	}
+
+	if((m_currentAxis == M_AXIS_NONE || m_currentAxis == M_AXIS_VIEW) && event == MWIN_EVENT_MOUSE_BUTTON_UP && rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
 	{
 		pointSelect(rootWindow->getMousePosition());
 		m_selectionDepth++;
+		m_currentAxis = M_AXIS_NONE;
 	}
 }
 
@@ -746,6 +931,58 @@ float MV3dEdit::getObjectRayNearestIntersectionDistance(MObject3d * object, cons
 	return false;
 }
 
+void MV3dEdit::getRayFromPoint(MVector2 point, MVector3 *ray_o, MVector3 *ray_dir)
+{
+	MWindow * rootWindow = m_window->getRootWindow();
+
+	// get camera
+	MOCamera * camera = &m_view.m_camera;
+	MVector3 cameraAxis = camera->getRotatedVector(MVector3(0, 0, -1)).getNormalized();
+
+	MVector3 ray_origin = camera->getTransformedPosition();
+	MVector3 ray_dest = camera->getUnProjectedPoint(MVector3(point.x, (float)(rootWindow->getHeight() - point.y), 1));
+
+	if(camera->isOrtho())
+	{
+		MVector3 point;
+		float dist = rayPlaneIntersection(ray_dest, -cameraAxis, ray_origin + (cameraAxis * camera->getClippingNear()), cameraAxis);
+		ray_origin = ray_dest - cameraAxis*dist;
+	}
+
+	ray_dest = ray_origin + ((ray_dest - ray_origin).getNormalized() * (camera->getClippingFar() - camera->getClippingNear()));
+
+	*ray_o = ray_origin;
+	*ray_dir = (ray_dest - ray_origin).getNormalized();
+}
+
+void MV3dEdit::pointSelectAxis(MVector2 point)
+{
+	MEditor * editor = MEditor::getInstance();
+	MSelectionManager * selection = editor->getSelectionManager();
+	MWindow * rootWindow = m_window->getRootWindow();
+
+	M_AXIS axis = M_AXIS_NONE;
+
+	// get camera
+	MOCamera * camera = &m_view.m_camera;
+	MVector3 cameraAxis = camera->getRotatedVector(MVector3(0, 0, -1)).getNormalized();
+
+	// ray
+	MVector3 ray_origin, ray_dir;
+	getRayFromPoint(point, &ray_origin, &ray_dir);
+
+	// axis
+	M_TRANSFORM_MODE transformMode = getTransformMode();
+	if(transformMode != M_TRANSFORM_MOUSE && selection->getSelectionSize() > 0)
+	{
+		MVector3 position; float size;
+		computeTransformSizeAndPos(camera, &position, &size);
+		axis = getSelectedAxis(transformMode, camera, ray_origin, ray_dir, position, size);
+	}
+
+	m_currentAxis = axis;
+}
+
 void MV3dEdit::pointSelect(MVector2 point, bool useDepth)
 {
 	MEngine * engine = MEngine::getInstance();
@@ -761,28 +998,16 @@ void MV3dEdit::pointSelect(MVector2 point, bool useDepth)
 	MVector3 cameraAxis = camera->getRotatedVector(MVector3(0, 0, -1)).getNormalized();;
 
 	// ray
-	MVector3 ray_origin = camera->getTransformedPosition();
-	MVector3 ray_dest = camera->getUnProjectedPoint(MVector3(point.x, (float)(rootWindow->getHeight() - point.y), 1));
+	MVector3 ray_origin, ray_dir;
+	getRayFromPoint(point, &ray_origin, &ray_dir);
 
-	if(camera->isOrtho())
-	{
-		MVector3 point;
-		float dist = rayPlaneIntersection(ray_dest, -cameraAxis, ray_origin + (cameraAxis * camera->getClippingNear()), cameraAxis);
-		ray_origin = ray_dest - cameraAxis*dist;
-	}
-
-	ray_dest = ray_origin + ((ray_dest - ray_origin).getNormalized() * (camera->getClippingFar() - camera->getClippingNear()));
-	MVector3 ray_dir = (ray_dest - ray_origin).getNormalized();
-
-	// transform
+	// axis
 	M_TRANSFORM_MODE transformMode = getTransformMode();
 	if(transformMode != M_TRANSFORM_MOUSE && selection->getSelectionSize() > 0)
 	{
-		// size and pos
 		MVector3 position; float size;
 		computeTransformSizeAndPos(camera, &position, &size);
-	
-		M_AXIS axis = getSelectedAxis(transformMode, camera, ray_origin, ray_dir, position, size, transformMode==M_TRANSFORM_SCALE);
+		M_AXIS axis = getSelectedAxis(transformMode, camera, ray_origin, ray_dir, position, size);
 		if(axis == M_AXIS_X || axis == M_AXIS_Y || axis == M_AXIS_Z)
 			return;
 	}
@@ -851,4 +1076,9 @@ M_TRANSFORM_MODE MV3dEdit::getTransformMode(void)
 	}
 	
 	return M_TRANSFORM_MOUSE;
+}
+
+M_ORIENTATION_MODE MV3dEdit::getOrientationMode(void)
+{
+	return M_ORIENTATION_WORLD;
 }

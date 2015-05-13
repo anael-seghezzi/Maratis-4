@@ -69,7 +69,8 @@ private:
 	void computeTransformDirection(MOCamera * camera, const MVector3 & rayO, const MVector3 & rayD, const MVector3 & position, const float distance, const MVector3 & axis);
 	void computeTransformPlane(MOCamera * camera, const MVector3 & position, const MVector3 & axis);
 	void computeTransformSizeAndPos(MOCamera * camera, MVector3 * position, float * size);
-	
+	bool isTransformLocal(void);
+
 protected:
 
 	int m_selectionDepth;
@@ -77,17 +78,24 @@ protected:
 	MGuiWindow * m_tools;
 	bool m_axisVis[3];
 	
-	static void drawCallback(MGuiWindow * window);
-	
+	void transformPosition(MVector2 point);
+
+	void getRayFromPoint(MVector2 point, MVector3 *ray_origin, MVector3 *ray_dest);
+	void pointSelectAxis(MVector2 point);
 	void pointSelect(MVector2 point, bool useDepth = true);
-	void drawEdit(M_TRANSFORM_MODE mode, MOCamera * camera, bool local=false);
+
+	void drawEdit(M_TRANSFORM_MODE mode, MOCamera * camera);
 	void drawAxis(M_TRANSFORM_MODE mode, M_AXIS axis, MOCamera * camera, MMatrix4x4 * matrix, bool viewTest = true);
+
 	float getObjectRayNearestIntersectionDistance(MObject3d * object, const MVector3 & origin, const MVector3 & direction);
-	M_AXIS getSelectedAxis(M_TRANSFORM_MODE mode, MOCamera * camera, const MVector3 & rayO, const MVector3 & rayD, const MVector3 & position, const float radius, bool local=false);
+	M_AXIS getSelectedAxis(M_TRANSFORM_MODE mode, MOCamera * camera, const MVector3 & rayO, const MVector3 & rayD, const MVector3 & position, const float radius);
+
+	static void drawCallback(MGuiWindow * window);
 
 public:
 	
 	M_TRANSFORM_MODE getTransformMode(void);
+	M_ORIENTATION_MODE getOrientationMode(void);
 	
 	void create(MWindow * rootWindow);
 	void resize(MVector2 position, MVector2 scale);
