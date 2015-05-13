@@ -475,7 +475,6 @@ void MV3dEdit::transformPosition(MVector2 point)
 	MSelectionManager * selection = editor->getSelectionManager();
 	MPreferences * prefs = editor->getPreferences();
 
-
 	// selection
 	unsigned int oSize = selection->getSelectionSize();
 	selection->updateSelectionCenter();
@@ -484,7 +483,6 @@ void MV3dEdit::transformPosition(MVector2 point)
 	// camera
 	MOCamera * camera = &m_view.m_camera;
 	MVector3 viewAxis = camera->getRotatedVector(MVector3(0, 0, -1));
-
 
 	// view
 	if(m_currentAxis == M_AXIS_VIEW)
@@ -522,10 +520,8 @@ void MV3dEdit::transformPosition(MVector2 point)
 		return;
 	}
 
-
 	// axis
 	MVector3 axis;
-
 	if((getOrientationMode() == M_ORIENTATION_WORLD) || (oSize > 1))
 	{
 		switch(m_currentAxis)
@@ -608,6 +604,297 @@ void MV3dEdit::transformPosition(MVector2 point)
 			object->setPosition(worldPos + (axis * distance));
 		}
 
+		object->updateMatrix();
+	}
+}
+
+void MV3dEdit::transformRotation(MVector2 pointDir)
+{
+	MEngine * engine = MEngine::getInstance();
+	MEditor * editor = MEditor::getInstance();
+	MWindow * rootWindow = m_window->getRootWindow();
+	MLevel * level = engine->getLevel();
+	MScene * scene = level->getCurrentScene();
+	MSelectionManager * selection = editor->getSelectionManager();
+	MPreferences * prefs = editor->getPreferences();
+
+	// selection
+	unsigned int oSize = selection->getSelectionSize();
+	selection->updateSelectionCenter();
+	MVector3 selectionCenter = selection->getSelectionCenter();
+
+	// camera
+	MOCamera * camera = &m_view.m_camera;
+
+	// angle
+	float angle;
+	switch(m_currentAxis)
+	{
+        case M_AXIS_X:
+        case M_AXIS_Y:
+        case M_AXIS_Z:
+            angle = m_tVectorDirection.dotProduct(pointDir);
+            break;
+        case M_AXIS_VIEW:
+			{
+				MVector2 vec = (m_tMousePosition - m_tCenterPosition).getNormalized();
+				angle = MVector2(-vec.y, vec.x).dotProduct(pointDir);
+			}
+            break;
+        default:
+            break;
+	}
+
+	// rotate
+	if(getOrientationMode() == M_ORIENTATION_WORLD)
+	{
+		MVector3 axis;
+		switch(m_currentAxis)
+		{
+            case M_AXIS_X:
+                axis = MVector3(1, 0, 0);
+                break;
+            case M_AXIS_Y:
+                axis = MVector3(0, 1, 0);
+                break;
+            case M_AXIS_Z:
+                axis = MVector3(0, 0, 1);
+                break;
+
+            case M_AXIS_VIEW:
+				if(camera->isOrtho())
+					axis = camera->getRotatedVector(MVector3(0, 0, -1));
+				else
+					axis = (selectionCenter - camera->getTransformedPosition()).getNormalized();
+                break;
+
+            default:
+                break;
+		}
+
+		unsigned int i;
+		for(i=0; i<oSize; i++)
+		{
+			MObject3d * object = selection->getSelectedObject(i);
+
+			if(object->hasParent())
+			{
+				MObject3d * parent = object->getParent();
+				if(selection->isObjectSelected(parent))
+					continue;
+
+				// translate
+				MVector3 vec = object->getTransformedPosition() - selectionCenter;
+				vec.rotateAxis((double)angle, axis);
+
+				MVector3 localPos = parent->getInversePosition(selectionCenter + vec);
+				object->setPosition(localPos);
+
+				// rotate
+				MVector3 iAxis = object->getMatrix()->getInverseRotatedVector3(axis) / object->getTransformedScale();
+
+				object->addAxisAngleRotation(iAxis, angle);
+			}
+			else
+			{
+				// translate
+				MVector3 vec = (object->getTransformedPosition() - selectionCenter);
+				vec.rotateAxis((double)angle, axis);
+				object->setPosition(selectionCenter + vec);
+
+				// rotate
+				MVector3 iAxis = object->getMatrix()->getInverseRotatedVector3(axis) / object->getTransformedScale();
+				object->addAxisAngleRotation(iAxis, angle);
+			}
+
+			// update matrix
+			object->updateMatrix();
+		}
+	}
+	else
+	{
+		MVector3 axis;
+		switch(m_currentAxis)
+		{
+            case M_AXIS_X:
+                axis = MVector3(1, 0, 0);
+                break;
+            case M_AXIS_Y:
+                axis = MVector3(0, 1, 0);
+                break;
+            case M_AXIS_Z:
+                axis = MVector3(0, 0, 1);
+                break;
+
+            case M_AXIS_VIEW:
+			{
+				if(camera->isOrtho())
+					axis = camera->getRotatedVector(MVector3(0, 0, -1));
+			}
+                break;
+
+            default:
+                break;
+		}
+
+		unsigned int i;
+		for(i=0; i<oSize; i++)
+		{
+			MObject3d * object = selection->getSelectedObject(i);
+
+			if(m_currentAxis == M_AXIS_VIEW)
+			{
+				if(! camera->isOrtho())
+					axis = (object->getTransformedPosition() - camera->getTransformedPosition()).getNormalized();
+
+				MVector3 iAxis = object->getMatrix()->getInverseRotatedVector3(axis) / object->getTransformedScale();
+				object->addAxisAngleRotation(iAxis, angle);
+				object->updateMatrix();
+				continue;
+			}
+
+			object->addAxisAngleRotation(axis, angle);
+			object->updateMatrix();
+		}
+	}
+}
+
+void MV3dEdit::transformScale(MVector2 pointDir)
+{
+	MEngine * engine = MEngine::getInstance();
+	MEditor * editor = MEditor::getInstance();
+	MWindow * rootWindow = m_window->getRootWindow();
+	MLevel * level = engine->getLevel();
+	MScene * scene = level->getCurrentScene();
+	MSelectionManager * selection = editor->getSelectionManager();
+	MPreferences * prefs = editor->getPreferences();
+
+	// selection
+	unsigned int oSize = selection->getSelectionSize();
+	selection->updateSelectionCenter();
+	MVector3 selectionCenter = selection->getSelectionCenter();
+
+	// camera
+	MOCamera * camera = &m_view.m_camera;
+	MVector3 viewAxis = camera->getRotatedVector(MVector3(0, 0, -1));
+
+	// view axis
+	if(m_currentAxis == M_AXIS_VIEW)
+	{
+		// scale factor
+		MVector2 dir = (m_tMousePosition - m_tCenterPosition).getNormalized();
+		float scaleFactor = 1.0f + dir.dotProduct(pointDir) * 0.01f;
+
+		unsigned int i;
+		for(i=0; i<oSize; i++)
+		{
+			MObject3d * object = selection->getSelectedObject(i);
+
+			if(getOrientationMode() == M_ORIENTATION_WORLD)
+			{
+				if(object->hasParent())
+				{
+					MObject3d * parent = object->getParent();
+					if(selection->isObjectSelected(parent))
+						continue;
+
+					MVector3 worldPos = object->getTransformedPosition();
+					MVector3 localPos = parent->getInversePosition(selectionCenter + ((worldPos - selectionCenter) * scaleFactor));
+					object->setPosition(localPos);
+				}
+				else
+				{
+					MVector3 worldPos = object->getTransformedPosition();
+					object->setPosition(selectionCenter + ((worldPos - selectionCenter) * scaleFactor));
+				}
+			}
+
+			MVector3 scale = object->getScale() * scaleFactor;
+			object->setScale(scale);
+			object->updateMatrix();
+		}
+
+		return;
+	}
+
+	// axis
+	MVector3 axis;
+	if(oSize > 1)
+	{
+		switch(m_currentAxis)
+		{
+            case M_AXIS_X:
+                axis = MVector3(1, 0, 0);
+                break;
+
+            case M_AXIS_Y:
+                axis = MVector3(0, 1, 0);
+                break;
+
+            case M_AXIS_Z:
+                axis = MVector3(0, 0, 1);
+                break;
+
+            default:
+                break;
+		}
+	}
+	else
+	{
+		MObject3d * object = selection->getSelectedObject(0);
+
+		// matrix
+		MVector3 scale = object->getTransformedScale();
+		MMatrix4x4 iScaleMatrix;
+		iScaleMatrix.setScale(MVector3(1.0f / scale.x, 1.0f / scale.y, 1.0f / scale.z));
+		MMatrix4x4 matrix = (*object->getMatrix()) * iScaleMatrix;
+
+		switch(m_currentAxis)
+		{
+            case M_AXIS_X:
+                axis = matrix.getRotatedVector3(MVector3(1, 0, 0));
+                break;
+
+            case M_AXIS_Y:
+                axis = matrix.getRotatedVector3(MVector3(0, 1, 0));
+                break;
+
+            case M_AXIS_Z:
+                axis = matrix.getRotatedVector3(MVector3(0, 0, 1));
+                break;
+
+            default:
+                break;
+		}
+	}
+
+	// scale factor
+	float scaleFactor = 1.0f + m_tVectorDirection.dotProduct(pointDir) * 0.01f;
+
+	unsigned int i;
+	for(i=0; i<oSize; i++)
+	{
+		MObject3d * object = selection->getSelectedObject(i);
+		MVector3 worldPos = object->getTransformedPosition();
+
+		MVector3 scale = object->getScale();
+		switch(m_currentAxis)
+		{
+            case M_AXIS_X:
+                scale.x *= scaleFactor;
+                break;
+            case M_AXIS_Y:
+                scale.y *= scaleFactor;
+                break;
+            case M_AXIS_Z:
+                scale.z *= scaleFactor;
+                break;
+
+            default:
+                break;
+		}
+
+		object->setScale(scale);
 		object->updateMatrix();
 	}
 }
@@ -838,9 +1125,11 @@ void MV3dEdit::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 	if(m_tools->isMouseInside())
 		return;
 		
+	static bool transformed = false;
 	if(event == MWIN_EVENT_MOUSE_BUTTON_DOWN && rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
 	{
 		pointSelectAxis(rootWindow->getMousePosition());
+		transformed = false;
 	}
 
 	if(m_currentAxis != M_AXIS_NONE && event == MWIN_EVENT_MOUSE_MOVE && rootWindow->isMouseButtonPressed(MMOUSE_BUTTON_LEFT))
@@ -848,9 +1137,14 @@ void MV3dEdit::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 		M_TRANSFORM_MODE tmode = getTransformMode();
 		if(tmode == M_TRANSFORM_POSITION)
 			transformPosition(rootWindow->getMousePosition());
+		else if(tmode == M_TRANSFORM_ROTATION)
+			transformRotation(rootWindow->getMouseDir());
+		else if(tmode == M_TRANSFORM_SCALE)
+			transformScale(rootWindow->getMouseDir());
+		transformed = true;
 	}
 
-	if((m_currentAxis == M_AXIS_NONE || m_currentAxis == M_AXIS_VIEW) && event == MWIN_EVENT_MOUSE_BUTTON_UP && rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
+	if((m_currentAxis == M_AXIS_NONE || (m_currentAxis == M_AXIS_VIEW && !transformed)) && event == MWIN_EVENT_MOUSE_BUTTON_UP && rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
 	{
 		pointSelect(rootWindow->getMousePosition());
 		m_selectionDepth++;

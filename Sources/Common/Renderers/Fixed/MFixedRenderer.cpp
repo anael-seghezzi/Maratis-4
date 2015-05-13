@@ -803,12 +803,13 @@ void MFixedRenderer::drawScene(MScene * scene, MOCamera * camera)
 					render->setLightAttenuation(l, 1, 0, quadraticAttenuation);
 
 					// spot
-					render->setLightSpotAngle(l, light->getSpotAngle());
-					if(light->getSpotAngle() < 90){
+					if(light->getLightType() == M_LIGHT_SPOT){
+						render->setLightSpotAngle(l, light->getSpotAngle());
 						render->setLightSpotDirection(l, light->getRotatedVector(MVector3(0, 0, -1)).getNormalized());
 						render->setLightSpotExponent(l, light->getSpotExponent());
 					}
 					else {
+						render->setLightSpotAngle(l, 180);
 						render->setLightSpotExponent(l, 0.0f);
 					}
 				}
@@ -947,12 +948,13 @@ void MFixedRenderer::drawScene(MScene * scene, MOCamera * camera)
 					render->setLightAttenuation(l, 1, 0, quadraticAttenuation);
 
 					// spot
-					render->setLightSpotAngle(l, light->getSpotAngle());
-					if(light->getSpotAngle() < 90){
+					if(light->getLightType() == M_LIGHT_SPOT){
+						render->setLightSpotAngle(l, light->getSpotAngle());
 						render->setLightSpotDirection(l, light->getRotatedVector(MVector3(0, 0, -1)).getNormalized());
 						render->setLightSpotExponent(l, light->getSpotExponent());
 					}
 					else {
+						render->setLightSpotAngle(l, 180);
 						render->setLightSpotExponent(l, 0.0f);
 					}
 				}

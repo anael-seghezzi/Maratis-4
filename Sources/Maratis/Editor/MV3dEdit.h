@@ -79,6 +79,8 @@ protected:
 	bool m_axisVis[3];
 	
 	void transformPosition(MVector2 point);
+	void transformRotation(MVector2 pointDir);
+	void transformScale(MVector2 pointDir);
 
 	void getRayFromPoint(MVector2 point, MVector3 *ray_origin, MVector3 *ray_dest);
 	void pointSelectAxis(MVector2 point);

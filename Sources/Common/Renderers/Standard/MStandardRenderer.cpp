@@ -1766,12 +1766,13 @@ void MStandardRenderer::prepareSubMesh(MScene * scene, MOCamera * camera, MOEnti
 		render->setLightAttenuation(l, 1, 0, quadraticAttenuation);
 
 		// spot
-		render->setLightSpotAngle(l, light->getSpotAngle());
-		if(light->getSpotAngle() < 90){
+		if(light->getLightType() == M_LIGHT_SPOT){
+			render->setLightSpotAngle(l, light->getSpotAngle());
 			render->setLightSpotDirection(l, light->getRotatedVector(MVector3(0, 0, -1)).getNormalized());
 			render->setLightSpotExponent(l, light->getSpotExponent());
 		}
 		else {
+			render->setLightSpotAngle(l, 180);
 			render->setLightSpotExponent(l, 0.0f);
 		}
 
@@ -2051,7 +2052,7 @@ void MStandardRenderer::drawScene(MScene * scene, MOCamera * camera)
 		MShadowLight * shadowLight = createShadowLight(light);
 
 		// no need to update shadow (spot only)
-		if(light->getSpotAngle() < 90.0f && shadowLight->currentFrame == scene->getCurrentFrame())
+		if(light->getLightType() == M_LIGHT_SPOT && shadowLight->currentFrame == scene->getCurrentFrame())
 			continue;
 
 		// bind FBO

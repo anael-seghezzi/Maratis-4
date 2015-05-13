@@ -104,7 +104,7 @@ public:
 	inline MVector3 getFinalColor(void) const { return m_color * m_intensity; }
 
 	// spot
-	inline void setSpotAngle(float angle){ m_spotAngle = CLAMP(angle, 1.0f, 180.0f); }
+	inline void setSpotAngle(float angle){ m_spotAngle = CLAMP(angle, 0.0f, 90.0f); }
 	inline void setSpotExponent(float exponent){ m_spotExponent = CLAMP(exponent, 0.0f, 1.0f); }
 	inline float getSpotAngle(void){ return m_spotAngle; }
 	inline float getSpotExponent(void){ return m_spotExponent; }

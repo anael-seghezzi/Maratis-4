@@ -475,7 +475,7 @@ void MV3dView::drawLight(MOLight * light, MMeshRef * meshRef, float unitSize)
 		endDraw(render);
 	}
 	// spot
-	else if(spotAngle < 90)
+	else if(light->getLightType() == M_LIGHT_SPOT)
 	{
 		float size = getBillboardObjectSize(light, unitSize)*10;
 		

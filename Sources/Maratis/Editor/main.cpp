@@ -151,12 +151,13 @@ void winEvents(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				light->setColor(MVector3(1, 1, 1));
 				light->setRadius(500);
 				light->setLightType(M_LIGHT_DIRECTIONAL);
+
 				light->addAxisAngleRotation(MVector3(1, 0, 0), 30);
 				//light->castShadow(true);
 				light->setShadowBlur(0.05f);
 				light->setShadowQuality(1024);
 				light->setShadowBias(0.1f);
-				
+
 				scene->update();
 				scene->updateObjectsMatrices();
 			}
