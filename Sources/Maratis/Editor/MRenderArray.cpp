@@ -104,4 +104,3 @@ void endDraw(MRenderingContext * render)
 	render->setVertexPointer(M_FLOAT, 3, g_vertices);
 	render->drawArray(g_primitiveType, 0, g_verticesNumber);
 }
-

@@ -131,7 +131,6 @@ void winEvents(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				getGlobalFilename(filename, workingDir, "Resources/meshes/default/Jules.mesh");
 				MOEntity * entity = scene->addNewEntity(level->loadMesh(filename));
 				entity->setPosition(MVector3(0, 0, 1));
-				//entity->setEulerRotation(MVector3(0, 0, 10));
 				
 				MOCamera * camera = scene->addNewCamera();
 				camera->setPosition(MVector3(200, 100, 200));
@@ -236,7 +235,7 @@ int main(int argc, char **argv)
 
 	window->setDrawCallback(drawCallback);
 	
-	//MGUI_createWindow("test2", 850, 200, 64*8, 45*8, winEvents2);
+	MGUI_createWindow("test2", 850, 200, 64*8, 45*8, winEvents2);
 	
 	printf("> Maratis");
 

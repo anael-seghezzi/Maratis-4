@@ -1132,7 +1132,7 @@ void MV3dEdit::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 		transformed = false;
 	}
 
-	if(m_currentAxis != M_AXIS_NONE && event == MWIN_EVENT_MOUSE_MOVE && rootWindow->isMouseButtonPressed(MMOUSE_BUTTON_LEFT))
+	if(event == MWIN_EVENT_MOUSE_MOVE && rootWindow->isMouseButtonPressed(MMOUSE_BUTTON_LEFT) && m_currentAxis != M_AXIS_NONE)
 	{
 		M_TRANSFORM_MODE tmode = getTransformMode();
 		if(tmode == M_TRANSFORM_POSITION)
@@ -1144,10 +1144,13 @@ void MV3dEdit::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 		transformed = true;
 	}
 
-	if((m_currentAxis == M_AXIS_NONE || (m_currentAxis == M_AXIS_VIEW && !transformed)) && event == MWIN_EVENT_MOUSE_BUTTON_UP && rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
+	if(event == MWIN_EVENT_MOUSE_BUTTON_UP && rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
 	{
-		pointSelect(rootWindow->getMousePosition());
-		m_selectionDepth++;
+		if(m_currentAxis == M_AXIS_NONE || (m_currentAxis == M_AXIS_VIEW && !transformed))
+		{
+			pointSelect(rootWindow->getMousePosition());
+			m_selectionDepth++;
+		}
 		m_currentAxis = M_AXIS_NONE;
 	}
 }
