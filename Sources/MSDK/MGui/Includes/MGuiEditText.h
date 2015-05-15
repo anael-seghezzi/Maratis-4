@@ -68,6 +68,7 @@ private:
 	MVector2 getCharacterPosition(unsigned int characterId);
 	unsigned int findPointedCharacter(MVector2 point);
 	void drawSelection(void);
+	void setTextInternal(const char * text);
 
 public:
 

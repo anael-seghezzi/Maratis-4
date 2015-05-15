@@ -55,25 +55,201 @@ static MLevel * level = NULL;
 static MViewport * my3dView = NULL;
 
 
+
+// syntax highlighting
+
+static int sh_is_white(int c)
+{
+	return c == ' ' || c == '\t' || c == '\n';
+}
+
+int sh_isalpha_special(int c)
+{
+	return isalpha(c) || c == '_';
+}
+
+int sh_isalnum_special(int c)
+{
+	return isalnum(c) || c == '_';
+}
+
+int sh_isquote(int c)
+{
+	return c == '\'' || c == '\"';
+}
+
+static int sh_compare_key(char *string, char *key, int len)
+{
+	int i;
+	for (i = 0; i < len; i++) {
+		if ((*string) != (*key))
+			return 0;
+		if (*string == 0 || *key == 0)
+			return 0;
+		string++;
+		key++;
+	}
+	return 1;
+}
+
+static int sh_lua_compare_key(char *string, char *key, int len)
+{
+	char *next = string + len;
+	return (
+		sh_compare_key(string, key, len) &&
+		(sh_is_white(*next) || !sh_isalnum_special(*next))
+	);
+}
+
+static int sh_lua_instruction(char *string)
+{
+	if (sh_lua_compare_key(string, "and", 3)) return 3;
+	if (sh_lua_compare_key(string, "break", 5)) return 5;
+	if (sh_lua_compare_key(string, "do", 2)) return 2;
+	if (sh_lua_compare_key(string, "else", 4)) return 4;
+	if (sh_lua_compare_key(string, "elseif", 6)) return 6;
+	if (sh_lua_compare_key(string, "end", 3)) return 3;
+	if (sh_lua_compare_key(string, "false", 5)) return 5;
+	if (sh_lua_compare_key(string, "for", 3)) return 3;
+	if (sh_lua_compare_key(string, "function", 8)) return 8;
+	if (sh_lua_compare_key(string, "if", 2)) return 2;
+	if (sh_lua_compare_key(string, "in", 2)) return 2;
+	if (sh_lua_compare_key(string, "local", 5)) return 5;
+	if (sh_lua_compare_key(string, "nil", 3)) return 3;
+	if (sh_lua_compare_key(string, "not", 3)) return 3;
+	if (sh_lua_compare_key(string, "or", 2)) return 2;
+	if (sh_lua_compare_key(string, "repeat", 6)) return 6;
+	if (sh_lua_compare_key(string, "return", 6)) return 6;
+	if (sh_lua_compare_key(string, "then", 4)) return 4;
+	if (sh_lua_compare_key(string, "true", 4)) return 4;
+	if (sh_lua_compare_key(string, "until", 5)) return 5;
+	if (sh_lua_compare_key(string, "while", 5)) return 5;
+	return 0;
+}
+
+static void sh_lua_syntax(const char *string, map<unsigned int, MColor> *coloring)
+{
+	MEditor *editor = MEditor::getInstance();
+	MPreferences *pref = editor->getPreferences();
+	int mode = -1; // 0, comment, instruction, number, string, alphanum
+	int i = 0;
+	char *s = (char *)string;
+
+	coloring->clear();
+
+	for (; *s; s++, i++) {
+
+		int res;
+
+		// comment
+		if (mode == 1) {
+			if (*s != '\n')
+				continue;
+		}
+		else if (sh_compare_key(s, "--", 2)) {
+			(*coloring)[i] = MColor(pref->getColor("lua comment"));
+			mode = 1;
+			s++;
+			i++;
+			continue;
+		}
+
+		// string
+		if (mode == 4) {
+			if (! sh_isquote(*s))
+				continue;
+			else {
+				mode = -1;
+				continue;
+			}
+		}
+		else if (sh_isquote(*s)) {
+			(*coloring)[i] = MColor(pref->getColor("lua string"));
+			mode = 4;
+			continue;
+		}
+
+		// instruction
+		res = sh_lua_instruction(s);
+		if (mode != 5 && res > 0) {
+			(*coloring)[i] = MColor(pref->getColor("lua instruction"));
+			s += res - 1;
+			i += res - 1;
+			mode = 2;
+			continue;
+		}
+
+		// alphanum
+		if (mode == 5) {
+			if (sh_isalnum_special(*s))
+				continue;
+		}
+		else if (sh_isalpha_special(*s)) {
+			mode = 5;
+			continue;
+		}
+
+		// number
+		if (mode == 3) {
+			if (isdigit(*s))
+				continue;
+		}
+		else if (isdigit(*s)) {
+			(*coloring)[i] = MColor(pref->getColor("lua number"));
+			mode = 3;
+			continue;
+		}
+
+		// default
+		if (mode != 0) {
+			(*coloring)[i] = MColor(pref->getColor("lua default"));
+			mode = 0;
+		}
+	}
+}
+
+
+
+
+void scriptCallback(MGuiEditText * editText, MGUI_EVENT_TYPE event)
+{ 
+	if(event == MGUI_EVENT_ON_CHANGE)
+		sh_lua_syntax(editText->getText(), editText->getTextColoring());
+}
+
 void winEvents2(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 {
 	MEngine * engine = MEngine::getInstance();
+	MEditor * editor = MEditor::getInstance();
 	
 	switch(event)
 	{
 	case MWIN_EVENT_CREATE:
 		{
+			char filename[256];
+			const char * workingDir = systemContext->getWorkingDirectory();
+			MLevel * guiData = editor->getGuiData();
+
+			// create a gui window (sub-window of rootWindow handled by MGui)
 			MGuiWindow * gw = rootWindow->addNewWindow();
 			gw->setScale(MVector2(rootWindow->getWidth(), rootWindow->getHeight()));
-			gw->setColor(MVector3(1));
+			gw->setColor(MVector3(0.3f, 0.3f, 0.3f));
 			
-			MTextureRef * texRef = MTextureRef::getNew(0, "RAY", 0);
-			MDataManager * texMan = engine->getLevel()->getTextureManager();
-			texMan->addRef(texRef);
+			// load a font
+			getGlobalFilename(filename, workingDir, "Resources/fonts/GenR102.TTF");
+			MFontRef * fontRef = guiData->loadFont(filename);
 			
-			MGuiImage * image = gw->addNewImage();
-			image->setScale(gw->getScale());
-			image->setNormalTexture(texRef);
+			// add some editable text
+			MGuiEditText * text = gw->addNewEditText();
+			text->setPosition(MVector2(16, 16));
+			text->setFont(fontRef);
+			text->setTextSize(16);
+			text->setTextColor(MVector4(1, 1, 1, 1));
+			text->setEventCallback(scriptCallback);
+
+			char *script = readTextFile("Resources/test/script.lua");
+			text->setText(script);
+			SAFE_FREE(script);
 		}
 		break;
 		
@@ -128,9 +304,10 @@ void winEvents(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				const char * workingDir = systemContext->getWorkingDirectory();
 		
 				MScene * scene = level->addNewScene();
-				getGlobalFilename(filename, workingDir, "Resources/meshes/default/Jules.mesh");
+				getGlobalFilename(filename, workingDir, "Resources/meshes/default/box.mesh");
 				MOEntity * entity = scene->addNewEntity(level->loadMesh(filename));
-				entity->setPosition(MVector3(0, 0, 1));
+				entity->setPosition(MVector3(0, 0, 10));
+				entity->setScale(MVector3(10));
 				
 				MOCamera * camera = scene->addNewCamera();
 				camera->setPosition(MVector3(200, 100, 200));
@@ -152,7 +329,6 @@ void winEvents(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				light->setLightType(M_LIGHT_DIRECTIONAL);
 
 				light->addAxisAngleRotation(MVector3(1, 0, 0), 30);
-				//light->castShadow(true);
 				light->setShadowBlur(0.05f);
 				light->setShadowQuality(1024);
 				light->setShadowBias(0.1f);
@@ -235,7 +411,7 @@ int main(int argc, char **argv)
 
 	window->setDrawCallback(drawCallback);
 	
-	MGUI_createWindow("test2", 850, 200, 64*8, 45*8, winEvents2);
+	MGUI_createWindow("test2", 850, 200, 512, 512, winEvents2);
 	
 	printf("> Maratis");
 

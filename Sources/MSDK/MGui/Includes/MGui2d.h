@@ -138,8 +138,9 @@ public:
 	inline bool isAutoScaleFromTextEnabled(void){ return m_autoScaleFromText; }
 	inline const char * getText(void){ return m_textObject.getText(); }
 	inline M_ALIGN_MODES getTextAlign(void){ return m_textObject.getAlign(); }
-	void setTextMargin(float margin){ m_textMargin = margin; }
-	float getTextMargin(void){ return m_textMargin; }
+	inline void setTextMargin(float margin){ m_textMargin = margin; }
+	inline float getTextMargin(void){ return m_textMargin; }
+	inline map <unsigned int, MColor> * getTextColoring(){ return &m_textObject.m_coloring; }
 
 	// root window
 	MWindow * getRootWindow(void);

@@ -44,7 +44,6 @@ m_endSelectionId(0),
 m_eventCallback(NULL)
 {
 	setColor(MVector4(0, 0, 0, 0));
-	setText("");
 }
 
 void MGuiEditText::decodeUTF8(vector <unsigned int> * text32)
@@ -168,9 +167,9 @@ void MGuiEditText::updateFromVariable(void)
 			bool * value = (bool *)getVariablePointer();
 
 			if(*value)
-				setText("1");
+				setTextInternal("1");
 			else
-				setText("0");
+				setTextInternal("0");
 		}
 		break;
 	case M_VARIABLE_INT:
@@ -180,7 +179,7 @@ void MGuiEditText::updateFromVariable(void)
 			char text[256];
 			sprintf(text, "%d", *value);
 
-			setText(text);
+			setTextInternal(text);
 		}
 		break;
 	case M_VARIABLE_UINT:
@@ -190,7 +189,7 @@ void MGuiEditText::updateFromVariable(void)
 			char text[256];
 			sprintf(text, "%d", *value);
 
-			setText(text);
+			setTextInternal(text);
 		}
 		break;
 	case M_VARIABLE_FLOAT:
@@ -200,13 +199,13 @@ void MGuiEditText::updateFromVariable(void)
 			char text[256];
 			sprintf(text, "%0.3f", *value);
 
-			setText(text);
+			setTextInternal(text);
 		}
 		break;
 	case M_VARIABLE_STRING:
 		{
 			MString * value = (MString *)getVariablePointer();
-			setText(value->getSafeString());
+			setTextInternal(value->getSafeString());
 		}
 		break;
 	default:
@@ -214,7 +213,7 @@ void MGuiEditText::updateFromVariable(void)
 	}
 }
 
-void MGuiEditText::setText(const char * text)
+void MGuiEditText::setTextInternal(const char * text)
 {
 	m_textObject.setText(text);
 
@@ -234,6 +233,12 @@ void MGuiEditText::setText(const char * text)
 		setCharId(tSize);
 
 	autoScaleFromText();
+}
+
+void MGuiEditText::setText(const char * text)
+{
+	setTextInternal(text);
+	onChange();
 }
 
 void MGuiEditText::setPressed(bool pressed)

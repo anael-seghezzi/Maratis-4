@@ -1495,13 +1495,16 @@ void MStandardRenderer::drawText(MOText * textObj)
 	MFont * font = textObj->getFont();
 	const char * text = textObj->getText();
 	vector <float> * linesOffset = textObj->getLinesOffset();
+	unsigned int textLen = strlen(text);
 
-	if(! (strlen(text) > 0 && font))
+	if(! (textLen > 0 && font))
 		return;
 
 	if(linesOffset->size() == 0)
 		return;
 
+
+	// TODO: optimize !! clip, use bigger buffer
 
 	int id = 0;
 	int vertAttribIndex;
@@ -1511,6 +1514,9 @@ void MStandardRenderer::drawText(MOText * textObj)
 	MVector2 texCoords[4];
 	MMatrix4x4 ProjModelViewMatrix;
 	
+	map<unsigned int, MColor> *coloring = &textObj->m_coloring;
+	map<unsigned int, MColor>::iterator col_iter(coloring->begin());
+
 
 	// Matrix
 	if(m_currentCamera)
@@ -1526,7 +1532,6 @@ void MStandardRenderer::drawText(MOText * textObj)
 		ProjModelViewMatrix = cameraProjMatrix * modelViewMatrix;
 	}
 
-
 	// cull face
 	render->disableCullFace();
 	render->setDepthMask(0);
@@ -1534,7 +1539,6 @@ void MStandardRenderer::drawText(MOText * textObj)
 	// blending
 	render->enableBlending();
 	render->setBlendingMode(M_BLENDING_ALPHA);
-
 
 	// bind FX
 	fxId = m_FXs[8];
@@ -1583,8 +1587,25 @@ void MStandardRenderer::drawText(MOText * textObj)
 	unsigned int charCode;
 	unsigned int state = 0;
 	unsigned char* s = (unsigned char*)text;	
-	for(; *s; ++s)
+
+	unsigned int i = 0;
+	unsigned int nexti = coloring->size() > 0 ? col_iter->first : textLen;
+
+	
+	for(; *s; s++, i++)
 	{
+		// coloring
+		if(i == nexti)
+		{
+			// Color
+			render->sendUniformVec4(fxId, "Color", MVector4(col_iter->second));
+
+			col_iter++;
+			if(col_iter != coloring->end())
+				nexti = col_iter->first;
+		}
+
+		// decode
 		if(utf8_decode(&state, &charCode, *s) != UTF8_ACCEPT)
 			continue;
 	
@@ -1636,6 +1657,7 @@ void MStandardRenderer::drawText(MOText * textObj)
 		//move to next character
 		xc += character->getXAdvance() * size;
 	}
+
 
 	// disable attribs
 	if(vertAttribIndex != -1)
@@ -2398,4 +2420,6 @@ void MStandardRenderer::drawScene(MScene * scene, MOCamera * camera)
 		
 		render->setDepthMask(1);
 	}
+
+	m_currentCamera = NULL;
 }

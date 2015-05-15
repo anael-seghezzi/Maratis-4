@@ -84,9 +84,7 @@ unsigned int MFont::getCharactersNumber(void)
 MCharacter * MFont::getCharacterByIndex(unsigned int id)
 {
 	map<unsigned int, MCharacter>::iterator iter(m_characters.begin());
-
-	for(unsigned int i=0; i<id; i++)
-		iter++;
+	advance(iter, id);
 
 	if(iter != m_characters.end())
 		return &iter->second;

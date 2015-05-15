@@ -23,6 +23,13 @@
         <Color name="3d Object Off"                 value="32 32 32 255"        />
         <Color name="3d Object Highlight"           value="100 200 255 255"     />
 		
+		<!-- syntax highlighting -->
+		<Color name="lua default"			value="220 220 220 255"     />
+		<Color name="lua comment"		value="140 140 140 255"     />
+		<Color name="lua instruction"		value="150 200 100 255"     />
+		<Color name="lua number"			value="255 200 30 255"     />
+		<Color name="lua string"				value="240 120 0 255"     />
+		
     </Theme>
 
 </Preferences>

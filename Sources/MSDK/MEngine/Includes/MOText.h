@@ -52,6 +52,9 @@ public:
 	// copy constructor
 	MOText(const MOText & text);
 
+	// string coloring
+	map <unsigned int, MColor> m_coloring;
+
 private:
 
 	// font ref

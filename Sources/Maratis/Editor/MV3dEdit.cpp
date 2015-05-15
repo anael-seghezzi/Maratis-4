@@ -1042,7 +1042,6 @@ void MV3dEdit::create(MWindow * rootWindow)
 		button->setPressedTexture(ref1_2);
 		button->setScale(MVector2(ref1_1->getWidth(), ref1_1->getHeight()));
 		button->setYPosition(y);
-		button->setPressed(true);
 		y+=button->getScale().y;
 		
 		button = m_tools->addNewButton();
@@ -1051,6 +1050,7 @@ void MV3dEdit::create(MWindow * rootWindow)
 		button->setPressedTexture(ref2_2);
 		button->setScale(MVector2(ref2_1->getWidth(), ref2_1->getHeight()));
 		button->setYPosition(y);
+		button->setPressed(true);
 		y+=button->getScale().y;
 		
 		button = m_tools->addNewButton();

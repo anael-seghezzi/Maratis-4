@@ -85,8 +85,6 @@ m_fontFilename("fonts/GenR102.TTF"),
 m_guiPath("gui")
 {
 	initKeys();
-    initShortcuts();
-	initThemes();
 }
 
 MPreferences::~MPreferences(void)
@@ -171,123 +169,6 @@ int MPreferences::getKeyCode(const char * name)
 	}
 	
 	return -1;
-}
-
-void MPreferences::initShortcuts(void)
-{
-	// add default shortcuts
-	MShortcut * sc;
-	
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("S");
-    sc->key2 = getKeyCode("Ctrl");
-    m_shortcuts["Save"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("Z");
-    sc->key2 = getKeyCode("Ctrl");
-    m_shortcuts["Undo"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("Y");
-    sc->key2 = getKeyCode("Ctrl");
-    m_shortcuts["Redo"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("O");
-    sc->key2 = getKeyCode("Ctrl");
-    m_shortcuts["Load Level"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("Q");
-    sc->key2 = getKeyCode("Ctrl");
-    m_shortcuts["Quit"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("D");
-    sc->key2 = getKeyCode("Ctrl");
-    m_shortcuts["Duplicate"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("A");
-    sc->key2 = getKeyCode("Ctrl");
-    m_shortcuts["Select All"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("Num5");
-    m_shortcuts["Orthogonal View"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("Num1");
-    m_shortcuts["Face View"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("Num3");
-    m_shortcuts["Right View"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("Num7");
-    m_shortcuts["Top View"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = m_keys["Num9"];
-    m_shortcuts["Bottom View"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("M");
-    m_shortcuts["Transform Mouse"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("T");
-    m_shortcuts["Transform Position"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("R");
-    m_shortcuts["Transform Rotation"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("S");
-    m_shortcuts["Transform Scale"] = sc;
-
-	sc = new MShortcut();
-    sc->key2 = getKeyCode("Ctrl");
-    m_shortcuts["Multiple Selection"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("F");
-    m_shortcuts["Focus Selection"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("Backspace");
-    m_shortcuts["Delete"] = sc;
-
-	sc = new MShortcut();
-    sc->key1 = getKeyCode("Delete");
-    m_shortcuts["Delete2"] = sc;
-
-	sc = new MShortcut();
-    sc->key2 = getKeyCode("Ctrl");
-    m_shortcuts["Pan View"] = sc;
-}
-
-void MPreferences::initThemes(void)
-{
-	m_colors["Head"] = MColor(45, 45, 45, 255);
-	m_colors["Head Button"] = MColor(0, 0, 0, 0);
-	m_colors["Head Button Highlight"] = MColor(56, 128, 180, 255);
-	m_colors["Head Button Text"] = MColor(255, 255, 255, 255);
-	
-	m_colors["Menu"] = MColor(62, 62, 62, 216);
-	m_colors["Menu Highlight"] = MColor(213, 221, 146, 191);
-	m_colors["Menu Text"] = MColor(255, 255, 255, 255);
-	
-	m_colors["Edit Background"] = MColor(26, 37, 48, 255);
-	m_colors["Edit Head"] = MColor(57, 130, 182, 255);
-	m_colors["Edit Text"] = MColor(255, 255, 255, 255);
-	m_colors["Edit Variable Text"] = MColor(163, 190, 219, 255);
-	m_colors["Edit Component Text"] = MColor(213, 221, 146, 255);
-	
-	m_colors["Console"] = MColor(45, 45, 45, 255);
 }
 
 MShortcut * MPreferences::getShortcut(const char * name)
