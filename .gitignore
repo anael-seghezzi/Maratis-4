@@ -31,5 +31,7 @@
 # Debug files
 *.dSYM/
 
-Build*
+Build
+BuildVC
+BuildX
 bin
