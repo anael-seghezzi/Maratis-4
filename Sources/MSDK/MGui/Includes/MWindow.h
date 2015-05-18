@@ -59,7 +59,11 @@ protected:
 	MVector2 m_mousePos;
 	MVector2 m_mouseDir;
 	MVector2 m_mouseScroll;
-	
+
+	// clic tick
+	unsigned long m_previousClicTick;
+	unsigned long m_currentClicTick;
+
 	// local windows
 	vector <MGuiWindow *> m_windows;
 
@@ -104,6 +108,9 @@ public:
 	MGuiWindow * addNewWindow(void);
 	inline unsigned int getWindowsNumber(void){ return m_windows.size(); }
 	inline MGuiWindow * getWindow(unsigned int id){ return m_windows[id]; }
+
+	// previous clic
+	inline unsigned long getPreviousClicElapsedTime(void){ return m_currentClicTick - m_previousClicTick; }
 
 	// events
 	inline void onChar(unsigned int character){ m_currentKey = character; onEvent(MWIN_EVENT_CHAR); }

@@ -37,17 +37,18 @@ class M_GUI_EXPORT MGuiEditText : public MGui2d
 private:
 
 	bool m_isSingleLine;
+	bool m_fullWindowScale;
 
 	// text
 	unsigned int m_charId; // edited character position
 
+	// selection
+	unsigned int m_charSel1;
+	unsigned int m_charSel2;
+
 	// limit length
 	bool m_limitLength;
 	unsigned int m_maxLength;
-
-	// selection
-	unsigned int m_startSelectionId;
-	unsigned int m_endSelectionId;
 
 	// events
 	void (* m_eventCallback)(MGuiEditText * editText, MGUI_EVENT_TYPE event);
@@ -77,11 +78,14 @@ public:
 	inline void setMaxLength(unsigned int maxLength){ m_maxLength = maxLength; }
 	inline void setLimitedLength(bool limit){ m_limitLength = limit; }
 
+	// full window scale
+	inline void setFullWindowScale(bool state){ m_fullWindowScale = state; }
+
 	// linked variable
 	void sendVariable(void);
 
 	// selection
-	inline void setSelection(unsigned int start, unsigned int end){ m_startSelectionId = start; m_endSelectionId = end; }
+	inline void setSelection(unsigned int start, unsigned int end){ m_charSel1 = start; m_charSel2 = end; }
 
 	// on change
 	void onChange(void);

@@ -44,6 +44,9 @@ MWindow::MWindow(int x, int y, unsigned int width, unsigned int height)
 	m_height = height;
 	memset(m_keys, 0, sizeof(bool)*MWIN_MAX_KEYS);
 	memset(m_mouseButtons, 0, sizeof(bool)*MWIN_MAX_MOUSE_BUTTONS);
+
+	// event tick
+	m_previousClicTick = m_currentClicTick = 0;
 }
 
 MWindow::~MWindow(void)
@@ -144,15 +147,19 @@ void MWindow::unHighLightAllWindows(void)
 
 void MWindow::onEvent(MWIN_EVENT_TYPE event)
 {
-	int i, j;
+	MSystemContext *system = MEngine::getInstance()->getSystemContext();
 	int wSize = (int)m_windows.size();
+	int i, j;
+
+	// clic tick
+	if(event == MWIN_EVENT_MOUSE_BUTTON_DOWN && isMouseButtonPressed(MMOUSE_BUTTON_LEFT))
+	{
+		m_previousClicTick = m_currentClicTick;
+		m_currentClicTick = system->getSystemTick();
+	}
 
 	if(wSize == 0)
-	{
-		if(m_eventCallback)
-			m_eventCallback(this, event);
-		return;
-	}
+		goto end;
 
 	// menus windows
 	for(i=0; i<wSize; i++)
@@ -162,11 +169,7 @@ void MWindow::onEvent(MWIN_EVENT_TYPE event)
 
 		int result = m_windows[i]->onWindowMenusEvent(this, event);
 		if(result != 0)
-		{
-			if(m_eventCallback)
-				m_eventCallback(this, event);
-			return;
-		}
+			goto end;
 	}
 
 	// windows
@@ -193,6 +196,7 @@ void MWindow::onEvent(MWIN_EVENT_TYPE event)
 		}
 	}
 	
+	end:
 	if(m_eventCallback)
 		m_eventCallback(this, event);
 }

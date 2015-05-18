@@ -36,11 +36,12 @@
 //constructor
 MGuiEditText::MGuiEditText(void):
 m_isSingleLine(false),
+m_fullWindowScale(false),
 m_charId(0),
 m_limitLength(false),
 m_maxLength(0),
-m_startSelectionId(0),
-m_endSelectionId(0),
+m_charSel1(0),
+m_charSel2(0),
 m_eventCallback(NULL)
 {
 	setColor(MVector4(0, 0, 0, 0));
@@ -444,7 +445,7 @@ void MGuiEditText::autoScrolling(void)
 	if(selection)
 	{
 		// charPos
-		charPos = getCharacterPosition(m_endSelectionId);
+		charPos = getCharacterPosition(m_charSel2);
 	}
 	else
 	{
@@ -510,6 +511,14 @@ void MGuiEditText::autoScaleFromText(void)
 	float size = getTextSize();
 	m_scale.x = MAX(m_scale.x, size);
 	m_scale.y = MAX(m_scale.y, size);
+
+	if(m_fullWindowScale)
+	{
+		MGuiWindow *parent = getParentWindow();
+		m_scale.x = MAX(m_scale.x, parent->getScale().x);
+		m_scale.y = MAX(m_scale.y, parent->getScale().y);
+		parent->resizeScroll();
+	}
 }
 
 void MGuiEditText::onChange(void)
@@ -521,15 +530,15 @@ void MGuiEditText::onChange(void)
 
 bool MGuiEditText::getSelectionIds(unsigned int * start, unsigned int * end)
 {
-	if(m_endSelectionId > m_startSelectionId)
+	if(m_charSel2 > m_charSel1)
 	{
-		*start = m_startSelectionId;
-		*end = m_endSelectionId;
+		*start = m_charSel1;
+		*end = m_charSel2;
 	}
 	else
 	{
-		*start = m_endSelectionId;
-		*end = m_startSelectionId;
+		*start = m_charSel2;
+		*end = m_charSel1;
 	}
 
 	unsigned int count;
@@ -566,6 +575,7 @@ void MGuiEditText::editText(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 	unsigned int sEnd;
 
 	bool selection = getSelectionIds(&sStart, &sEnd);
+	bool shift = (rootWindow->isKeyPressed(MKEY_LSHIFT) || rootWindow->isKeyPressed(MKEY_RSHIFT));
 
 	// events
 	if(event == MWIN_EVENT_KEY_DOWN)
@@ -575,14 +585,13 @@ void MGuiEditText::editText(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 		case MKEY_UP:
 			if(! isSingleLine())
 			{
-				if(rootWindow->isKeyPressed(MKEY_LSHIFT) || rootWindow->isKeyPressed(MKEY_RSHIFT))
-					if(m_endSelectionId == m_startSelectionId)
-						m_startSelectionId = m_charId;
+				if(shift && (m_charSel2 == m_charSel1))
+						m_charSel1 = m_charId;
 		
 				upCharId(-1);
 
-				if(rootWindow->isKeyPressed(MKEY_LSHIFT) || rootWindow->isKeyPressed(MKEY_RSHIFT))
-					m_endSelectionId = m_charId;
+				if(shift)
+					m_charSel2 = m_charId;
 				else
 					setSelection(0, 0);
 			}
@@ -591,41 +600,44 @@ void MGuiEditText::editText(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 		case MKEY_DOWN:
 			if(! isSingleLine())
 			{
-				if(rootWindow->isKeyPressed(MKEY_LSHIFT) || rootWindow->isKeyPressed(MKEY_RSHIFT))
-					if(m_endSelectionId == m_startSelectionId)
-						m_startSelectionId = m_charId;
+				if(shift && (m_charSel2 == m_charSel1))
+						m_charSel1 = m_charId;
 				
 				upCharId(1);
 
-				if(rootWindow->isKeyPressed(MKEY_LSHIFT) || rootWindow->isKeyPressed(MKEY_RSHIFT))
-					m_endSelectionId = m_charId;
+				if(shift)
+					m_charSel2 = m_charId;
 				else
 					setSelection(0, 0);
 			}
 			return;
 
 		case MKEY_RIGHT:
-			if(rootWindow->isKeyPressed(MKEY_LSHIFT) || rootWindow->isKeyPressed(MKEY_RSHIFT))
-				if(m_endSelectionId == m_startSelectionId)
-					m_startSelectionId = m_charId;
+			if(shift && (m_charSel2 == m_charSel1))
+				m_charSel1 = m_charId;
 					
-			addCharId();
+			if(!shift && m_charSel2 != m_charSel1)
+				m_charId = MAX(m_charSel2, m_charSel1);
+			else
+				addCharId();
 			
-			if(rootWindow->isKeyPressed(MKEY_LSHIFT) || rootWindow->isKeyPressed(MKEY_RSHIFT))
-				m_endSelectionId = m_charId;
+			if(shift)
+				m_charSel2 = m_charId;
 			else
 				setSelection(0, 0);
 			return;
 
 		case MKEY_LEFT:
-			if(rootWindow->isKeyPressed(MKEY_LSHIFT) || rootWindow->isKeyPressed(MKEY_RSHIFT))
-				if(m_endSelectionId == m_startSelectionId)
-					m_startSelectionId = m_charId;
-					
-			subCharId();
+			if(shift && (m_charSel2 == m_charSel1))
+				m_charSel1 = m_charId;
 			
-			if(rootWindow->isKeyPressed(MKEY_LSHIFT) || rootWindow->isKeyPressed(MKEY_RSHIFT))
-				m_endSelectionId = m_charId;
+			if(!shift && m_charSel2 != m_charSel1)
+				m_charId = MIN(m_charSel2, m_charSel1);
+			else
+				subCharId();
+			
+			if(shift)
+				m_charSel2 = m_charId;
 			else
 				setSelection(0, 0);
 			return;
@@ -799,6 +811,10 @@ void MGuiEditText::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 
 	switch(event)
 	{
+	case MWIN_EVENT_RESIZE:
+		autoScaleFromText();
+		break;
+
 	case MWIN_EVENT_MOUSE_SCROLL:
 	case MWIN_EVENT_MOUSE_MOVE:
 		if(parent->isHighLight() && isMouseInside(MVector2(12, 0)))
@@ -812,10 +828,10 @@ void MGuiEditText::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 		{
 			setHighLight(false);
 		}
-
-		if(isPressed() && rootWindow->isMouseButtonPressed(MMOUSE_BUTTON_LEFT))
+	
+		if(isPressed() && rootWindow->isMouseButtonPressed(MMOUSE_BUTTON_LEFT) && rootWindow->getPreviousClicElapsedTime() > 500)
 		{
-			m_endSelectionId = findPointedCharacter(getPointLocalPosition(rootWindow->getMousePosition()));
+			m_charSel2 = findPointedCharacter(getPointLocalPosition(rootWindow->getMousePosition()));
 			autoScrolling();
 		}
 		break;
@@ -955,7 +971,7 @@ void MGuiEditText::draw(void)
 	// draw text
 	drawText();
 
-	if(isPressed() && (m_startSelectionId == m_endSelectionId)) // cursor
+	if(isPressed() && (m_charSel1 == m_charSel2)) // cursor
 	{
 		render->disableTexture();
 		render->setColor4(MVector4(1, 0, 0, 0.5f));
