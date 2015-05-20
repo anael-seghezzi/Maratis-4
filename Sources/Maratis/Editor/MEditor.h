@@ -77,7 +77,8 @@ private:
 	MLevel m_guiData;
 	MPreferences m_preferences;
 	MSelectionManager m_selectionManager;
-	
+	MString m_ressourcesPath;
+
 public:
 
 	void init(void);
@@ -87,6 +88,9 @@ public:
 	inline MLevel * getGuiData(void){ return &m_guiData; }
 	inline MSelectionManager * getSelectionManager(void){ return &m_selectionManager; }
 	
+	inline void setRessourcesPath(const char * path){ m_ressourcesPath = path; }
+	inline const char * getRessourcesPath(void){ return m_ressourcesPath.getSafeString(); }
+
 	// windows
 	MWindow * createWindow(const char * title, int x, int y, unsigned int width, unsigned int height, void (* eventCallback)(MWindow * rootWindow, MWIN_EVENT_TYPE event) = NULL);
 	void closeWindow(MWindow * window);

@@ -261,7 +261,6 @@ public:
 	void setLevel(MLevel * level);
 	bool loadLevel(const char * filename); // loads level immediately
 	void requestLoadLevel(const char * filename); // send a request to load a level
-	bool doesLevelExist(const char * filename);
 	inline MLevel * getLevel(void){ return m_level; }
 
 	// game

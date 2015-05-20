@@ -60,6 +60,7 @@ public:
 
 	// run script
 	void runScript(const char * filename);
+	void runScriptFromMemory(const char * script, const char * workingDirectory);
 
 	// call function
 	bool startCallFunction(const char* name);

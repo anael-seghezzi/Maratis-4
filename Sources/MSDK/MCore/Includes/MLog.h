@@ -48,7 +48,6 @@
 	7	Debug	debug	Debug-level messages.	Info useful to developers for debugging the application, not useful during operations.
 */
 
-
 // for the moment let s just simply log if the message has a severity lower than the env variable
 #define MLOG(severity, USERMESSAGE) { MLog::m_stringstream.str(std::string("")); MLog::m_stringstream<<USERMESSAGE; MLog::m_string=MLog::m_stringstream.str(); MLog::log(severity, __FUNCTION__, __FILE__, __LINE__); }
 

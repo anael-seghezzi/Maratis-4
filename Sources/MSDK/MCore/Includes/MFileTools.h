@@ -36,10 +36,10 @@
 M_CORE_EXPORT bool copyFile(const char * inFilename, const char * outFilename);
 M_CORE_EXPORT bool createDirectory(const char * filename, bool recursive = false);
 M_CORE_EXPORT bool isDirectory(const char * filename);
-M_CORE_EXPORT bool isEmptyDirectory(const char * filename);
+M_CORE_EXPORT bool isDirectoryEmpty(const char * filename);
 M_CORE_EXPORT bool clearDirectory(const char * filename);
 M_CORE_EXPORT bool removeDirectory(const char * filename);
-M_CORE_EXPORT bool isFileExist(const char * filename);
+M_CORE_EXPORT bool doesFileExist(const char * filename);
 M_CORE_EXPORT bool copyDirectory(const char * inFilename, const char * outFilename);
 M_CORE_EXPORT bool readDirectory(const char * filename, vector<string> * files, bool hiddenFiles = false, bool recursive = false);
 

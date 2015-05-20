@@ -39,12 +39,18 @@ MEditor::~MEditor(void)
 
 void MEditor::init(void)
 {
+	char filename[256];
+	const char * rPath = getRessourcesPath();
+
 	clear();
 	
 	// load preferences
 	{
-		m_preferences.load("Resources/preferences.xml");
-		m_preferences.load("Resources/themes/grey/grey.xml");
+		getGlobalFilename(filename, rPath, "preferences.xml");
+		m_preferences.load(filename);
+
+		getGlobalFilename(filename, rPath, "themes/grey/grey.xml");
+		m_preferences.load(filename);
 	}
 	
 	// load font
@@ -72,16 +78,16 @@ void MEditor::init(void)
 	
 	// load meshes
 	{
-		const char * path = "Resources/meshes/gui";
+		getGlobalFilename(filename, rPath, "meshes/gui");
 
 		char tmp[256];
 		vector<string> files;
-		readDirectory(path, &files);
+		readDirectory(filename, &files);
 		
 		unsigned int size = files.size();
 		for(unsigned int i=0; i<size; i++)
 		{
-			getGlobalFilename(tmp, path, files[i].c_str());
+			getGlobalFilename(tmp, filename, files[i].c_str());
 			MMeshRef * ref = m_guiData.loadMesh(tmp);
 			ref->setFilename(files[i].c_str()); // use only the file name
 		}

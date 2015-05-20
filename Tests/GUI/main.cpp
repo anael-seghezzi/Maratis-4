@@ -46,6 +46,7 @@
 static MLevel * guiData = NULL;
 static MRenderingContext * render = NULL;
 static MRenderer * renderer = NULL;
+static MSystemContext * sys = NULL;
 
 void winEvents(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 {
@@ -55,6 +56,9 @@ void winEvents(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 	{
 	case MWIN_EVENT_CREATE:
 		{
+			sys = new MGUIContext();
+			engine->setSystemContext(sys);
+
 			// create a rendering context
 			render = new MGLContext();
 			engine->setRenderingContext(render);
@@ -98,6 +102,7 @@ void winEvents(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 			SAFE_DELETE(guiData);
 			SAFE_DELETE(renderer);
 			SAFE_DELETE(render);
+			SAFE_DELETE(sys);
 		}
 		break;
 		

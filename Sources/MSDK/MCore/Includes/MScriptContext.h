@@ -41,6 +41,7 @@ public :
 
 	// run script
 	virtual void runScript(const char * filename) = 0;
+	virtual void runScriptFromMemory(const char * script, const char * workingDirectory) = 0;
 
 	// call function
 	virtual bool startCallFunction(const char * name) = 0;

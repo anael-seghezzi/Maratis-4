@@ -52,7 +52,6 @@ static MRenderingContext * render = NULL;
 static MRenderer * renderer = NULL;
 static MSystemContext * systemContext = NULL;
 static MLevel * level = NULL;
-
 static MViewport * my3dView = NULL;
 
 
@@ -75,8 +74,6 @@ void winEvents2(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 	{
 	case MWIN_EVENT_CREATE:
 		{
-			char filename[256];
-			const char * workingDir = systemContext->getWorkingDirectory();
 			MLevel * guiData = editor->getGuiData();
 
 			// create a gui window (sub-window of rootWindow handled by MGui)
@@ -86,8 +83,7 @@ void winEvents2(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 			gw->setEventCallback(gwEvents);
 
 			// load a font
-			getGlobalFilename(filename, workingDir, "Resources/fonts/GenR102.TTF");
-			MFontRef * fontRef = guiData->loadFont(filename);
+			MFontRef * fontRef = guiData->loadFont("Resources/fonts/GenR102.TTF");
 			
 			// add some editable text
 			MGuiEditText * text = gw->addNewEditText();
@@ -153,12 +149,8 @@ void winEvents(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 			
 			// test scene
 			{
-				char filename[256];
-				const char * workingDir = systemContext->getWorkingDirectory();
-		
 				MScene * scene = level->addNewScene();
-				getGlobalFilename(filename, workingDir, "Resources/meshes/default/box.mesh");
-				MOEntity * entity = scene->addNewEntity(level->loadMesh(filename));
+				MOEntity * entity = scene->addNewEntity(level->loadMesh("Resources/meshes/default/box.mesh"));
 				entity->setPosition(MVector3(0, 0, 10));
 				entity->setScale(MVector3(10));
 				
@@ -169,8 +161,7 @@ void winEvents(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				MOSound * sound = scene->addNewSound(NULL);
 				sound->setPosition(MVector3(100, 0, 0));
 				
-				getGlobalFilename(filename, workingDir, "Resources/meshes/default/box.mesh");
-				MOEntity * entity2 = scene->addNewEntity(level->loadMesh(filename));
+				MOEntity * entity2 = scene->addNewEntity(level->loadMesh("Resources/meshes/default/box.mesh"));
 				entity2->setScale(MVector3(100, 100, 1));
 				MMaterial * material = entity2->createLocalMaterial(0);
 				material->setDiffuse(MVector3(0.8f));
@@ -243,10 +234,16 @@ int main(int argc, char **argv)
 {
 	setlocale(LC_NUMERIC, "C");
 	
+	// working dir
 	char dir[256];
 	getDirectory(dir, argv[0]);
 	MGUI_setCurrentDirectory(dir);
-		
+	
+	// editor ressources path
+	char rPath[256];
+	getGlobalFilename(rPath, dir, "Resources");
+	MEditor::getInstance()->setRessourcesPath(rPath);
+
 	// init
 	if(! MGUI_init())
 		return EXIT_FAILURE;
