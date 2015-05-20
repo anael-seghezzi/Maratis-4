@@ -67,13 +67,13 @@ anael (a) maratis3d.com
 Contributors
 ------------
 
-Davide Bacchet
-Skumancer
-Sergey Pershin
-Mario Pišpek
-Nistur
-Skaiware
-Sponk
-Dahnielson
-Jurgel
+Davide Bacchet<br>
+Skumancer<br>
+Sergey Pershin<br>
+Mario Pišpek<br>
+Nistur<br>
+Skaiware<br>
+Sponk<br>
+Dahnielson<br>
+Jurgel<br>
 ...
