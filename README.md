@@ -26,8 +26,8 @@ Getting source
     git clone https://github.com/anael-seghezzi/Maratis-Tiny-C-library.git
     git clone https://github.com/anael-seghezzi/Maratis-4.git
 
-Building
---------
+Building (CMake)
+----------------
 
 **Unix:**
 
@@ -56,6 +56,11 @@ or:
     cmake -G "MinGW Makefiles" ../ -DCMAKE_INSTALL_PREFIX=../bin
     make
     make install
+  
+**Options:**
+
+    SDL2 backend : -DUSE_SDL2=ON
+    SDL2 without directx : -DUSE_SDL2=ON -DDIRECTX=OFF -DRENDER_D3D=OFF
   
 Contact
 -------
