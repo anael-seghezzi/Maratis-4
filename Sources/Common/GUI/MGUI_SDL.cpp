@@ -27,18 +27,19 @@
 //
 //========================================================================
 
-
-#include <tinycthread.h>
 #include <SDL.h>
-
-#include <MEngine.h>
-#include <MGui.h>
-
 #ifdef WIN32
+#include <Windows.h>
 #include <WinBase.h>
 #endif
 
+#include <MEngine.h>
+#include <MGui.h>
+#include <tinyutf8.h>
+
 #include "MGUI.h"
+
+static SDL_GLContext g_sdlContext = NULL;
 
 
 // thread window
@@ -46,15 +47,14 @@ class MSDLWindow : public MWindow
 {
 public:
 
-    MSDLWindow(SDL_Window * sdlWin, SDL_GLContext sdlCtx, int x, int y, unsigned int width, unsigned int height, MGUI_EVENT_CALLBACK):
+    MSDLWindow(SDL_Window * sdlWin, int x, int y, unsigned int width, unsigned int height, MGUI_EVENT_CALLBACK):
         MWindow(x, y, width, height),
         init(false),
         running(true),
         paused(false),
         pause(false),
         focus(false),
-        sdlWindow(sdlWin),
-        sdlContext(sdlCtx)
+        sdlWindow(sdlWin)
     {
         setEventCallback(eventCallback);
     }
@@ -63,7 +63,6 @@ public:
     {
         running = false;
         onEvent(MWIN_EVENT_DESTROY);
-        SDL_GL_DeleteContext(sdlContext);
         SDL_DestroyWindow(sdlWindow);
         clear();
     }
@@ -74,7 +73,6 @@ public:
     bool pause;
     bool focus;
     SDL_Window * sdlWindow;
-    SDL_GLContext sdlContext;
 };
 
 
@@ -179,10 +177,10 @@ static void mousebutton_callback(MSDLWindow * rootWindow, int button, int action
     switch(action)
     {
     case SDL_MOUSEBUTTONDOWN:
-        rootWindow->onKeyDown(button);
+        rootWindow->onMouseButtonDown(button);
         break;
     case SDL_MOUSEBUTTONUP:
-        rootWindow->onKeyUp(button);
+        rootWindow->onMouseButtonUp(button);
         break;
     default:
         break;
@@ -224,9 +222,34 @@ static void event_callback(MSDLWindow * rootWindow, SDL_Event event)
     case SDL_KEYUP:
         key_callback(rootWindow, event.key.keysym.sym, type);
         break;
+	case SDL_TEXTINPUT:
+		{
+			unsigned int charCode;
+			unsigned int state = 0;
+			unsigned char* s = (unsigned char *)event.edit.text;
+			for(; *s; ++s)
+			{
+				if(utf8_decode(&state, &charCode, *s) == UTF8_ACCEPT)
+					char_callback(rootWindow, charCode);
+			}
+		}
+		break;
     case SDL_MOUSEBUTTONDOWN:
     case SDL_MOUSEBUTTONUP:
-        mousebutton_callback(rootWindow, event.button.button, type);
+		switch(event.button.button)
+		{
+		case 1:
+			mousebutton_callback(rootWindow, MMOUSE_BUTTON_LEFT, type);
+			break;
+		case 2:
+			mousebutton_callback(rootWindow, MMOUSE_BUTTON_MIDDLE, type);
+			break;
+		case 3:
+			mousebutton_callback(rootWindow, MMOUSE_BUTTON_RIGHT, type);
+			break;
+		default:
+			mousebutton_callback(rootWindow, event.button.button - 1, type);
+		}
         break;
     case SDL_MOUSEMOTION:
         cursorpos_callback(rootWindow, event.motion.x, event.motion.y);
@@ -247,7 +270,7 @@ static void event_callback(MSDLWindow * rootWindow, SDL_Event event)
             size_callback(rootWindow, event.window.data1, event.window.data2);
             break;
         case SDL_WINDOWEVENT_SIZE_CHANGED:
-            SDL_GL_MakeCurrent(rootWindow->sdlWindow, rootWindow->sdlContext);
+            SDL_GL_MakeCurrent(rootWindow->sdlWindow, g_sdlContext);
             break;
         case SDL_WINDOWEVENT_SHOWN:
             rootWindow->focus = true;
@@ -274,11 +297,12 @@ static void drawWindow(MSDLWindow * window)
     if(! MGUI_isFocused() && window->init)
     {
         window->paused = window->pause;
-        thrd_yield();
+        //thrd_yield();
+		SDL_Delay(0);
         return;
     }
 
-    SDL_GL_MakeCurrent(window->sdlWindow, window->sdlContext);
+    SDL_GL_MakeCurrent(window->sdlWindow, g_sdlContext);
 
     if(window->running)
     {
@@ -301,28 +325,11 @@ static void drawWindow(MSDLWindow * window)
     }
 
     SDL_GL_MakeCurrent(NULL, NULL);
-    thrd_yield();
+    //thrd_yield();
+	SDL_Delay(0);
 }
 
 static vector <MSDLWindow *> windows;
-/*
-static thrd_t threadId = 0;
-static bool running = false;
-static int thread_main(void * data)
-{
-    while(running)
-    {
-        unsigned int i, wSize = windows.size();
-        for(i=0; i<wSize; i++)
-        {
-            MGLFWWindow * window = windows[i];
-            if(window)
-                drawWindow(window);
-        }
-    }
-
-    return 0;
-}*/
 
 static int app_event_callback(void * userData, SDL_Event * event)
 {
@@ -350,6 +357,8 @@ bool MGUI_init(void)
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
         return false;
 
+	SDL_StartTextInput();
+	//SDL_CaptureMouse(1); SDL 2.04
     return true;
 }
 
@@ -358,19 +367,20 @@ MWindow * MGUI_createWindow(const char * title, int x, int y, unsigned int width
     SDL_Window * sdlWindow = SDL_CreateWindow(title, x, y, width, height, SDL_WINDOW_OPENGL);
     if (sdlWindow == NULL)
     {
-        SDL_Quit();
         return NULL;
     }
 
-    SDL_GLContext sdlContext = SDL_GL_CreateContext(sdlWindow);
-    if (sdlContext == NULL)
-    {
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        return NULL;
-    }
+	if (g_sdlContext == NULL)
+	{
+		g_sdlContext = SDL_GL_CreateContext(sdlWindow);
+		if (g_sdlContext == NULL)
+		{
+			SDL_DestroyWindow(sdlWindow);
+			return NULL;
+		}
+	}
 
-    MSDLWindow * window = new MSDLWindow(sdlWindow, sdlContext, x, y, width, height, eventCallback);
+    MSDLWindow * window = new MSDLWindow(sdlWindow, x, y, width, height, eventCallback);
     windows.push_back(window);
 
     window->onCreate();
@@ -402,7 +412,7 @@ void MGUI_pauseWindow(MWindow * window)
 
     thWin->pause = true;
     while(! thWin->paused)
-        SLEEP(1);
+		SDL_Delay(1);
 }
 
 void MGUI_unpauseWindow(MWindow * window)
@@ -413,7 +423,7 @@ void MGUI_unpauseWindow(MWindow * window)
 
     thWin->pause = false;
     while(thWin->paused)
-        SLEEP(1);
+		SDL_Delay(1);
 }
 
 void MGUI_closeAllWindows(void)
@@ -447,7 +457,7 @@ void MGUI_pauseAllWindows(void)
                 continue;
 
             while(! thWin->paused)
-                SLEEP(1);
+				SDL_Delay(1);
         }
     }
 }
@@ -473,7 +483,7 @@ void MGUI_unpauseAllWindows(void)
                 continue;
 
             while(thWin->paused)
-                SLEEP(1);
+				SDL_Delay(1);
         }
     }
 }
@@ -490,10 +500,11 @@ bool MGUI_update(void)
         for(i=0; i<wSize; i++)
         {
             MSDLWindow * window = windows[i];
-            if(SDL_GetWindowID(window->sdlWindow) == e.window.windowID)
-            {
-                event_callback(window, e);
-            }
+			if(window)
+			{
+				if(SDL_GetWindowID(window->sdlWindow) == e.window.windowID)
+					event_callback(window, e);
+			}
         }
     }
 
@@ -552,10 +563,6 @@ bool MGUI_isFocused(void)
 
 void MGUI_close(void)
 {
-    /*int result;
-    running = false;
-    thrd_join(threadId, &result);*/
-
     unsigned int i;
     unsigned int wSize = windows.size();
     if(wSize > 0)
@@ -568,6 +575,7 @@ void MGUI_close(void)
         SAFE_DELETE(windows[0]);
     }
 
+	SDL_GL_DeleteContext(g_sdlContext);
     SDL_Quit();
 }
 

@@ -334,7 +334,7 @@ localexit:
     /* *INDENT-ON* */
 }
 
-void
+static void
 _ftol2_sse()
 {
     _ftol();

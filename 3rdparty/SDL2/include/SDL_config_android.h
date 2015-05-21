@@ -119,9 +119,8 @@
 #define SDL_LOADSO_DLOPEN   1
 
 /* Enable various threading systems */
-#define SDL_THREADS_DISABLED 1
-//#define SDL_THREAD_PTHREAD  1
-//#define SDL_THREAD_PTHREAD_RECURSIVE_MUTEX  1
+#define SDL_THREAD_PTHREAD  1
+#define SDL_THREAD_PTHREAD_RECURSIVE_MUTEX  1
 
 /* Enable various timer systems */
 #define SDL_TIMER_UNIX  1
@@ -130,10 +129,10 @@
 #define SDL_VIDEO_DRIVER_ANDROID 1
 
 /* Enable OpenGL ES */
-//#define SDL_VIDEO_OPENGL_ES 1
+#define SDL_VIDEO_OPENGL_ES 1
 #define SDL_VIDEO_OPENGL_ES2 1
 #define SDL_VIDEO_OPENGL_EGL 1
-//#define SDL_VIDEO_RENDER_OGL_ES 1
+#define SDL_VIDEO_RENDER_OGL_ES 1
 #define SDL_VIDEO_RENDER_OGL_ES2    1
 
 /* Enable system power support */
