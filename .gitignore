@@ -35,3 +35,4 @@ Build
 BuildVC
 BuildX
 bin
+CMakeLists.txt.user
