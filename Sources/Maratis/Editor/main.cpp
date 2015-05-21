@@ -263,7 +263,7 @@ int main(int argc, char **argv)
 	
 	MGUI_createWindow("test2", 850, 200, 512, 512, winEvents2);
 	
-	printf("> Maratis");
+	MLOG_INFO("> Maratis 4.x");
 
 	// update
 	while(1)

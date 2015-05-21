@@ -332,7 +332,7 @@ void registerVec3(lua_State * L)
 
 static int vec3(lua_State *L)
 {
-	if(! isFunctionOk(L, "vec", 3))
+	if(! isFunctionOk(L, "vec3", 3))
 		return 0;
 	
 	float x = (float)lua_tonumber(L, 1);
@@ -2254,11 +2254,11 @@ int quit(lua_State * L)
 	return 0;
 }
 
-int doesLevelExist(lua_State * L)
+int doesFileExist(lua_State * L)
 {
 	MEngine * engine = MEngine::getInstance();
 
-	if(! isFunctionOk(L, "doesLevelExist", 1))
+	if(! isFunctionOk(L, "doesFileExist", 1))
 		return 0;
 
 	const char * filename = lua_tostring(L, 1);
@@ -3510,6 +3510,31 @@ void MScript::init(void)
 	luaL_openlibs(m_state);
 
 	
+	/*
+	MOCamera * addNewCamera(void);
+	MOCamera * addNewCamera(const MOCamera & camera);
+	MOLight * addNewLight(void);
+	MOLight * addNewLight(const MOLight & light);
+	MOEntity * addNewEntity(MMeshRef * meshRef);
+	MOEntity * addNewEntity(const MOEntity & entity);
+	MOSound * addNewSound(MSoundRef * soundRef);
+	MOSound * addNewSound(const MOSound & sound);
+	MOText * addNewText(MFontRef * fontRef);
+	MOText * addNewText(const MOText & text);
+
+	// get objects number
+	inline unsigned int getObjectsNumber(void){ return m_objects.size(); }
+	inline unsigned int getCamerasNumber(void){ return m_cameras.size(); }
+	inline unsigned int getLightsNumber(void){ return m_lights.size(); }
+	inline unsigned int getEntitiesNumber(void){ return m_entities.size(); }
+	inline unsigned int getSoundsNumber(void){ return m_sounds.size(); }
+	inline unsigned int getTextsNumber(void){ return m_texts.size(); }
+	*/
+
+
+
+
+
 	// vec3
 	registerVec3(m_state);
 	lua_register(m_state, "vec3", vec3);
@@ -3519,12 +3544,12 @@ void MScript::init(void)
 	lua_register(m_state, "cross", cross);
 	
 	// object/scene init
-	lua_register(m_state, "getScene",	 getScene);
-	lua_register(m_state, "getObject",	 getObject);
-	lua_register(m_state, "getClone",	 getClone);
-	lua_register(m_state, "getParent",	 getParent);
-	lua_register(m_state, "getChilds",	 getChilds);
-	lua_register(m_state, "getCurrentCamera",    getCurrentCamera);
+	lua_register(m_state, "getScene",			getScene);
+	lua_register(m_state, "getObject",			getObject);
+	lua_register(m_state, "getClone",			getClone);
+	lua_register(m_state, "getParent",			getParent);
+	lua_register(m_state, "getChilds",			getChilds);
+	lua_register(m_state, "getCurrentCamera",   getCurrentCamera);
 	
 	// object
 	lua_register(m_state, "rotate",					rotate);
@@ -3615,20 +3640,22 @@ void MScript::init(void)
 	lua_register(m_state, "getSoundGain", getSoundGain);
 	lua_register(m_state, "setSoundGain", setSoundGain);
 	
+	// files
+	lua_register(m_state, "doesFileExist", doesFileExist);
+
 	// scene/level
 	lua_register(m_state, "changeScene",			changeScene);
 	lua_register(m_state, "getCurrentSceneId",		getCurrentSceneId);
 	lua_register(m_state, "getScenesNumber",		getScenesNumber);
-	lua_register(m_state, "doesLevelExist",			doesLevelExist);
 	lua_register(m_state, "loadLevel",				loadLevel);
 
 	// light
-	lua_register(m_state, "getLightColor",	   getLightColor);
-	lua_register(m_state, "getLightRadius",	   getLightRadius);
-	lua_register(m_state, "getLightIntensity", getLightIntensity);
-	lua_register(m_state, "setLightColor",	   setLightColor);
-	lua_register(m_state, "setLightRadius",	   setLightRadius);
-	lua_register(m_state, "setLightIntensity", setLightIntensity);
+	lua_register(m_state, "getLightColor",			getLightColor);
+	lua_register(m_state, "getLightRadius",			getLightRadius);
+	lua_register(m_state, "getLightIntensity",		getLightIntensity);
+	lua_register(m_state, "setLightColor",			setLightColor);
+	lua_register(m_state, "setLightRadius",			setLightRadius);
+	lua_register(m_state, "setLightIntensity",		setLightIntensity);
 	lua_register(m_state, "setLightShadowQuality",	setlightShadowQuality);
 	lua_register(m_state, "setLightShadowBias",		setlightShadowBias);
 	lua_register(m_state, "setLightShadowBlur",		setlightShadowBlur);

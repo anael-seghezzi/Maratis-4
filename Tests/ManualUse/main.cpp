@@ -56,6 +56,7 @@ static MRenderingContext *render = NULL;
 static MInputContext *input = NULL;
 static MBulletContext *physics = NULL;
 static MRenderer *renderer = NULL;
+static MSystemContext * sys = NULL;
 
 // window events
 void winEvents(MWindow *rootWindow, MWIN_EVENT_TYPE event)
@@ -68,6 +69,9 @@ void winEvents(MWindow *rootWindow, MWIN_EVENT_TYPE event)
     {
     case MWIN_EVENT_CREATE:
     {
+		sys = new MGUIContext();
+		engine->setSystemContext(sys);
+
         // create a rendering context
         render = new MGLContext();
         engine->setRenderingContext(render);
@@ -112,6 +116,7 @@ void winEvents(MWindow *rootWindow, MWIN_EVENT_TYPE event)
         SAFE_DELETE(render);
         SAFE_DELETE(input);
         SAFE_DELETE(physics);
+		SAFE_DELETE(sys);
     }
     break;
 
