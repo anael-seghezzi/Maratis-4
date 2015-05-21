@@ -30,6 +30,22 @@
 #include "MSyntax.h"
 
 
+static int sh_isdigit(int c)
+{
+	if(c >= 0 && c <= 255)
+		return isdigit(c);
+	else
+		return 0;
+}
+
+static int sh_isalnum(int c)
+{
+	if(c >= 0 && c <= 255)
+		return isalnum(c);
+	else
+		return 0;
+}
+
 static int sh_is_white(int c)
 {
 	return c == ' ' || c == '\t' || c == '\n';
@@ -37,12 +53,15 @@ static int sh_is_white(int c)
 
 static int sh_isalpha_special(int c)
 {
-	return isalpha(c) || c == '_';
+	if(c >= 0 && c <= 255)
+		return isalpha(c) || c == '_';
+	else
+		return 0;
 }
 
 static int sh_isalnum_special(int c)
 {
-	return isalnum(c) || c == '_';
+	return sh_isalnum(c) || c == '_';
 }
 
 static int sh_isquote(int c)
@@ -72,12 +91,12 @@ void sh_select_word(const char *string, int id, int *begin, int *end)
 	*begin = *end = id;
 
 	/* number */
-	if (isdigit(c) || c=='.') {
+	if (sh_isdigit(c) || c=='.') {
 		
 		i = id - 1;
 		while (i >= 0) {
 			int c2 = string[i];
-			if (!isalnum(c2) && c2 != '.')
+			if (!sh_isalnum(c2) && c2 != '.')
 				break;
 			i--;
 		}
@@ -86,7 +105,7 @@ void sh_select_word(const char *string, int id, int *begin, int *end)
 		i = id + 1;
 		while (i >= 0) {
 			int c2 = string[i];
-			if (!isalnum(c2) && c2 != '.')
+			if (!sh_isalnum(c2) && c2 != '.')
 				break;
 			i++;
 		}
@@ -235,10 +254,10 @@ void sh_lua_syntax(const char *string, map<unsigned int, MColor> *coloring)
 
 		// number
 		if (mode == 3) {
-			if (isdigit(*s))
+			if (sh_isdigit(*s))
 				continue;
 		}
-		else if (isdigit(*s)) {
+		else if (sh_isdigit(*s)) {
 			(*coloring)[i] = MColor(pref->getColor("lua number"));
 			mode = 3;
 			continue;
