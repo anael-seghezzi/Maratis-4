@@ -120,7 +120,7 @@ bool createDirectory(const char * filename, bool recursive)
     return createDirectoryInternal(filename);
 }
 
-bool isFileExist(const char * filename)
+bool doesFileExist(const char * filename)
 {
 	MFile * file = M_fopen(filename, "r");
 	if(! file)
@@ -138,7 +138,7 @@ bool isDirectory(const char * filename)
 	return true;
 }
 
-bool isEmptyDirectory(const char * filename)
+bool isDirectoryEmpty(const char * filename)
 {
     DIR * pdir = opendir(filename);
 	if(! pdir)

@@ -157,6 +157,10 @@ void MWindow::onEvent(MWIN_EVENT_TYPE event)
 		m_previousClicTick = m_currentClicTick;
 		m_currentClicTick = system->getSystemTick();
 	}
+	else if((event == MWIN_EVENT_MOUSE_BUTTON_DOWN || event == MWIN_EVENT_MOUSE_MOVE) && !isMouseButtonPressed(MMOUSE_BUTTON_LEFT))
+	{
+		m_currentClicTick = 0;
+	}
 
 	if(wSize == 0)
 		goto end;

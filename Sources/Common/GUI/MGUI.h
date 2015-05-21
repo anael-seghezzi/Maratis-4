@@ -56,8 +56,7 @@ class MGUIContext : public MSystemContext
 {
 public:
 
-	~MGUIContext(void){}
-	void getScreenSize(unsigned int * width, unsigned int * height){}
+	void getScreenSize(unsigned int * width, unsigned int * height){ MWindow *win = MGUI_getWindow(0); *width = win->getWidth(); *height = win->getHeight(); }
 	void setCursorPosition(int x, int y){}
 	void hideCursor(void){}
 	void showCursor(void){}

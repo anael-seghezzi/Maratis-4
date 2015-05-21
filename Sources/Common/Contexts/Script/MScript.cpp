@@ -2263,7 +2263,7 @@ int doesLevelExist(lua_State * L)
 
 	const char * filename = lua_tostring(L, 1);
 
-	lua_pushnumber(L, (lua_Number)engine->doesLevelExist(filename));
+	lua_pushnumber(L, (lua_Number)doesFileExist(filename));
 	return 1;
 }
 
@@ -3069,10 +3069,7 @@ int enableRenderToTexture(lua_State * L)
 				unsigned int width = (unsigned int)lua_tointeger(L, 3);
 				unsigned int height = (unsigned int)lua_tointeger(L, 4);
 				
-				char globalFilename[256];
-				getGlobalFilename(globalFilename, system->getWorkingDirectory(), name);
-				
-				MTextureRef * colorTexture = level->loadTexture(globalFilename, 0, 0);
+				MTextureRef * colorTexture = level->loadTexture(name, 0, 0);
 				MTextureRef * depthTexture = level->loadTexture(object->getName(), 0, 0);
 				
 				colorTexture->clear();
@@ -3473,7 +3470,7 @@ int doFile(lua_State * L)
 		return 0;
 	
 	// update current directory
-	getRepertory(g_currentDirectory, globalFilename);
+	getDirectory(g_currentDirectory, globalFilename);
 	
 	// do string
 	luaL_dostring(L, text);
@@ -3720,45 +3717,32 @@ int MScript::function(lua_State * L)
 
 void MScript::runScript(const char * filename)
 {
+	char * script = readTextFile(filename);
+	if(script)
+	{
+		getDirectory(g_currentDirectory, filename);
+		runScriptFromMemory(script, g_currentDirectory);
+		SAFE_FREE(script);
+	}
+	else
+	{
+		clear();
+	}
+}
+
+void MScript::runScriptFromMemory(const char * script, const char * workingDirectory)
+{
 	clear();
+	strcpy(g_currentDirectory, workingDirectory);
 
-	if(! filename)
-	{
-		m_isRunning = false;
-		return;
-	}
-
-	if(strlen(filename) == 0)
-	{
-		m_isRunning = false;
-		return;
-	}
-
-	// current directory
-	getRepertory(g_currentDirectory, filename);
-	
-	// read file
-	char * text = readTextFile(filename);
-	if(! text)
-	{
-		printf("ERROR lua script : unable to read file %s\n", filename);
-		m_isRunning = false;
-		return;
-	}
-	
 	init();
-	
-	// do string
-	if(luaL_dostring(m_state, text) != 0)
+
+	if(luaL_dostring(m_state, script) != 0)
 	{
 		printf("ERROR lua script :\n %s\n", lua_tostring(m_state, -1));
-		m_isRunning = false;
-		SAFE_FREE(text);
 		return;
 	}
-	
-	// finish
-	SAFE_FREE(text);
+
 	m_isRunning = true;
 }
 
@@ -3886,6 +3870,6 @@ void MScript::pushFloat(float value){
 	lua_pushnumber(m_state, (lua_Number)value);
 }
 
-void MScript::pushPointer(void* value){
+void MScript::pushPointer(void * value){
 	lua_pushinteger(m_state, (lua_Integer)value);
 }
