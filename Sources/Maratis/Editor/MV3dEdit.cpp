@@ -29,6 +29,8 @@
 
 MV3dEdit::MV3dEdit(void):
 MV3dView(),
+m_selected(false),
+m_transformed(false),
 m_selectionDepth(0),
 m_currentAxis(M_AXIS_NONE),
 m_tools(NULL)
@@ -1120,38 +1122,44 @@ void MV3dEdit::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 	MV3dView::onEvent(rootWindow, event);
 	
 	if(event == MWIN_EVENT_MOUSE_MOVE)
+	{
 		m_selectionDepth = 0;
 		
-	if(m_tools->isMouseInside())
-		return;
+		if(rootWindow->isMouseButtonPressed(MMOUSE_BUTTON_LEFT) && m_currentAxis != M_AXIS_NONE)
+		{
+			M_TRANSFORM_MODE tmode = getTransformMode();
+			if(tmode == M_TRANSFORM_POSITION)
+				transformPosition(rootWindow->getMousePosition());
+			else if(tmode == M_TRANSFORM_ROTATION)
+				transformRotation(rootWindow->getMouseDir());
+			else if(tmode == M_TRANSFORM_SCALE)
+				transformScale(rootWindow->getMouseDir());
+			m_transformed = true;
+		}
+	}
+	
+	if(! m_tools->isMouseInside())
+	{
+		if(event == MWIN_EVENT_MOUSE_BUTTON_DOWN && rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
+		{
+			pointSelectAxis(rootWindow->getMousePosition());
+			m_selected = true;
+			m_transformed = false;
+		}
+	}
 		
-	static bool transformed = false;
-	if(event == MWIN_EVENT_MOUSE_BUTTON_DOWN && rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
-	{
-		pointSelectAxis(rootWindow->getMousePosition());
-		transformed = false;
-	}
-
-	if(event == MWIN_EVENT_MOUSE_MOVE && rootWindow->isMouseButtonPressed(MMOUSE_BUTTON_LEFT) && m_currentAxis != M_AXIS_NONE)
-	{
-		M_TRANSFORM_MODE tmode = getTransformMode();
-		if(tmode == M_TRANSFORM_POSITION)
-			transformPosition(rootWindow->getMousePosition());
-		else if(tmode == M_TRANSFORM_ROTATION)
-			transformRotation(rootWindow->getMouseDir());
-		else if(tmode == M_TRANSFORM_SCALE)
-			transformScale(rootWindow->getMouseDir());
-		transformed = true;
-	}
-
 	if(event == MWIN_EVENT_MOUSE_BUTTON_UP && rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
 	{
-		if(m_currentAxis == M_AXIS_NONE || (m_currentAxis == M_AXIS_VIEW && !transformed))
+		if(m_selected)
 		{
-			pointSelect(rootWindow->getMousePosition());
-			m_selectionDepth++;
+			if(m_currentAxis == M_AXIS_NONE || (m_currentAxis == M_AXIS_VIEW && !m_transformed))
+			{
+				pointSelect(rootWindow->getMousePosition());
+				m_selectionDepth++;
+			}
+			m_currentAxis = M_AXIS_NONE;
+			m_selected = false;
 		}
-		m_currentAxis = M_AXIS_NONE;
 	}
 }
 

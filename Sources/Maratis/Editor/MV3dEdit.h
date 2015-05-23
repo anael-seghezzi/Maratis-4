@@ -65,6 +65,8 @@ private:
 	MVector2 m_tVectorDirection;
 	MVector2 m_tOffsetDirection;
 	MVector3 m_tPlane;
+	bool m_selected;
+	bool m_transformed;
 	
 	void computeTransformDirection(MOCamera * camera, const MVector3 & rayO, const MVector3 & rayD, const MVector3 & position, const float distance, const MVector3 & axis);
 	void computeTransformPlane(MOCamera * camera, const MVector3 & position, const MVector3 & axis);

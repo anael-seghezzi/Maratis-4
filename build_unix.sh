@@ -12,5 +12,5 @@ make
 make install
 
 echo ""
-echo "done !"
+echo "done"
 read x
