@@ -109,7 +109,9 @@ public:
 	void attachFrameBufferTexture(M_FRAME_BUFFER_ATTACHMENT attachment, unsigned int textureId);
 	void attachFrameBufferRB(M_FRAME_BUFFER_ATTACHMENT attachment, unsigned int renderBufferId);
 	void setDrawingBuffers(M_FRAME_BUFFER_ATTACHMENT * buffers, unsigned int size);
-
+	void enableFrameBufferSRGB(void);
+	void disableFrameBufferSRGB(void);
+	
 	// render buffer
 	void createRenderBuffer(unsigned int * renderBufferId);
 	void deleteRenderBuffer(unsigned int * renderBufferId);

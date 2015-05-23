@@ -38,18 +38,20 @@ static bool readUByteColor(TiXmlElement * node, const char * name, float * vecto
 
 		tok = strtok((char*)data, filter);
 
+		float *v = vector;
 		unsigned int pass = 0;
 		while((tok != NULL) && (pass < 4))
 		{
 			int value;
 			sscanf(tok, "%d", &value);
-			*vector = value/255.0f;
+			*v = value/255.0f;
 
 			tok = strtok(NULL, filter);
-			vector++;
+			v++;
 			pass++;
 		}
 
+		m_color_sRGB_to_linear(vector, vector);
 		return true;
 	}
 

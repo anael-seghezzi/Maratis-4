@@ -37,6 +37,25 @@
 #include <MCore.h>
 #include "MFreeImageLoader.h"
 
+/*
+static void convertToLinear(MImage *image)
+{
+	unsigned char *data = (unsigned char *)image->getData();
+	unsigned int size = image->getSize();
+	unsigned int i, c = image->getComponents();
+	
+	float div = 1.0f/255.0f;
+	for(i = 0; i < size; i+=c)
+	{
+		float srgb[3] = {data[0]*div, data[1]*div, data[2]*div};
+		float lin[3];
+		m_color_sRGB_to_linear(srgb, lin);
+		data[0] = lin[0] * 255;
+		data[1] = lin[1] * 255;
+		data[2] = lin[2] * 255;
+		data += c;
+	}
+}*/
 
 unsigned readProc(void *buffer, unsigned size, unsigned count, fi_handle handle) {
 	return (unsigned)M_fread(buffer, size, count, (MFile *)handle);
@@ -153,6 +172,7 @@ bool M_loadImage(const char * filename, void * data, void * arg)
 				bits = FreeImage_GetScanLine(dib, y);
 				memcpy(dest, bits, width*3*sizeof(char));
 			}
+			//convertToLinear(image);
 			break;
 	
 		case 32:
@@ -164,6 +184,7 @@ bool M_loadImage(const char * filename, void * data, void * arg)
 				bits = FreeImage_GetScanLine(dib, y);
 				memcpy(dest, bits, width*4*sizeof(char));
 			}
+			//convertToLinear(image);
 			break;
 			
 		default:

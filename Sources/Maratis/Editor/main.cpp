@@ -69,7 +69,8 @@ void winEvents2(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 {
 	MEngine * engine = MEngine::getInstance();
 	MEditor * editor = MEditor::getInstance();
-	
+	MPreferences *pref = editor->getPreferences();
+
 	switch(event)
 	{
 	case MWIN_EVENT_CREATE:
@@ -79,7 +80,7 @@ void winEvents2(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 			// create a gui window (sub-window of rootWindow handled by MGui)
 			MGuiWindow * gw = rootWindow->addNewWindow();
 			gw->setScale(MVector2(rootWindow->getWidth(), rootWindow->getHeight()));
-			gw->setColor(MVector3(0.35f));
+			gw->setColor(pref->getColor("lua background"));
 			gw->setEventCallback(gwEvents);
 
 			// load a font
@@ -165,12 +166,13 @@ void winEvents(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				entity2->setScale(MVector3(100, 100, 1));
 				MMaterial * material = entity2->createLocalMaterial(0);
 				material->setDiffuse(MVector3(0.8f));
+				material->setEmit(MVector3(0.025f));
 				
 				MOLight * light = scene->addNewLight();
-				light->setPosition(MVector3(150, 0, 100));
+				light->setPosition(MVector3(50, 0, 100));
 				light->setColor(MVector3(1, 1, 1));
 				light->setRadius(500);
-				light->setLightType(M_LIGHT_DIRECTIONAL);
+				//light->setLightType(M_LIGHT_DIRECTIONAL);
 
 				light->addAxisAngleRotation(MVector3(1, 0, 0), 30);
 				light->setShadowBlur(0.05f);

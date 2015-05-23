@@ -250,6 +250,8 @@ public:
 	virtual void attachFrameBufferTexture(M_FRAME_BUFFER_ATTACHMENT attachment, unsigned int textureId) = 0;
 	virtual void attachFrameBufferRB(M_FRAME_BUFFER_ATTACHMENT attachment, unsigned int renderBufferId){}
 	virtual void setDrawingBuffers(M_FRAME_BUFFER_ATTACHMENT * buffers, unsigned int size) = 0;
+	virtual void enableFrameBufferSRGB(void){};
+	virtual void disableFrameBufferSRGB(void){};
 
 	// render buffer
 	virtual void createRenderBuffer(unsigned int * renderBufferId){}

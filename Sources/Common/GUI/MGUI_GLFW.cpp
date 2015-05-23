@@ -227,6 +227,7 @@ static void drawWindow(MGLFWWindow * window)
 	}
 
 	glfwMakeContextCurrent(window->glfwWindow);
+	render->enableFrameBufferSRGB();
 
 	if(window->running)
 	{
@@ -276,7 +277,8 @@ bool MGUI_init(void)
 {
 	int init = glfwInit();
 	glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
-
+	glfwWindowHint(GLFW_SRGB_CAPABLE, GL_TRUE);
+	
 	if(init != GL_TRUE)
 		return false;
 

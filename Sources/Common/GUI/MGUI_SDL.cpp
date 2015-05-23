@@ -303,6 +303,7 @@ static void drawWindow(MSDLWindow * window)
     }
 
     SDL_GL_MakeCurrent(window->sdlWindow, g_sdlContext);
+	render->enableFrameBufferSRGB();
 
     if(window->running)
     {
@@ -357,6 +358,7 @@ bool MGUI_init(void)
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
         return false;
 
+	SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, 1);
 	SDL_StartTextInput();
 	//SDL_CaptureMouse(1); SDL 2.04
     return true;

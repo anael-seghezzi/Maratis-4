@@ -421,11 +421,12 @@ void MGLContext::sendTextureImage(MImage * image, bool mipMap, bool filter, bool
 {
 	// get properties
 	unsigned int bytePerPix = image->getComponents();
+	bool srgb = image->getDataType() == M_UBYTE;
 
 	unsigned int width  = image->getWidth();
 	unsigned int height = image->getHeight();
 
-	int internalFormat = GL_RGB;
+	int internalFormat = srgb ? GL_SRGB : GL_RGB;
 	int format = GL_RGB;
 
 	if(compress)
@@ -433,11 +434,11 @@ void MGLContext::sendTextureImage(MImage * image, bool mipMap, bool filter, bool
 		if(bytePerPix == 4)
 		{
 			format = GL_RGBA;
-			internalFormat = GL_COMPRESSED_RGBA_ARB;
+			internalFormat = srgb ? GL_COMPRESSED_SRGB_ALPHA : GL_COMPRESSED_RGBA_ARB;
 		}
 		else
 		{
-			internalFormat = GL_COMPRESSED_RGB_ARB;
+			internalFormat = srgb ? GL_COMPRESSED_SRGB : GL_COMPRESSED_RGB_ARB;
 		}
 	}
 	else
@@ -445,7 +446,7 @@ void MGLContext::sendTextureImage(MImage * image, bool mipMap, bool filter, bool
 		if(bytePerPix == 4)
 		{
 			format = GL_RGBA;
-			internalFormat = GL_RGBA;
+			internalFormat = srgb ? GL_SRGB_ALPHA : GL_RGBA;
 		}
 	}
 
@@ -478,22 +479,24 @@ void MGLContext::sendTextureImage(MImage * image, bool mipMap, bool filter, bool
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, g_maxAnisotropy); // anisotropic filtering
 		glGenerateMipmapEXT(glType);
 	}
-
-	/*
-	if(mipMap)
-		gluBuild2DMipmaps(glType, bytePerPix, width, height, format, GL_UNSIGNED_BYTE, image->getData());
-	else
-		glTexImage2D(glType, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, image->getData());
-	*/
 }
 
 void MGLContext::texImage(unsigned int level, unsigned int width, unsigned int height, M_TYPES type, M_TEX_MODES mode, const void * pixels)
 {
 	GLenum format = returnTexMode(mode);
 	GLenum intFormat = format;
-	//if(type == M_FLOAT && mode == M_RGB)
-	//	intFormat = GL_RGB32F_ARB;
-
+	if(type == M_UBYTE) // srgb
+	{
+		switch(intFormat)
+		{
+			case GL_RGB:
+			intFormat = GL_SRGB;
+			break;
+			case GL_RGBA:
+			intFormat = GL_SRGB_ALPHA;
+			break;
+		}
+	}
 	glTexImage2D(GL_TEXTURE_2D, level, intFormat, width, height, 0, format, returnGLType(type), pixels);
 	if(level > 0)
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, g_maxAnisotropy); // anisotropic filtering
@@ -613,6 +616,14 @@ void MGLContext::setDrawingBuffers(M_FRAME_BUFFER_ATTACHMENT * buffers, unsigned
 		glDrawBuffer(GL_BACK);
 		glReadBuffer(GL_BACK);
 	}
+}
+
+void MGLContext::enableFrameBufferSRGB(void){
+	glEnable(GL_FRAMEBUFFER_SRGB);
+}
+
+void MGLContext::disableFrameBufferSRGB(void){
+	glDisable(GL_FRAMEBUFFER_SRGB);
 }
 
 // render buffer
