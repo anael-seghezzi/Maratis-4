@@ -59,8 +59,7 @@ or:
   
 **Options:**
 
-    SDL2 backend : -DUSE_SDL2=ON
-    SDL2 without directx : -DUSE_SDL2=ON -DDIRECTX=OFF -DRENDER_D3D=OFF
+    SDL2 backend : -DUSE_SDL2=ON -DDIRECTX=OFF -DRENDER_D3D=OFF
   
 Contact
 -------
