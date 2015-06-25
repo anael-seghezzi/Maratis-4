@@ -51,7 +51,7 @@ static bool readUByteColor(TiXmlElement * node, const char * name, float * vecto
 			pass++;
 		}
 
-		m_color_sRGB_to_linear(vector, vector);
+		m_color_sRGB_to_linear(vector, vector, 3);
 		return true;
 	}
 
