@@ -34,6 +34,9 @@
 #define MWIN_MAX_KEYS 256
 #define MWIN_MAX_MOUSE_BUTTONS 32
 
+#define MWIN_COLSPACE_SRGB 0
+#define MWIN_COLSPACE_LINEAR 1
+
 
 class M_GUI_EXPORT MWindow
 {
@@ -43,6 +46,9 @@ public:
 	virtual ~MWindow(void);
 
 protected:
+
+	// color space
+	int m_colorSpace;
 
 	// pos / scale
 	int m_pos[2];
@@ -80,6 +86,10 @@ protected:
 	void * m_userPointer;
 	
 public:
+
+	// color space
+	void setColorSpace(int colorSpace){ m_colorSpace = colorSpace; }
+	int getColorSpace(void){ return m_colorSpace; }
 
 	// clear
 	void clear(void);

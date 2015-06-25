@@ -34,6 +34,7 @@
 
 MWindow::MWindow(int x, int y, unsigned int width, unsigned int height)
 {
+	m_colorSpace = MWIN_COLSPACE_SRGB;
 	m_drawCallback = NULL;
 	m_eventCallback = NULL;
 	m_currentKey = 0;

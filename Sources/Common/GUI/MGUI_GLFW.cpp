@@ -227,7 +227,10 @@ static void drawWindow(MGLFWWindow * window)
 	}
 
 	glfwMakeContextCurrent(window->glfwWindow);
-	render->enableFrameBufferSRGB();
+	if(window->getColorSpace() == MWIN_COLSPACE_SRGB)
+		render->enableFrameBufferSRGB();
+	else
+		render->disableFrameBufferSRGB();
 
 	if(window->running)
 	{

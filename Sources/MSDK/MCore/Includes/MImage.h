@@ -42,6 +42,7 @@ public:
 private:
 
 	struct m_image m_raw;
+	unsigned char m_colorSpace;
 
 public:
 
@@ -59,6 +60,8 @@ public:
 	inline unsigned int getHeight(void){ return m_raw.height; }
 	inline unsigned int getSize(void){ return m_raw.size; }
 	inline struct m_image *getRaw(void){ return &m_raw; }
+	inline void setColorSpace(unsigned char colorSpace) { m_colorSpace = colorSpace; }
+	inline unsigned char getColorSpace(void) { return m_colorSpace; }
 };
 
 #endif

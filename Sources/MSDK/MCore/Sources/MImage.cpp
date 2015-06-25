@@ -34,12 +34,14 @@
 MImage::MImage(void)
 {
 	m_raw = m_image_identity();
+	m_colorSpace = 0;
 }
 
 MImage::MImage(const MImage & image)
 {
 	m_raw = m_image_identity();
 	copyFrom(image);
+	m_colorSpace = image.m_colorSpace;
 }
 
 MImage::~MImage(void)

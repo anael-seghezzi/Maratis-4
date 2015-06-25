@@ -421,7 +421,7 @@ void MGLContext::sendTextureImage(MImage * image, bool mipMap, bool filter, bool
 {
 	// get properties
 	unsigned int bytePerPix = image->getComponents();
-	bool srgb = image->getDataType() == M_UBYTE;
+	bool srgb = image->getDataType() == M_UBYTE && image->getColorSpace() == 0;
 
 	unsigned int width  = image->getWidth();
 	unsigned int height = image->getHeight();
