@@ -69,7 +69,7 @@ static int sh_isquote(int c)
 	return c == '\'' || c == '\"';
 }
 
-static int sh_compare_key(char *string, char *key, int len)
+static int sh_compare_key(const char *string, const char *key, int len)
 {
 	int i;
 	for (i = 0; i < len; i++) {
@@ -155,16 +155,16 @@ void sh_select_word(const char *string, int id, int *begin, int *end)
 	}
 }
 
-static int sh_lua_compare_key(char *string, char *key, int len)
+static int sh_lua_compare_key(const char *string, const char *key, int len)
 {
-	char *next = string + len;
+	const char *next = string + len;
 	return (
 		sh_compare_key(string, key, len) &&
 		(sh_is_white(*next) || !sh_isalnum_special(*next))
 	);
 }
 
-static int sh_lua_instruction(char *string)
+static int sh_lua_instruction(const char *string)
 {
 	if (sh_lua_compare_key(string, "and", 3)) return 3;
 	if (sh_lua_compare_key(string, "break", 5)) return 5;

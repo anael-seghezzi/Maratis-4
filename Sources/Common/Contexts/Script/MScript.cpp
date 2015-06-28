@@ -53,6 +53,25 @@ const char * LUA_VEC3 = "LUA_VEC3";
 		}	\
 	}
 
+#define GET_SCENE_OBJECT_NAME()\
+	MLevel * level = MEngine::getInstance()->getLevel(); MScene * scene;\
+	int nbArguments = lua_gettop(L);\
+	if(nbArguments == 2)\
+		scene = level->getSceneByIndex(lua_tointeger(L, 1));\
+	else\
+		scene = level->getCurrentScene();\
+	const char * name = lua_tostring(L, nbArguments);\
+	
+#define GET_SCENE_OBJECT_NAME_PATH()\
+	MLevel * level = MEngine::getInstance()->getLevel(); MScene * scene;\
+	int nbArguments = lua_gettop(L);\
+	if(nbArguments == 3)\
+		scene = level->getSceneByIndex(lua_tointeger(L, 1));\
+	else\
+		scene = level->getCurrentScene();\
+	const char * name = lua_tostring(L, nbArguments-1);\
+	const char * path = lua_tostring(L, nbArguments);\
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // useful functions
@@ -63,7 +82,7 @@ static bool isFunctionOk(lua_State * L, const char * name, unsigned int nbArgs)
 	int nbArguments = lua_gettop(L);
 	if(nbArguments < (int)nbArgs)
 	{
-		printf("ERROR script : \"%s\" need at least %d parameter(s)\n", name, nbArgs);
+		printf("ERROR script : \"%s\" requires at least %d parameter(s)\n", name, nbArgs);
 		return false;
 	}
 	return true;
@@ -103,8 +122,14 @@ static MObject3d * getObject3d(LUA_INTEGER object)
 {
 	if(object == 0)
 		return NULL;
-	
 	return (MObject3d*)object;
+}
+
+static MMeshRef * getMeshRef(LUA_INTEGER object)
+{
+	if(object == 0)
+		return NULL;
+	return (MMeshRef*)object;
 }
 
 static bool getVector2(lua_State * L, int index, MVector2 * vector)
@@ -438,12 +463,106 @@ int getCurrentCamera(lua_State * L)
 	return 0;
 }
 
+int getNewEntity(lua_State * L)
+{
+	if(! isFunctionOk(L, "getNewEntity", 2))
+		return 0;
+
+	GET_SCENE_OBJECT_NAME_PATH()
+	if(name)
+	{
+		MOEntity * entity = scene->addNewEntity(NULL);
+		entity->setName(name);
+		if(path)
+		{
+			MMeshRef *ref = level->loadMesh(path, scene->getDataMode() == M_DATA_STATIC);
+			entity->setMeshRef(ref);
+		}
+		lua_pushinteger(L, (lua_Integer)entity);
+		return 1;
+	}
+	return 0;
+}
+
+int getNewLight(lua_State * L)
+{
+	if(! isFunctionOk(L, "getNewLight", 1))
+		return 0;
+
+	GET_SCENE_OBJECT_NAME()
+	if(name)
+	{
+		MObject3d * object = scene->addNewLight();
+		object->setName(name);
+		lua_pushinteger(L, (lua_Integer)object);
+		return 1;
+	}
+	return 0;
+}
+
+int getNewCamera(lua_State * L)
+{
+	if(! isFunctionOk(L, "getNewCamera", 1))
+		return 0;
+
+	GET_SCENE_OBJECT_NAME()
+	if(name)
+	{
+		MObject3d * object = scene->addNewCamera();
+		object->setName(name);
+		lua_pushinteger(L, (lua_Integer)object);
+		return 1;
+	}
+	return 0;
+}
+
+int getNewSound(lua_State * L)
+{
+	if(! isFunctionOk(L, "getNewSound", 2))
+		return 0;
+
+	GET_SCENE_OBJECT_NAME_PATH()
+	if(name)
+	{
+		MOSound * sound = scene->addNewSound(NULL);
+		sound->setName(name);
+		if(path)
+		{
+			MSoundRef *ref = level->loadSound(path, scene->getDataMode() == M_DATA_STATIC);
+			sound->setSoundRef(ref);
+		}
+		lua_pushinteger(L, (lua_Integer)sound);
+		return 1;
+	}
+	return 0;
+}
+
+int getNewText(lua_State * L)
+{
+	if(! isFunctionOk(L, "getNewText", 2))
+		return 0;
+
+	GET_SCENE_OBJECT_NAME_PATH()
+	if(name)
+	{
+		MOText * text = scene->addNewText(NULL);
+		text->setName(name);
+		if(path)
+		{
+			MFontRef *ref = level->loadFont(path, scene->getDataMode() == M_DATA_STATIC);
+			text->setFontRef(ref);
+		}
+		lua_pushinteger(L, (lua_Integer)text);
+		return 1;
+	}
+	return 0;
+}
+
 int getObject(lua_State * L)
 {
 	MLevel * level = MEngine::getInstance()->getLevel();
 	MScene * scene = level->getCurrentScene();
 	
-
 	if(! isFunctionOk(L, "getObject", 1))
 		return 0;
 
@@ -471,9 +590,10 @@ int getObject(lua_State * L)
 
 int getClone(lua_State * L)
 {
-	MLevel * level = MEngine::getInstance()->getLevel();
+	MEngine * engine = MEngine::getInstance();
+	MLevel * level = engine->getLevel();
 	MScene * scene = level->getCurrentScene();
-	
+	MGame * game = engine->getGame();
 	
 	if(! isFunctionOk(L, "getClone", 1))
 		return 0;
@@ -502,7 +622,8 @@ int getClone(lua_State * L)
 				break;
 			case M_OBJECT3D_ENTITY:
 				cloneObj = scene->addNewEntity(*(MOEntity*)object);
-				scene->prepareCollisionObject((MOEntity*)cloneObj);
+				if(game->isRunning())
+					scene->prepareCollisionObject((MOEntity*)cloneObj);
 				break;
 			case M_OBJECT3D_SOUND:
 				cloneObj = scene->addNewSound(*(MOSound*)object);
@@ -514,9 +635,17 @@ int getClone(lua_State * L)
 		
 		if(cloneObj)
 		{
-			char name[256];
-			sprintf(name, "%s_clone%d", object->getName(), scene->getObjectsNumber());
-			cloneObj->setName(name);
+			if(nbArguments == 3)
+			{
+				const char * name = lua_tostring(L, nbArguments);
+				cloneObj->setName(name);
+			}
+			else
+			{
+				char name[256];
+				sprintf(name, "%s_clone%d", object->getName(), scene->getObjectsNumber());
+				cloneObj->setName(name);
+			}
 		}
 		
 		lua_pushinteger(L, (lua_Integer)cloneObj);
@@ -565,6 +694,201 @@ int getChilds(lua_State * L)
 		return 1;
 	}
 	
+	return 0;
+}
+
+int getObjects(lua_State * L)
+{
+	MLevel * level = MEngine::getInstance()->getLevel();
+	MScene * scene;
+
+	if(lua_gettop(L) == 1)
+		scene = level->getSceneByIndex(lua_tointeger(L, 1));
+	else
+		scene = level->getCurrentScene();
+
+	unsigned int oSize = scene->getObjectsNumber();
+	lua_Integer * objects = new lua_Integer[oSize];
+	for(unsigned int o=0; o<oSize; o++)
+		objects[o] = (lua_Integer)scene->getObjectByIndex(o);
+	pushIntArray(L, objects, oSize);
+	
+	delete [] objects;
+	return 1;
+}
+
+int getEntities(lua_State * L)
+{
+	MLevel * level = MEngine::getInstance()->getLevel();
+	MScene * scene;
+
+	if(lua_gettop(L) == 1)
+		scene = level->getSceneByIndex(lua_tointeger(L, 1));
+	else
+		scene = level->getCurrentScene();
+
+	unsigned int oSize = scene->getEntitiesNumber();
+	lua_Integer * objects = new lua_Integer[oSize];
+	for(unsigned int o=0; o<oSize; o++)
+		objects[o] = (lua_Integer)scene->getEntityByIndex(o);
+	pushIntArray(L, objects, oSize);
+	
+	delete [] objects;
+	return 1;
+}
+
+int getLights(lua_State * L)
+{
+	MLevel * level = MEngine::getInstance()->getLevel();
+	MScene * scene;
+
+	if(lua_gettop(L) == 1)
+		scene = level->getSceneByIndex(lua_tointeger(L, 1));
+	else
+		scene = level->getCurrentScene();
+
+	unsigned int oSize = scene->getLightsNumber();
+	lua_Integer * objects = new lua_Integer[oSize];
+	for(unsigned int o=0; o<oSize; o++)
+		objects[o] = (lua_Integer)scene->getLightByIndex(o);
+	pushIntArray(L, objects, oSize);
+	
+	delete [] objects;
+	return 1;
+}
+
+int getCameras(lua_State * L)
+{
+	MLevel * level = MEngine::getInstance()->getLevel();
+	MScene * scene;
+
+	if(lua_gettop(L) == 1)
+		scene = level->getSceneByIndex(lua_tointeger(L, 1));
+	else
+		scene = level->getCurrentScene();
+
+	unsigned int oSize = scene->getCamerasNumber();
+	lua_Integer * objects = new lua_Integer[oSize];
+	for(unsigned int o=0; o<oSize; o++)
+		objects[o] = (lua_Integer)scene->getCameraByIndex(o);
+	pushIntArray(L, objects, oSize);
+	
+	delete [] objects;
+	return 1;
+}
+
+int getSounds(lua_State * L)
+{
+	MLevel * level = MEngine::getInstance()->getLevel();
+	MScene * scene;
+
+	if(lua_gettop(L) == 1)
+		scene = level->getSceneByIndex(lua_tointeger(L, 1));
+	else
+		scene = level->getCurrentScene();
+
+	unsigned int oSize = scene->getSoundsNumber();
+	lua_Integer * objects = new lua_Integer[oSize];
+	for(unsigned int o=0; o<oSize; o++)
+		objects[o] = (lua_Integer)scene->getSoundByIndex(o);
+	pushIntArray(L, objects, oSize);
+	
+	delete [] objects;
+	return 1;
+}
+
+int getTexts(lua_State * L)
+{
+	MLevel * level = MEngine::getInstance()->getLevel();
+	MScene * scene;
+
+	if(lua_gettop(L) == 1)
+		scene = level->getSceneByIndex(lua_tointeger(L, 1));
+	else
+		scene = level->getCurrentScene();
+
+	unsigned int oSize = scene->getTextsNumber();
+	lua_Integer * objects = new lua_Integer[oSize];
+	for(unsigned int o=0; o<oSize; o++)
+		objects[o] = (lua_Integer)scene->getTextByIndex(o);
+	pushIntArray(L, objects, oSize);
+	
+	delete [] objects;
+	return 1;
+}
+
+int isEntity(lua_State * L)
+{
+	if(! isFunctionOk(L, "isEntity", 1))
+		return 0;
+
+	MObject3d * object;
+	lua_Integer id = lua_tointeger(L, 1);
+	if((object = getObject3d(id)))
+	{
+		lua_pushnumber(L, (lua_Number)object->getType() == M_OBJECT3D_ENTITY);
+		return 1;
+	}
+	return 0;
+}
+
+int isCamera(lua_State * L)
+{
+	if(! isFunctionOk(L, "isCamera", 1))
+		return 0;
+
+	MObject3d * object;
+	lua_Integer id = lua_tointeger(L, 1);
+	if((object = getObject3d(id)))
+	{
+		lua_pushnumber(L, (lua_Number)object->getType() == M_OBJECT3D_CAMERA);
+		return 1;
+	}
+	return 0;
+}
+
+int isText(lua_State * L)
+{
+	if(! isFunctionOk(L, "isText", 1))
+		return 0;
+
+	MObject3d * object;
+	lua_Integer id = lua_tointeger(L, 1);
+	if((object = getObject3d(id)))
+	{
+		lua_pushnumber(L, (lua_Number)object->getType() == M_OBJECT3D_TEXT);
+		return 1;
+	}
+	return 0;
+}
+
+int isSound(lua_State * L)
+{
+	if(! isFunctionOk(L, "isSound", 1))
+		return 0;
+
+	MObject3d * object;
+	lua_Integer id = lua_tointeger(L, 1);
+	if((object = getObject3d(id)))
+	{
+		lua_pushnumber(L, (lua_Number)object->getType() == M_OBJECT3D_SOUND);
+		return 1;
+	}
+	return 0;
+}
+
+int isLight(lua_State * L)
+{
+	if(! isFunctionOk(L, "isSound", 1))
+		return 0;
+
+	MObject3d * object;
+	lua_Integer id = lua_tointeger(L, 1);
+	if((object = getObject3d(id)))
+	{
+		lua_pushnumber(L, (lua_Number)object->getType() == M_OBJECT3D_LIGHT);
+		return 1;
+	}
 	return 0;
 }
 
@@ -1114,6 +1438,22 @@ int setParent(lua_State * L)
 		return 0;
 	}
 	
+	return 0;
+}
+
+int loadMesh(lua_State * L)
+{
+	MLevel *level = MEngine::getInstance()->getLevel();
+
+	if(! isFunctionOk(L, "loadMesh", 1))
+		return 0;
+
+	const char * filename = lua_tostring(L, 1);
+	if(filename)
+	{
+		lua_pushinteger(L, (lua_Integer)level->loadMesh(filename));
+		return 1;
+	}
 	return 0;
 }
 
@@ -3510,30 +3850,6 @@ void MScript::init(void)
 	luaL_openlibs(m_state);
 
 	
-	/*
-	MOCamera * addNewCamera(void);
-	MOCamera * addNewCamera(const MOCamera & camera);
-	MOLight * addNewLight(void);
-	MOLight * addNewLight(const MOLight & light);
-	MOEntity * addNewEntity(MMeshRef * meshRef);
-	MOEntity * addNewEntity(const MOEntity & entity);
-	MOSound * addNewSound(MSoundRef * soundRef);
-	MOSound * addNewSound(const MOSound & sound);
-	MOText * addNewText(MFontRef * fontRef);
-	MOText * addNewText(const MOText & text);
-
-	// get objects number
-	inline unsigned int getObjectsNumber(void){ return m_objects.size(); }
-	inline unsigned int getCamerasNumber(void){ return m_cameras.size(); }
-	inline unsigned int getLightsNumber(void){ return m_lights.size(); }
-	inline unsigned int getEntitiesNumber(void){ return m_entities.size(); }
-	inline unsigned int getSoundsNumber(void){ return m_sounds.size(); }
-	inline unsigned int getTextsNumber(void){ return m_texts.size(); }
-	*/
-
-
-
-
 
 	// vec3
 	registerVec3(m_state);
@@ -3544,28 +3860,47 @@ void MScript::init(void)
 	lua_register(m_state, "cross", cross);
 	
 	// object/scene init
-	lua_register(m_state, "getScene",			getScene);
-	lua_register(m_state, "getObject",			getObject);
-	lua_register(m_state, "getClone",			getClone);
-	lua_register(m_state, "getParent",			getParent);
-	lua_register(m_state, "getChilds",			getChilds);
+	lua_register(m_state, "getNewCamera",	getNewCamera);
+	lua_register(m_state, "getNewEntity",	getNewEntity);
+	lua_register(m_state, "getNewLight",	getNewLight);
+	lua_register(m_state, "getNewSound",	getNewSound);
+	lua_register(m_state, "getNewText",		getNewText);
+	lua_register(m_state, "getClone",		getClone);
+	
+	lua_register(m_state, "getScene",		getScene);
+	lua_register(m_state, "getObject",		getObject);
+	lua_register(m_state, "getParent",		getParent);
+	lua_register(m_state, "getChilds",		getChilds);
+	lua_register(m_state, "getObjects",		getObjects);
+	lua_register(m_state, "getEntities",	getEntities);
+	lua_register(m_state, "getSounds",		getSounds);
+	lua_register(m_state, "getLights",		getLights);
+	lua_register(m_state, "getCameras",		getCameras);
+	lua_register(m_state, "getTexts",		getTexts);
+	
 	lua_register(m_state, "getCurrentCamera",   getCurrentCamera);
 	
 	// object
-	lua_register(m_state, "rotate",					rotate);
-	lua_register(m_state, "translate",				translate);
-	lua_register(m_state, "getPosition",			getPosition);
-	lua_register(m_state, "getRotation",			getRotation);
-	lua_register(m_state, "getScale",				getScale);
-	lua_register(m_state, "setPosition",			setPosition);
-	lua_register(m_state, "setRotation",			setRotation);
-	lua_register(m_state, "setScale",				setScale);
-	lua_register(m_state, "isVisible",				isVisible);
-	lua_register(m_state, "activate",				activate);
-	lua_register(m_state, "deactivate",				deactivate);
-	lua_register(m_state, "isActive",				isActive);
-	lua_register(m_state, "getName",				getName);
-	lua_register(m_state, "setParent",				setParent);
+	lua_register(m_state, "isEntity",	isEntity);
+	lua_register(m_state, "isLight",	isLight);
+	lua_register(m_state, "isCamera",	isCamera);
+	lua_register(m_state, "isText",		isText);
+	lua_register(m_state, "isSound",	isSound);
+	
+	lua_register(m_state, "rotate",			rotate);
+	lua_register(m_state, "translate",		translate);
+	lua_register(m_state, "getPosition",	getPosition);
+	lua_register(m_state, "getRotation",	getRotation);
+	lua_register(m_state, "getScale",		getScale);
+	lua_register(m_state, "setPosition",	setPosition);
+	lua_register(m_state, "setRotation",	setRotation);
+	lua_register(m_state, "setScale",		setScale);
+	lua_register(m_state, "isVisible",		isVisible);
+	lua_register(m_state, "activate",		activate);
+	lua_register(m_state, "deactivate",		deactivate);
+	lua_register(m_state, "isActive",		isActive);
+	lua_register(m_state, "getName",		getName);
+	lua_register(m_state, "setParent",		setParent);
 	
 	lua_register(m_state, "enableShadow",			enableShadow);
 	lua_register(m_state, "isCastingShadow",		isCastingShadow);
@@ -3648,6 +3983,9 @@ void MScript::init(void)
 	lua_register(m_state, "getCurrentSceneId",		getCurrentSceneId);
 	lua_register(m_state, "getScenesNumber",		getScenesNumber);
 	lua_register(m_state, "loadLevel",				loadLevel);
+
+	// entity
+	
 
 	// light
 	lua_register(m_state, "getLightColor",			getLightColor);
