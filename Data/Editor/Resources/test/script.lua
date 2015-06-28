@@ -17,6 +17,3 @@ function onSceneUpdate()
 	rotate(TPot, {0, 0, -1}, 1)
 	
 end
-
- 
-func
