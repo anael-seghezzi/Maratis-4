@@ -60,6 +60,7 @@ extern "C" {
 #include <m_image.h>
 #include <m_image_filter.h>
 #include <m_morphology.h>
+#include <m_dist.h>
 }
 
 class MImage;
