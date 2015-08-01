@@ -66,7 +66,6 @@ SDL2 backend :
 Contact
 -------
 
-Anaël Seghezzi
 anael (a) maratis3d.com
 
 
