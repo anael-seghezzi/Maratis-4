@@ -33,13 +33,13 @@
 
 MImage::MImage(void)
 {
-	m_raw = m_image_identity();
+	memset(&m_raw, 0, sizeof(struct m_image));
 	m_colorSpace = 0;
 }
 
 MImage::MImage(const MImage & image)
 {
-	m_raw = m_image_identity();
+	memset(&m_raw, 0, sizeof(struct m_image));
 	copyFrom(image);
 	m_colorSpace = image.m_colorSpace;
 }
