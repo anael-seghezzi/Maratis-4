@@ -54,7 +54,6 @@
 #endif
 
 extern "C" {
-#include <m_base.h>
 #include <m_math.h>
 #include <m_color.h>
 #include <m_image.h>
@@ -62,6 +61,8 @@ extern "C" {
 #include <m_morphology.h>
 #include <m_dist.h>
 }
+
+typedef int M_TYPES;
 
 class MImage;
 class MSound;

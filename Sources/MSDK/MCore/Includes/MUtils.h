@@ -52,6 +52,6 @@ using namespace std;
 // delete
 #define SAFE_DELETE(p)			{ if(p) { delete   (p); (p)=NULL; } }
 #define SAFE_DELETE_ARRAY(p)	{ if(p) { delete[] (p); (p)=NULL; } }
-#define SAFE_FREE(p)			M_SAFE_FREE(p)
+#define SAFE_FREE(p)			{ if(p) { free     (p); (p)=NULL; } }
 
 #endif
