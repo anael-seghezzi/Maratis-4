@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MCore
-// MCore.h
+// MColor.cpp
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //========================================================================
@@ -27,61 +27,8 @@
 //
 //========================================================================
 
+#define M_MATH_IMPLEMENTATION
+#define M_IMAGE_IMPLEMENTATION
+#define M_COLOR_IMPLEMENTATION
 
-#ifndef _M_CORE_H
-#define _M_CORE_H
-
-#ifdef WIN32
-
-	#ifdef _MSC_VER
-		#pragma warning(disable: 4251)
-	#endif
-
-	// M_CORE_EXPORT
-	#if defined(MCORE_DLL)
-		#define M_CORE_EXPORT __declspec( dllexport )
-	#elif defined(MCORE_STATIC)
-		#define M_CORE_EXPORT
-	#else
-		#define M_CORE_EXPORT __declspec( dllimport )
-	#endif
-
-#else
-
-	// M_CORE_EXPORT
-	#define M_CORE_EXPORT
-
-#endif
-
-#define MMAPI M_CORE_EXPORT
-#define MIAPI M_CORE_EXPORT
-#define MCAPI M_CORE_EXPORT
-#include <m_math.h>
-#include <m_image.h>
-#include <m_color.h>
-
-typedef int M_TYPES;
-
-class MImage;
-class MSound;
-
-#include "MUtils.h"
-#include "MString.h"
-#include "MFile.h"
-#include "MStdFile.h"
-#include "MFileTools.h"
-#include "MMaths.h"
-#include "MSystemContext.h"
-#include "MInputContext.h"
-#include "MRenderingContext.h"
-#include "MSoundContext.h"
-#include "MPhysicsContext.h"
-#include "MScriptContext.h"
-#include "MImage.h"
-#include "MSound.h"
-#include "MStringTools.h"
-#include "MDataManager.h"
-#include "MDataLoader.h"
-#include "MLog.h"
-
-#endif
+#include "../Includes/MCore.h"
