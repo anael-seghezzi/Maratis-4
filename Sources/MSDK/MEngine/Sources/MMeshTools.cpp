@@ -119,7 +119,7 @@ bool animateFloat(MKey * keys, unsigned int keysNumber, float t, float * value)
 	int t0 = key0->getT();
 	int t1 = key1->getT();
 
-	float factor = (t - t0) / (float)(t1 - t0);
+	float factor = t0 == t1 ? 0 : (t - t0) / (float)(t1 - t0);
 	float * data0 = (float *)key0->getData();
 	float * data1 = (float *)key1->getData();
 
@@ -169,7 +169,7 @@ bool animateVector2(MKey * keys, unsigned int keysNumber, float t, MVector2 * ve
 	int t0 = key0->getT();
 	int t1 = key1->getT();
 
-	float factor = (t - t0) / (float)(t1 - t0);
+	float factor = t0 == t1 ? 0 : (t - t0) / (float)(t1 - t0);
 	MVector2 * data0 = (MVector2 *)key0->getData();
 	MVector2 * data1 = (MVector2 *)key1->getData();
 
@@ -219,7 +219,7 @@ bool animateVector3(MKey * keys, unsigned int keysNumber, float t, MVector3 * ve
 	int t0 = key0->getT();
 	int t1 = key1->getT();
 
-	float factor = (t - t0) / (float)(t1 - t0);
+	float factor = t0 == t1 ? 0 : (t - t0) / (float)(t1 - t0);
 	MVector3 * data0 = (MVector3 *)key0->getData();
 	MVector3 * data1 = (MVector3 *)key1->getData();
 
@@ -269,7 +269,7 @@ bool animateQuaternion(MKey * keys, unsigned int keysNumber, float t, MQuaternio
 	int t0 = key0->getT();
 	int t1 = key1->getT();
 
-	float factor = (t - t0) / (float)(t1 - t0);
+	float factor = t0 == t1 ? 0 : (t - t0) / (float)(t1 - t0);
 	MQuaternion * data0 = (MQuaternion *)key0->getData();
 	MQuaternion * data1 = (MQuaternion *)key1->getData();
 
