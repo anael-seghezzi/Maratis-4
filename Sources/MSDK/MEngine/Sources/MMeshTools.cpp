@@ -57,6 +57,27 @@ static void blendMatrices(MMatrix4x4 * matrix, const MMatrix4x4 * skinMatrix, co
 
 
 // animation
+inline void _getInterKeys(MKey * keys, int keysNumber, float t, int *k1, int *k2)
+{
+	int min = 0;
+	int max = keysNumber - 1;
+
+	while((max - min) > 1)
+	{
+		int half = min + (max - min) / 2;
+		int halfT = keys[half].getT();
+
+		if (halfT >= t)
+			max = half;
+
+		if (halfT <= t)
+			min = half;
+	}
+
+	*k1 = min;
+	*k2 = max;
+}
+
 bool animateFloat(MKey * keys, unsigned int keysNumber, float t, float * value)
 {
 	// no keys
@@ -89,28 +110,21 @@ bool animateFloat(MKey * keys, unsigned int keysNumber, float t, float * value)
 	}
 
 	// interpolation
-	for (unsigned int i = 1; i < keysNumber; i++)
-	{
-		MKey * key0 = keys;
-		MKey * key1 = keys+1;
+	int k1, k2;
+	_getInterKeys(keys, keysNumber, t, &k1, &k2);
 
-		int t0 = key0->getT();
-		int t1 = key1->getT();
+	MKey * key0 = keys + k1;
+	MKey * key1 = keys + k2;
 
-		if ((t >= t0) && (t <= t1))
-		{
-			float factor = (t - t0) / (float)(t1 - t0);
-			float * data0 = (float *)key0->getData();
-			float * data1 = (float *)key1->getData();
+	int t0 = key0->getT();
+	int t1 = key1->getT();
 
-			(*value) = (*data0) + ((*data1) - (*data0))*factor;
-			return true;
-		}
+	float factor = (t - t0) / (float)(t1 - t0);
+	float * data0 = (float *)key0->getData();
+	float * data1 = (float *)key1->getData();
 
-		keys++;
-	}
-
-	return false;
+	(*value) = (*data0) + ((*data1) - (*data0))*factor;
+	return true;
 }
 
 bool animateVector2(MKey * keys, unsigned int keysNumber, float t, MVector2 * vector2)
@@ -146,28 +160,21 @@ bool animateVector2(MKey * keys, unsigned int keysNumber, float t, MVector2 * ve
 	}
 
 	// interpolation
-	for (unsigned int i = 1; i < keysNumber; i++)
-	{
-		MKey * key0 = keys;
-		MKey * key1 = keys+1;
+	int k1, k2;
+	_getInterKeys(keys, keysNumber, t, &k1, &k2);
 
-		int t0 = key0->getT();
-		int t1 = key1->getT();
+	MKey * key0 = keys + k1;
+	MKey * key1 = keys + k2;
 
-		if ((t >= t0) && (t <= t1))
-		{
-			float factor = (t - t0) / (float)(t1 - t0);
-			MVector2 * data0 = (MVector2 *)key0->getData();
-			MVector2 * data1 = (MVector2 *)key1->getData();
+	int t0 = key0->getT();
+	int t1 = key1->getT();
 
-			(*vector2) = (*data0) + ((*data1) - (*data0))*factor;
-			return true;
-		}
+	float factor = (t - t0) / (float)(t1 - t0);
+	MVector2 * data0 = (MVector2 *)key0->getData();
+	MVector2 * data1 = (MVector2 *)key1->getData();
 
-		keys++;
-	}
-
-	return false;
+	(*vector2) = (*data0) + ((*data1) - (*data0))*factor;
+	return true;
 }
 
 bool animateVector3(MKey * keys, unsigned int keysNumber, float t, MVector3 * vector3)
@@ -203,28 +210,21 @@ bool animateVector3(MKey * keys, unsigned int keysNumber, float t, MVector3 * ve
 	}
 
 	// interpolation
-	for (unsigned int i = 1; i < keysNumber; i++)
-	{
-		MKey * key0 = keys;
-		MKey * key1 = keys+1;
+	int k1, k2;
+	_getInterKeys(keys, keysNumber, t, &k1, &k2);
 
-		int t0 = key0->getT();
-		int t1 = key1->getT();
+	MKey * key0 = keys + k1;
+	MKey * key1 = keys + k2;
 
-		if ((t >= t0) && (t <= t1))
-		{
-			float factor = (t - t0) / (float)(t1 - t0);
-			MVector3 * data0 = (MVector3 *)key0->getData();
-			MVector3 * data1 = (MVector3 *)key1->getData();
+	int t0 = key0->getT();
+	int t1 = key1->getT();
 
-			(*vector3) = (*data0) + ((*data1) - (*data0))*factor;
-			return true;
-		}
+	float factor = (t - t0) / (float)(t1 - t0);
+	MVector3 * data0 = (MVector3 *)key0->getData();
+	MVector3 * data1 = (MVector3 *)key1->getData();
 
-		keys++;
-	}
-
-	return false;
+	(*vector3) = (*data0) + ((*data1) - (*data0))*factor;
+	return true;
 }
 
 bool animateQuaternion(MKey * keys, unsigned int keysNumber, float t, MQuaternion * quaternion)
@@ -260,40 +260,21 @@ bool animateQuaternion(MKey * keys, unsigned int keysNumber, float t, MQuaternio
 	}
 
 	// interpolation
-	for (unsigned int i = 1; i < keysNumber; i++)
-	{
-		MKey * key0 = keys;
-		MKey * key1 = keys+1;
+	int k1, k2;
+	_getInterKeys(keys, keysNumber, t, &k1, &k2);
 
-		int t0 = key0->getT();
-		int t1 = key1->getT();
+	MKey * key0 = keys + k1;
+	MKey * key1 = keys + k2;
 
-		if (t == t0)
-		{
-			(*quaternion) = *(MQuaternion *)key0->getData();
-			return true;
-		}
+	int t0 = key0->getT();
+	int t1 = key1->getT();
 
-		if (t == t1)
-		{
-			(*quaternion) = *(MQuaternion *)key1->getData();
-			return true;
-		}
+	float factor = (t - t0) / (float)(t1 - t0);
+	MQuaternion * data0 = (MQuaternion *)key0->getData();
+	MQuaternion * data1 = (MQuaternion *)key1->getData();
 
-		if ((t > t0) && (t < t1))
-		{
-			float factor = (t - t0) / (float)(t1 - t0);
-			MQuaternion * data0 = (MQuaternion *)key0->getData();
-			MQuaternion * data1 = (MQuaternion *)key1->getData();
-
-			(*quaternion) = MQuaternion(*data0, *data1, factor);
-			return true;
-		}
-
-		keys++;
-	}
-
-	return false;
+	(*quaternion) = MQuaternion(*data0, *data1, factor);
+	return true;
 }
 
 void animateArmature(MArmature * armature, MArmatureAnim * armatureAnim, float t)
