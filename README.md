@@ -29,17 +29,13 @@ Getting source
 Building (CMake)
 ----------------
 
+(from Maratis-4 directory)
+
 **Unix:**
-
-run:
-
-    build_unix.sh
-    
-or type:
 
     mkdir Build
     cd Build
-    cmake -G "Unix Makefiles" ../ -DCMAKE_INSTALL_PREFIX=../bin
+    cmake -G "Unix Makefiles" ../ -DCMAKE_INSTALL_PREFIX=../bin -DCMAKE_BUILD_TYPE=Release
     make
     make install
 
@@ -48,14 +44,6 @@ or type:
     mkdir Build
     cd Build
     cmake -G "Visual Studio 11" ../ -DCMAKE_INSTALL_PREFIX=../bin
-
-or:
-
-    mkdir Build
-    cd Build
-    cmake -G "MinGW Makefiles" ../ -DCMAKE_INSTALL_PREFIX=../bin
-    make
-    make install
   
 **Options:**
 
