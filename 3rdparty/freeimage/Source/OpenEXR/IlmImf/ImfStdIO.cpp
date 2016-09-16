@@ -43,6 +43,7 @@
 #include <ImfStdIO.h>
 #include "Iex.h"
 #include <errno.h>
+#include <algorithm>
 
 using namespace std;
 
