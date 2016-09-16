@@ -49,6 +49,7 @@
 #include <Iex.h>
 #include <ImfStdIO.h>
 #include <ImfConvert.h>
+#include <algorithm>
 
 namespace Imf {
 
