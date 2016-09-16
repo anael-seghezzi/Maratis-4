@@ -69,7 +69,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <time.h>
-
+#include <algorithm>
 
 namespace Imf {
 
