@@ -46,6 +46,7 @@
 
 #include <assert.h>
 #include "half.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -72,7 +73,7 @@ half::overflow ()
 
     for (int i = 0; i < 10; i++)	
 	f *= f;				// this will overflow before
-					// the for­loop terminates
+					// the forÂ­loop terminates
     return f;
 }
 
