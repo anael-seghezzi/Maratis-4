@@ -40,7 +40,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfPreviewImageAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 
