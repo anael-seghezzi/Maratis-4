@@ -40,7 +40,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfStandardAttributes.h>
-
+#include <algorithm>
 
 #define IMF_STRING(name) #name
 
