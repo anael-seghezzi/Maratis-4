@@ -33,5 +33,5 @@
 ///////////////////////////////////////////////////////////////////////////
 
 #include "ImathBox.h"
-
+#include <algorithm>
 // this file is necessary for template instantiation on windows
