@@ -43,6 +43,7 @@
 #include <string>
 #include <assert.h>
 #include <iostream>
+#include <algorithm>
 
 namespace IlmThread {
 
