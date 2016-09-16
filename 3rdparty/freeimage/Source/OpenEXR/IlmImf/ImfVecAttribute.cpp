@@ -46,7 +46,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfVecAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 
