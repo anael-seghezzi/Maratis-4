@@ -41,6 +41,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfChromaticities.h>
+#include <algorithm>
 
 namespace Imf {
 
