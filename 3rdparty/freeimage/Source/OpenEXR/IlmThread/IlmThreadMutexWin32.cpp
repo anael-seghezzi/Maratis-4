@@ -40,7 +40,7 @@
 
 #include "IlmThreadMutex.h"
 #include "Iex.h"
-
+#include <algorithm>
 namespace IlmThread {
 
 
