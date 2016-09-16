@@ -44,7 +44,7 @@
 #include "IlmThreadPool.h"
 #include "Iex.h"
 #include <list>
-
+#include <algorithm>
 using namespace std;
 
 namespace IlmThread {
