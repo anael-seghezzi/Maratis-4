@@ -39,6 +39,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfMultiView.h>
+#include <algorithm>
 
 using namespace std;
 
