@@ -42,7 +42,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfLineOrderAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 
