@@ -40,7 +40,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfStringVectorAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 
