@@ -41,7 +41,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfChannelListAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 
