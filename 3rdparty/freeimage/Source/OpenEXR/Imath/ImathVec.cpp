@@ -41,6 +41,7 @@
 //----------------------------------------------------------------------------
 
 #include "ImathVec.h"
+#include <algorithm>
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 // suppress exception specification warnings
