@@ -45,6 +45,7 @@
 #include <ImfLut.h>
 #include <math.h>
 #include <assert.h>
+#include <algorithm>
 
 namespace Imf {
 
