@@ -43,7 +43,7 @@
 
 #include <ImfChannelList.h>
 #include <Iex.h>
-
+#include <algorithm>
 
 using std::string;
 using std::set;
