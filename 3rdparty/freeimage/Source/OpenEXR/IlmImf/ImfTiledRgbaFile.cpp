@@ -50,7 +50,7 @@
 #include <ImfArray.h>
 #include "IlmThreadMutex.h"
 #include "Iex.h"
-
+#include <algorithm>
 
 namespace Imf {
 
