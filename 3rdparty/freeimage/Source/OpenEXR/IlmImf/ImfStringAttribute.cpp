@@ -41,7 +41,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfStringAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 
