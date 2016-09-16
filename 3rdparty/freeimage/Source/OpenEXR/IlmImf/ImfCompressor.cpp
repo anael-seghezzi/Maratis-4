@@ -47,6 +47,7 @@
 #include <ImfPxr24Compressor.h>
 #include <ImfB44Compressor.h>
 #include <ImfCheckedArithmetic.h>
+#include <algorithm>
 
 namespace Imf {
 
