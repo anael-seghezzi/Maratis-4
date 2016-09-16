@@ -41,7 +41,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfFloatAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 
