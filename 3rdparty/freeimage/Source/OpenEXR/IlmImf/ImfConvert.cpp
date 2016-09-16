@@ -42,6 +42,7 @@
 
 #include <ImfConvert.h>
 #include <limits.h>
+#include <algorithm>
 
 namespace Imf {
 namespace {
