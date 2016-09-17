@@ -42,6 +42,7 @@
 #include <ImfPreviewImage.h>
 #include <ImfCheckedArithmetic.h>
 #include "Iex.h"
+#include <algorithm>
 
 namespace Imf {
 

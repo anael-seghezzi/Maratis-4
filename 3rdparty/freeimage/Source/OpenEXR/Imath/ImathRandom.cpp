@@ -42,6 +42,7 @@
 
 #include "ImathRandom.h"
 #include "ImathInt64.h"
+#include <algorithm>
 
 namespace Imath {
 namespace {

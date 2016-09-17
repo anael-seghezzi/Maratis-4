@@ -41,7 +41,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfCompressionAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 

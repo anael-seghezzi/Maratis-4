@@ -44,7 +44,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfMatrixAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 

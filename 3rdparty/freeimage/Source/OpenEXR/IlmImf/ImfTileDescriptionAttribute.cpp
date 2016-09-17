@@ -40,7 +40,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfTileDescriptionAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 

@@ -40,6 +40,7 @@
 //----------------------------------------------------------------------------
 
 #include "ImathColorAlgo.h"
+#include <algorithm>
 
 namespace Imath {
 

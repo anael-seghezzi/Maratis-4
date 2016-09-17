@@ -41,6 +41,7 @@
 
 #include <ImfIO.h>
 #include "Iex.h"
+#include <algorithm>
 
 namespace Imf {
 

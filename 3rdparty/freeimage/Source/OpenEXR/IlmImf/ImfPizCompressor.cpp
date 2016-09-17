@@ -54,6 +54,7 @@
 #include <ImfAutoArray.h>
 #include <string.h>
 #include <assert.h>
+#include <algorithm>
 
 namespace Imf {
 
@@ -310,7 +311,7 @@ PizCompressor::compress (const char *inPtr,
     //
 
     //
-    // Special case ­- empty input buffer
+    // Special case Â­- empty input buffer
     //
 
     if (inSize == 0)

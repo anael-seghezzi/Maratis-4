@@ -41,7 +41,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfDoubleAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 

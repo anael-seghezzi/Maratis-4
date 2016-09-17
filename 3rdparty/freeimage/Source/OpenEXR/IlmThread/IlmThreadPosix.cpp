@@ -40,7 +40,7 @@
 //-----------------------------------------------------------------------------
 
 #include "IlmBaseConfig.h"
-
+#include <algorithm>
 #if HAVE_PTHREAD
 
 #include "IlmThread.h"

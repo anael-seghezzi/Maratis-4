@@ -40,7 +40,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfTimeCodeAttribute.h>
-
+#include <algorithm>
 namespace Imf {
 
 

@@ -39,7 +39,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfRationalAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 

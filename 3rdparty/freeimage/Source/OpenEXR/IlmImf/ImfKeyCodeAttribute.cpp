@@ -40,6 +40,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfKeyCodeAttribute.h>
+#include <algorithm>
 
 namespace Imf {
 

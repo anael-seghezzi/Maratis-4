@@ -41,6 +41,7 @@
 
 #include <ImfKeyCode.h>
 #include "Iex.h"
+#include <algorithm>
 
 namespace Imf {
 

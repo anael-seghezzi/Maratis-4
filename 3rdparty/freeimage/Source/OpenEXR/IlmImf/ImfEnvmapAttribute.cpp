@@ -40,7 +40,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfEnvmapAttribute.h>
-
+#include <algorithm>
 
 namespace Imf {
 

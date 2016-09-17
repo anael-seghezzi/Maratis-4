@@ -34,6 +34,7 @@
 
 
 #include "ImathFun.h"
+#include <algorithm>
 
 namespace Imath {
 

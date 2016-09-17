@@ -45,7 +45,7 @@
 #include <ImfCheckedArithmetic.h>
 #include "Iex.h"
 #include <zlib.h>
-
+#include <algorithm>
 namespace Imf {
 
 
@@ -97,7 +97,7 @@ ZipCompressor::compress (const char *inPtr,
 			 const char *&outPtr)
 {
     //
-    // Special case ­- empty input buffer
+    // Special case Â­- empty input buffer
     //
 
     if (inSize == 0)
@@ -171,7 +171,7 @@ ZipCompressor::uncompress (const char *inPtr,
 			   const char *&outPtr)
 {
     //
-    // Special case ­- empty input buffer
+    // Special case Â­- empty input buffer
     //
 
     if (inSize == 0)

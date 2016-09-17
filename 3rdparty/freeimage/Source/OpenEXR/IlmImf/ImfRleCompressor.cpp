@@ -43,6 +43,7 @@
 #include <ImfRleCompressor.h>
 #include <ImfCheckedArithmetic.h>
 #include "Iex.h"
+#include <algorithm>
 
 namespace Imf {
 namespace {
@@ -195,7 +196,7 @@ RleCompressor::compress (const char *inPtr,
 			 const char *&outPtr)
 {
     //
-    // Special case ­- empty input buffer
+    // Special case Â­- empty input buffer
     //
 
     if (inSize == 0)
@@ -261,7 +262,7 @@ RleCompressor::uncompress (const char *inPtr,
 			   const char *&outPtr)
 {
     //
-    // Special case ­- empty input buffer
+    // Special case Â­- empty input buffer
     //
 
     if (inSize == 0)

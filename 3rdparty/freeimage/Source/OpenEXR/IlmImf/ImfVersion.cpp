@@ -41,7 +41,7 @@
 
 
 #include <ImfVersion.h>
-
+#include <algorithm>
 namespace Imf {
 
 

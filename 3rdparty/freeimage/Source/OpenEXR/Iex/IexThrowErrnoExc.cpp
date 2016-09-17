@@ -45,6 +45,7 @@
 #include "IexErrnoExc.h"
 #include <string.h>
 #include <errno.h>
+#include <algorithm>
 
 namespace Iex {
 

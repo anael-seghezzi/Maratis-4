@@ -54,6 +54,7 @@
 #include <ImfLut.h>
 #include "half.h"
 #include <string.h>
+#include <algorithm>
 
 using Imath::Box2i;
 using Imath::Box2f;

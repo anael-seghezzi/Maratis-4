@@ -43,7 +43,7 @@
 
 #include <ImfFrameBuffer.h>
 #include "Iex.h"
-
+#include <algorithm>
 
 using namespace std;
 

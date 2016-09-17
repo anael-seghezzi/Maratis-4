@@ -40,6 +40,7 @@
 
 #include <ImfFramesPerSecond.h>
 #include "ImathFun.h"
+#include <algorithm>
 
 using namespace Imath;
 

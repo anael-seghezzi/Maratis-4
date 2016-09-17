@@ -41,6 +41,7 @@
 //---------------------------------------------------------------------
 
 #include "IexBaseExc.h"
+#include <algorithm>
 
 namespace Iex {
 namespace {
