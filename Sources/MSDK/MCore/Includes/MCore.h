@@ -55,10 +55,8 @@
 
 #define MMAPI M_CORE_EXPORT
 #define MIAPI M_CORE_EXPORT
-#define MCAPI M_CORE_EXPORT
 #include <m_math.h>
 #include <m_image.h>
-#include <m_color.h>
 
 typedef int M_TYPES;
 
