@@ -147,7 +147,8 @@ void MGuiColorPicker::open(MGuiButton * parentButton, float * R, float * G, floa
 
 	// RGB and HSV color
 	MVector3 RGBColor(*R, *G, *B);
-	m_HSVColor = RGBToHSV(RGBColor);
+	m_RGB_to_HSV(m_HSVColor, RGBColor);
+
 	
 	// window
 	if(A == NULL)
@@ -232,9 +233,10 @@ void MGuiColorPicker::draw(MGuiWindow * window)
 	{
 		MVector2 pos = m_colorSel->getPosition();
 		MVector2 scale = m_colorSel->getScale();
-					
-		MVector3 color = HSVToRGB(MVector3(m_HSVColor.x, 1, 1));
-					
+		MVector3 color;
+		
+		m_HSV_to_RGB(color, MVector3(m_HSVColor.x, 1, 1));
+
 		for(int i=0; i<(int)scale.y; i++)
 		{
 			float factor = 1 - (i/scale.y);
@@ -352,7 +354,9 @@ void MGuiColorPicker::updateTargets(void)
 
 void MGuiColorPicker::updateRGBColor(void)
 {
-	MVector3 RGBColor = HSVToRGB(m_HSVColor);
+	MVector3 RGBColor;
+	
+	m_HSV_to_RGB(RGBColor, m_HSVColor);
 	*m_R = RGBColor.x;
 	*m_G = RGBColor.y;
 	*m_B = RGBColor.z;
@@ -365,8 +369,9 @@ void MGuiColorPicker::updateRGBColor(void)
 
 void MGuiColorPicker::updateHSVColor(void)
 {
-	m_HSVColor = RGBToHSV(MVector3(CLAMP(*m_R, 0, 1), CLAMP(*m_G, 0, 1), CLAMP(*m_B, 0, 1)));
-	
+	MVector3 RGBColor = MVector3(CLAMP(*m_R, 0, 1), CLAMP(*m_G, 0, 1), CLAMP(*m_B, 0, 1));
+	m_RGB_to_HSV(m_HSVColor, RGBColor);
+
 	if(m_parentButton)
 		m_parentButton->setColor(MVector3(*m_R, *m_G, *m_B));
 	

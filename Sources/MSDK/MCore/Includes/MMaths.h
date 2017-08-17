@@ -72,17 +72,11 @@ struct M_CORE_EXPORT MRange
 	int end;
 };
 
-// interpolations
-inline float cubicInterpolation(float y0, float y1, float y2, float y3, float mu) { m_interpolation_cubic(y0, y1, y2, y3, mu); }
-inline float CatmullRomInterpolation(float y0, float y1, float y2, float y3, float mu) { m_interpolation_catmullrom(y0, y1, y2, y3, mu); }
-M_CORE_EXPORT float HermiteInterpolation(float y0, float y1, float y2, float y3, float mu, float tension, float bias, bool begin = false, bool end = false);
-
 // sort
 M_CORE_EXPORT void sortFloatList(float floatList[], int start, int end);
 M_CORE_EXPORT void sortFloatIndexList(int indexList[], float floatList[], int start, int end);
 
 // 3d utils
-M_CORE_EXPORT void simplifyDP(float tol, MVector3 * v, int j, int k, int * mk);
 M_CORE_EXPORT MVector3 getTriangleNormal(const MVector3 & A, const MVector3 & B, const MVector3 & C);
 
 // 3d collision
@@ -121,11 +115,5 @@ inline float rayPlaneIntersection(const MVector3 & origin, const MVector3 & dire
 #include "MColor.h"
 #include "MMatrix4x4.h"
 #include "MQuaternion.h"
-
-// color convertions
-inline MVector3 RGBToHSV(const MVector3 &rgbColor) { MVector3 res; m_color_RGB_to_HSV(rgbColor, res); return res; }
-inline MVector3 HSVToRGB(const MVector3 &HSVColor) { MVector3 res; m_color_HSV_to_RGB(HSVColor, res); return res; }
-inline MVector3 RGBToHSL(const MVector3 &rgbColor) { MVector3 res; m_color_RGB_to_HSL(rgbColor, res); return res; }
-inline MVector3 HSLToRGB(const MVector3 &hslColor) { MVector3 res; m_color_HSL_to_RGB(hslColor, res); return res; }
 
 #endif
