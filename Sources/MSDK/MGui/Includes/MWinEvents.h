@@ -41,7 +41,7 @@
 #define MKEY_RETURN		130
 #define MKEY_PAUSE		131
 #define MKEY_ESCAPE		132
-#define MKEY_SPACE		133
+#define MKEY_SPACE		' '
 #define MKEY_DELETE		134
 #define MKEY_KP_0		135
 #define MKEY_KP_1		136

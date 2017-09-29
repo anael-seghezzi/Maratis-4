@@ -88,7 +88,6 @@ static int getMaratisKey(int key)
 	case GLFW_KEY_ENTER:		return MKEY_RETURN;
 	case GLFW_KEY_PAUSE:		return MKEY_PAUSE;
 	case GLFW_KEY_ESCAPE:		return MKEY_ESCAPE;
-	case GLFW_KEY_SPACE:		return MKEY_SPACE;
 	case GLFW_KEY_DELETE:		return MKEY_DELETE;
 	case GLFW_KEY_KP_0:			return MKEY_KP_0;
 	case GLFW_KEY_KP_1:			return MKEY_KP_1;
