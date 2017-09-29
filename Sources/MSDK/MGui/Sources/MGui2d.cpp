@@ -370,7 +370,9 @@ MVector2 MGui2d::getPointLocalPosition(const MVector2 & point)
 			return (point - m_parentWindow->getPosition() - m_parentWindow->getScroll())/m_parentWindow->getZoom();
 		}
 		else
+		{
 			return point - m_parentWindow->getPosition();
+		}
 	}
 
 	return point;
