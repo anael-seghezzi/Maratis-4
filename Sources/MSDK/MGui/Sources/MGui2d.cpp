@@ -173,8 +173,9 @@ void MGui2d::draw(void)
 	// draw shadows
 	if(hasShadow())
 	{
+		MVector2 position = getAlignedPosition();
 		render->pushMatrix();
-		render->translate(MVector3(getPosition().x, getPosition().y, 0));
+		render->translate(MVector3(position.x, position.y, 0));
 		drawShadow();
 		render->popMatrix();
 	}
@@ -277,7 +278,7 @@ bool MGui2d::isMouseInside(const MVector2 & margin)
 
 bool MGui2d::isPointInside(const MVector2 & point, const MVector2 & margin)
 {
-	MVector2 position = getPosition() - margin;
+	MVector2 position = getAlignedPosition() - margin;
 	MVector2 scale = getScale() + margin*2;
 
 	if(point.x >= position.x && point.x < (position.x + scale.x) &&
@@ -287,12 +288,58 @@ bool MGui2d::isPointInside(const MVector2 & point, const MVector2 & margin)
 	return false;
 }
 
+MVector2 MGui2d::getAlignedPosition(void)
+{
+	switch (m_align) {
+
+	case M_ALIGN_LEFT:
+		return m_position;
+		break;
+
+	case M_ALIGN_RIGHT:
+		{
+			MGuiWindow *parent = getParentWindow();
+			if (parent) {
+				float x = parent->getScale().x - getScale().x - m_position.x;
+				return MVector2(x, m_position.y);
+			}
+			else {
+				MWindow *root = getRootWindow();
+				if (root) {
+					float x = root->getWidth() - getScale().x - m_position.x;
+					return MVector2(x, m_position.y);
+				}
+			}
+		}
+		break;
+
+	case M_ALIGN_CENTER:
+		{
+			MGuiWindow *parent = getParentWindow();
+			if (parent) {
+				float x = (parent->getScale().x - getScale().x) * 0.5f - m_position.x;
+				return MVector2(x, m_position.y);
+			}
+			else {
+				MWindow *root = getRootWindow();
+				if (root) {
+					float x = root->getWidth() - getScale().x - m_position.x;
+					return MVector2(x, m_position.y);
+				}
+			}
+		}
+		break;
+	}
+
+	return m_position;
+}
+
 void MGui2d::drawQuad(void)
 {
+	MVector2 vertices[8];
 	MEngine * engine = MEngine::getInstance();
 	MRenderingContext * render = engine->getRenderingContext();
-	
-	MVector2 vertices[8];
+	MVector2 position = getAlignedPosition();
 
 	render->disableTexture();
 
@@ -301,10 +348,10 @@ void MGui2d::drawQuad(void)
 	render->disableColorArray();
 	render->enableVertexArray();
 
-	vertices[0] = MVector2(m_position.x, m_position.y);
-	vertices[1] = MVector2(m_position.x, m_position.y + m_scale.y);
-	vertices[3] = MVector2(m_position.x + m_scale.x, m_position.y + m_scale.y);
-	vertices[2] = MVector2(m_position.x + m_scale.x, m_position.y);
+	vertices[0] = MVector2(position.x, position.y);
+	vertices[1] = MVector2(position.x, position.y + m_scale.y);
+	vertices[3] = MVector2(position.x + m_scale.x, position.y + m_scale.y);
+	vertices[2] = MVector2(position.x + m_scale.x, position.y);
 
 	render->setVertexPointer(M_FLOAT, 2, vertices);
 	render->drawArray(M_PRIMITIVE_TRIANGLE_STRIP, 0, 4);
@@ -312,11 +359,11 @@ void MGui2d::drawQuad(void)
 
 void MGui2d::drawTexturedQuad(unsigned int textureId)
 {
-	MEngine * engine = MEngine::getInstance();
-	MRenderingContext * render = engine->getRenderingContext();
-	
 	MVector2 vertices[8];
 	MVector2 texCoords[8];
+	MEngine * engine = MEngine::getInstance();
+	MRenderingContext * render = engine->getRenderingContext();
+	MVector2 position = getAlignedPosition();
 
 	render->enableTexture();
 	
@@ -325,10 +372,10 @@ void MGui2d::drawTexturedQuad(unsigned int textureId)
 	render->enableVertexArray();
 	render->enableTexCoordArray();
 
-	vertices[0] = MVector2(m_position.x, m_position.y);
-	vertices[1] = MVector2(m_position.x, m_position.y + m_scale.y);
-	vertices[3] = MVector2(m_position.x + m_scale.x, m_position.y + m_scale.y);
-	vertices[2] = MVector2(m_position.x + m_scale.x, m_position.y);
+	vertices[0] = MVector2(position.x, position.y);
+	vertices[1] = MVector2(position.x, position.y + m_scale.y);
+	vertices[3] = MVector2(position.x + m_scale.x, position.y + m_scale.y);
+	vertices[2] = MVector2(position.x + m_scale.x, position.y);
 
 	texCoords[0] = MVector2(0, 0);
 	texCoords[1] = MVector2(0, 1);
@@ -348,7 +395,7 @@ void MGui2d::drawText(void)
 	MEngine * engine = MEngine::getInstance();
 	MRenderingContext * render = engine->getRenderingContext();
 	
-	MVector2 pos = getPosition() + getAlignedTextPosition();
+	MVector2 pos = getAlignedPosition() + getAlignedTextPosition();
 	{
 		// make sure the text is not filtered
 		pos.x = (int)(pos.x+0.5f);
@@ -367,11 +414,11 @@ MVector2 MGui2d::getPointLocalPosition(const MVector2 & point)
 	{
 		if(isScrollAffected())
 		{
-			return (point - m_parentWindow->getPosition() - m_parentWindow->getScroll())/m_parentWindow->getZoom();
+			return (point - m_parentWindow->getAlignedPosition() - m_parentWindow->getScroll()) / m_parentWindow->getZoom();
 		}
 		else
 		{
-			return point - m_parentWindow->getPosition();
+			return point - m_parentWindow->getAlignedPosition();
 		}
 	}
 

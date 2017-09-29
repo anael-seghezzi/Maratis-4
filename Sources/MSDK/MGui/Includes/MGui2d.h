@@ -79,7 +79,10 @@ protected:
 	MVector4 m_pressedColor;
 	MVector4 m_highLightColor;
 
-	// shadow textures
+	// align
+	M_ALIGN_MODES m_align;
+
+	// shadow
 	bool m_hasShadow;
 	float m_shadowOpacity;
 	MVector2 m_shadowDir;
@@ -120,7 +123,11 @@ public:
 	inline void enableVariable(void * variable, M_VARIABLE_TYPE type){ m_variablePointer = variable; m_variableType = type; updateFromVariable(); }
 	inline void disableVariable(void){ m_variablePointer = NULL; }
 
-	// shadows
+	// align
+	inline void setAlign(M_ALIGN_MODES align){ m_align = align; }
+	inline M_ALIGN_MODES getAlign(void){ return m_align; }
+
+	// shadow
 	inline void setShadow(bool shadow){ m_hasShadow = shadow; }
 	inline bool hasShadow(void){ return m_hasShadow; }
 	inline void setShadowOpacity(float opacity){ m_shadowOpacity = opacity; }
@@ -150,6 +157,7 @@ public:
 	inline MGuiWindow * getParentWindow(void){ if(m_parentWindow) return m_parentWindow; return NULL; }
 
 	// position / scale
+	MVector2 getAlignedPosition(void);
 	inline MVector2 getPosition(void){ return m_position; }
 	inline MVector2 getScale(void){ return m_scale; }
 

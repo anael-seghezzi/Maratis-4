@@ -170,7 +170,7 @@ void MGuiSlide::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 			if(rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
 			{
 				setPressed(true);
-				m_offset = localMousePos - m_button.getPosition();
+				m_offset = localMousePos - m_button.getAlignedPosition();
 			}
 
 			if(m_eventCallback) // send gui event
@@ -240,12 +240,12 @@ float MGuiSlide::getValueFromPoint(const MVector2 & point)
 
 	if(getDirection().x > getDirection().y)
 	{
-		pos = getPosition().x + m_offset.x;
+		pos = getAlignedPosition().x + m_offset.x;
 		val = (point.x - pos) / getDirection().x;
 	}
 	else
 	{
-		pos = getPosition().y + m_offset.y;
+		pos = getAlignedPosition().y + m_offset.y;
 		val = (point.y - pos) / getDirection().y;
 	}
 
@@ -283,7 +283,7 @@ MVector2 MGuiSlide::getPointfromValue(float value)
 			if(nValue > 1)
 				nValue = 1;
 
-			point = getPosition() + (getDirection() * nValue);
+			point = getAlignedPosition() + (getDirection() * nValue);
 			return point;
 		}
 	}
@@ -297,7 +297,7 @@ MVector2 MGuiSlide::getPointfromValue(float value)
 	if(nValue > 1)
 		nValue = 1;
 
-	point = getPosition() + (getDirection() * nValue);
+	point = getAlignedPosition() + (getDirection() * nValue);
 	return point;
 }
 

@@ -260,9 +260,9 @@ void MGuiMenu::rescaleWindowMenu(void)
 	unsigned int height = rootWindow->getHeight();
 	
 	// position
-	MVector2 newPos = parent->getPosition() +
-	parent->getScroll() +
-	getPosition();
+	MVector2 newPos = parent->getAlignedPosition() +
+		parent->getScroll() +
+		getAlignedPosition();
 	
 	// window scale
 	unsigned int i;
@@ -270,7 +270,7 @@ void MGuiMenu::rescaleWindowMenu(void)
 	for(i=0; i<bSize; i++)
 	{
 		MGuiButton * button = m_window.getButton(i);
-		tmp = button->getPosition()
+		tmp = button->getAlignedPosition()
 		+ button->getScale();
 		
 		if(tmp.x > newScale.x) newScale.x = tmp.x;
@@ -281,7 +281,7 @@ void MGuiMenu::rescaleWindowMenu(void)
 	for(i=0; i<tSize; i++)
 	{
 		MGuiText * text = m_window.getText(i);
-		tmp = text->getPosition()
+		tmp = text->getAlignedPosition()
 		+ text->getScale();
 		
 		if(tmp.x > newScale.x) newScale.x = tmp.x;

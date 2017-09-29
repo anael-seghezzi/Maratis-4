@@ -128,7 +128,7 @@ void MGuiWindow::autoScale(void)
 		if(!object->isVisible() || object->isDeleted())
 			continue;
 			
-		tmp = object->getPosition()
+		tmp = object->getAlignedPosition()
 		    + object->getScale();
 
 		if(tmp.x > newScale.x) newScale.x = tmp.x;
@@ -755,7 +755,7 @@ void MGuiWindow::resizeScroll(void)
 		if(!m_objects[i]->isVisible() || m_objects[i]->isDeleted())
 			continue;
 			
-		MVector2 p1 = m_objects[i]->getPosition();
+		MVector2 p1 = m_objects[i]->getAlignedPosition();
 		MVector2 p2 = p1 + m_objects[i]->getScale();
 
 		min.x = MIN(min.x, p1.x);
@@ -863,12 +863,12 @@ void MGuiWindow::drawNodeInfo(void)
 		text.setText(branch->getName());
 		text.setColor(node->getTextColor());
 		text.setPosition(getPointLocalPosition(m_rootWindow->getMousePosition()));
-		text.setPosition(text.getPosition() + MVector2(-text.getScale().x*0.5f, 0));
+		text.setPosition(text.getAlignedPosition() + MVector2(-text.getScale().x*0.5f, 0));
 			
 		if(branch->getType() == 0)
-			text.setPosition(text.getPosition() - MVector2(0, 24));
+			text.setPosition(text.getAlignedPosition() - MVector2(0, 24));
 		else
-			text.setPosition(text.getPosition() + MVector2(0, 16));
+			text.setPosition(text.getAlignedPosition() + MVector2(0, 16));
 			
 		text.draw();
 	}
@@ -953,7 +953,8 @@ void MGuiWindow::draw(void)
 	if(! isVisible())
 		return;
 	
-	
+	MVector2 position = getAlignedPosition();
+
 	// get viewport and matrices
 	int viewport[4];
 	render->getViewport(viewport);
@@ -968,7 +969,7 @@ void MGuiWindow::draw(void)
 	// scissor
 	rescaleScrollingBar();
 	render->enableScissorTest();
-	render->setScissor((int)getPosition().x, viewport[3] - (int)getPosition().y - (unsigned int)getScale().y, (unsigned int)getScale().x, (unsigned int)getScale().y);
+	render->setScissor((int)position.x, viewport[3] - (int)position.y - (unsigned int)getScale().y, (unsigned int)getScale().x, (unsigned int)getScale().y);
 
 	
 	// modes
@@ -1027,7 +1028,7 @@ void MGuiWindow::draw(void)
 
 	// gui
 	render->pushMatrix();
-	render->translate(MVector3((int)getPosition().x, (int)getPosition().y, 0));
+	render->translate(MVector3((int)getAlignedPosition().x, (int)getAlignedPosition().y, 0));
 
 	render->pushMatrix();
 	render->translate(MVector3((int)getScroll().x, (int)getScroll().y, 0));

@@ -251,7 +251,8 @@ void MGuiEditText::setPressed(bool pressed)
 
 unsigned int MGuiEditText::findPointedCharacter(MVector2 point)
 {
-	point = point - m_position - getAlignedTextPosition();
+	MVector2 position = getAlignedPosition();
+	point = point - position - getAlignedTextPosition();
 
 	MFont * font = m_textObject.getFont();
 	const char * text = m_textObject.getText();
@@ -367,10 +368,10 @@ MVector2 MGuiEditText::getCharacterPosition(unsigned int characterId)
 	vector <float> * linesOffset = m_textObject.getLinesOffset();
 
 	if(! (strlen(text) > 0 && font))
-		return m_position + getAlignedTextPosition();
+		return getAlignedPosition() + getAlignedTextPosition();
 
 	if(linesOffset->size() == 0)
-		return m_position + getAlignedTextPosition();
+		return getAlignedPosition() + getAlignedTextPosition();
 
 	unsigned int lineId = 0;
 	float lineOffset = (*linesOffset)[0];
@@ -424,7 +425,7 @@ MVector2 MGuiEditText::getCharacterPosition(unsigned int characterId)
 		id++;
 	}
 	
-	return m_position + getAlignedTextPosition() + MVector2(xc+lineOffset, yc);
+	return getAlignedPosition() + getAlignedTextPosition() + MVector2(xc+lineOffset, yc);
 }
 
 void MGuiEditText::autoScrolling(void)
@@ -891,6 +892,7 @@ void MGuiEditText::drawSelection(void)
 	if(id1 == id2)
 		return;
 	
+	MVector2 position = getAlignedPosition();
 	MGuiImage box;
 	float textSize = getTextSize();
 	
@@ -902,17 +904,17 @@ void MGuiEditText::drawSelection(void)
 	if(pos2.y > pos1.y)
 	{
 		// center
-		box.setPosition(MVector2(m_position.x, pos1.y));
-		box.setScale(MVector2(m_position.x+m_scale.x, pos2.y-textSize) - box.getPosition());
+		box.setPosition(MVector2(position.x, pos1.y));
+		box.setScale(MVector2(position.x+m_scale.x, pos2.y-textSize) - box.getPosition());
 		box.drawQuad();
 		
 		// top
 		box.setPosition(MVector2(pos1.x, pos1.y-textSize));
-		box.setScale(MVector2(m_position.x+m_scale.x, pos1.y) - box.getPosition());
+		box.setScale(MVector2(position.x+m_scale.x, pos1.y) - box.getPosition());
 		box.drawQuad();
 		
 		// bottom
-		box.setPosition(MVector2(m_position.x, pos2.y-textSize));
+		box.setPosition(MVector2(position.x, pos2.y-textSize));
 		box.setScale(MVector2(pos2.x, pos2.y) - box.getPosition());
 		box.drawQuad();
 	}
