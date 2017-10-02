@@ -407,7 +407,7 @@ void MGuiWindow::nodesEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 
 void MGuiWindow::internalEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 {
-	unsigned int i, oSize = m_objects.size();
+	int i, oSize = m_objects.size();
 	
 	// scolling slides
 	if(isHorizontalScroll())
@@ -430,10 +430,15 @@ void MGuiWindow::internalEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 	nodesEvent(rootWindow, event);
 
 	// objects event
-	for(i=0; i<oSize; i++)
+	for (i = oSize-1; i >= 0; i--)
 	{
-		if(m_objects[i]->isVisible() && !m_objects[i]->isDeleted())
+		if(m_objects[i]->isVisible() && !m_objects[i]->isDeleted()) {
+			
+			bool pressed = m_objects[i]->isPressed();
 			m_objects[i]->onEvent(rootWindow, event);
+			if (!pressed && m_objects[i]->isPressed())
+				break;
+		}
 	}
 }
 

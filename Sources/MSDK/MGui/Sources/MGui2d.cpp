@@ -52,7 +52,8 @@ m_autoScaleFromText(true),
 m_hasShadow(false),
 m_shadowOpacity(0.1f),
 m_shadowDir(8, 8),
-m_userPointer(NULL)
+m_userPointer(NULL),
+m_align(M_ALIGN_LEFT)
 {
 	setNormalColor(MVector3(1, 1, 1));
 	setHighLightColor(MVector3(1, 1, 1));
@@ -141,7 +142,7 @@ void MGui2d::draw(void)
 		return;
 
 	if(isPressed()) // pressed
-	{  
+	{
 		render->setColor4(getPressedColor());
 		if(hasPressedTexture())
 			drawTexturedQuad(getPressedTexture()->getTextureId());
