@@ -654,6 +654,7 @@ void MGuiEditText::editText(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 					strText.erase(strText.begin()+sStart, strText.begin() + sEnd);
 					setSelection(0, 0);
 					setCharId(sStart);
+					encodeUTF8(strText);
 				}
 
 				if(! canAddCharacter())
@@ -739,6 +740,7 @@ void MGuiEditText::editText(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 					strText.erase(strText.begin()+sStart, strText.begin() + sEnd);
 					setSelection(0, 0);
 					setCharId(sStart);
+					encodeUTF8(strText);
 				}
 
 				if(! canAddCharacter())
@@ -783,6 +785,7 @@ void MGuiEditText::editText(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				strText.erase(strText.begin()+sStart, strText.begin() + sEnd);
 				setSelection(0, 0);
 				setCharId(sStart);
+				encodeUTF8(strText);
 			}
 
 			if(! canAddCharacter())
