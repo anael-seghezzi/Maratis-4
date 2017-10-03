@@ -630,11 +630,8 @@ void MGuiWindow::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 		if(rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
 			setPressed(false);
 
-		if(isHighLight())
-		{
-			if(m_eventCallback)
-				m_eventCallback(this, MGUI_EVENT_MOUSE_BUTTON_UP);
-		}
+		if(m_eventCallback)
+			m_eventCallback(this, MGUI_EVENT_MOUSE_BUTTON_UP);
 		break;
 		
 	default:
