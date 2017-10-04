@@ -560,8 +560,15 @@ void MGuiWindow::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 			default:
 				break;
 		}
+		if(m_eventCallback)
+			m_eventCallback(this, MGUI_EVENT_KEY_DOWN);
 		break;
 		
+	case MWIN_EVENT_KEY_UP:
+		if(m_eventCallback)
+			m_eventCallback(this, MGUI_EVENT_KEY_UP);
+		break;
+
 	case MWIN_EVENT_MOUSE_SCROLL:
 		if(isHighLight())
 		{
