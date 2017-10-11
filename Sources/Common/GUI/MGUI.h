@@ -38,6 +38,7 @@ bool				MGUI_init(void);
 MWindow *			MGUI_createWindow(const char * title, int x, int y, unsigned int width, unsigned int height, MGUI_EVENT_CALLBACK = NULL);
 MWindow *			MGUI_getWindow(unsigned int id);
 unsigned int		MGUI_getWindowsNumber(void);
+void				MGUI_hideWindow(MWindow * window);
 void				MGUI_closeWindow(MWindow * window);
 void				MGUI_pauseWindow(MWindow * window);
 void				MGUI_unpauseWindow(MWindow * window);

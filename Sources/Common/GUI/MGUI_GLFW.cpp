@@ -346,6 +346,12 @@ unsigned int MGUI_getWindowsNumber(void)
 	return windows.size();
 }
 
+void MGUI_hideWindow(MWindow * window)
+{
+	MGLFWWindow * thWin = (MGLFWWindow *)window;
+	glfwHideWindow(thWin->glfwWindow);
+}
+
 void MGUI_closeWindow(MWindow * window)
 {
 	MGLFWWindow * thWin = (MGLFWWindow *)window;

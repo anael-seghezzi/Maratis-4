@@ -293,9 +293,9 @@ MVector2 MGui2d::getAlignedPosition(void)
 {
 	switch (m_align) {
 
+	default:
 	case M_ALIGN_LEFT:
 		return m_position;
-		break;
 
 	case M_ALIGN_RIGHT:
 		{
