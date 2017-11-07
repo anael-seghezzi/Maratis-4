@@ -52,6 +52,8 @@ void MGuiColorPicker::onValueEvents(MGuiEditText * editText, MGUI_EVENT_TYPE eve
 
 void MGuiColorPicker::winColorEvents(MGuiWindow * window, MGUI_EVENT_TYPE event)
 {
+	MGuiColorPicker *colorPicker = ((MGuiColorPicker *)window->getUserPointer());
+
 	switch(event)
 	{
 		default:
@@ -59,8 +61,8 @@ void MGuiColorPicker::winColorEvents(MGuiWindow * window, MGUI_EVENT_TYPE event)
 		
 		case MGUI_EVENT_MOUSE_BUTTON_DOWN:
 		{
-			if(! window->isMouseInside())
-				((MGuiColorPicker *)window->getUserPointer())->close();
+			if(! window->isMouseInside() && !colorPicker->m_parentButton->isMouseInside())
+				colorPicker->close();
 			break;
 		}
 	}

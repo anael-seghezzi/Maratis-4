@@ -272,8 +272,7 @@ bool MGui2d::isMouseInside(const MVector2 & margin)
 {
 	MWindow * rootWindow = getRootWindow();
 	if(rootWindow)
-		return isPointInside(getPointLocalPosition(rootWindow->getMousePosition()), margin);
-		
+		return isPointInside(getPointLocalPosition(rootWindow->getMousePosition()), margin + m_selectionMargin);
 	return false;
 }
 

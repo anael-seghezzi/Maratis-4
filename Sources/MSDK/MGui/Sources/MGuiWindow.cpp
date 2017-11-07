@@ -436,7 +436,7 @@ void MGuiWindow::internalEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 			
 			bool pressed = m_objects[i]->isPressed();
 			m_objects[i]->onEvent(rootWindow, event);
-			if (!pressed && m_objects[i]->isPressed())
+			if (pressed != m_objects[i]->isPressed())
 				break;
 		}
 	}
@@ -1057,6 +1057,10 @@ void MGuiWindow::draw(void)
 		if(m_objects[i]->isVisible() && !m_objects[i]->isDeleted())
 			m_objects[i]->draw();
 	}
+
+	// draw callback in-gui
+	if(m_drawCallback && m_drawCallbackMode == MGUI_DRAW_CALLBACK_IN_GUI)
+		m_drawCallback(this);
 
 	render->popMatrix();
 

@@ -64,6 +64,7 @@ protected:
 	// position / scale
 	MVector2 m_position;
 	MVector2 m_scale;
+	MVector2 m_selectionMargin;
 	
 	// textures
 	MTextureRef * m_normalTexture;
@@ -106,6 +107,7 @@ public:
 	inline void setScale(const MVector2 & scale){ m_scale = scale; }
 	inline void setXScale(float x){ m_scale.x = x; }
 	inline void setYScale(float y){ m_scale.y = y; }
+	inline void setSelectionMargin(const MVector2 & margin) { m_selectionMargin = margin; }
 
 	// drawing
 	void drawTexturedQuad(unsigned int textureId);
@@ -160,6 +162,7 @@ public:
 	MVector2 getAlignedPosition(void);
 	inline MVector2 getPosition(void){ return m_position; }
 	inline MVector2 getScale(void){ return m_scale; }
+	inline MVector2 getSelectionMargin(void) { return m_selectionMargin; }
 
 	// colors
 	inline void setColor(const MVector4 & color){ setNormalColor(color); setPressedColor(color); setHighLightColor(color); }

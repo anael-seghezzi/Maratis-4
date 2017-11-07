@@ -138,10 +138,9 @@ void MGuiButton::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 		{
 			if(rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
 			{
-				if(! isCheckButton())
+				if(! isCheckButton() && ! isGroupButton())
 				{
-					if(isGroupButton())
-						 unPressGroupButtons();
+					
                     press(true);
 				}
 
@@ -163,8 +162,13 @@ void MGuiButton::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 			{
 			    if(m_isActive)
 			    {
-                    if(isCheckButton())
+                    if(isCheckButton()) {
                         press(! isPressed());
+					}
+					else if(isGroupButton()) {
+						 unPressGroupButtons();
+						 press(true);
+					}
                 }
 
 				if(! isHighLight())

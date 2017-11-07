@@ -81,6 +81,8 @@ public:
 	
 	void setUserPointer(void * pointer){ m_userPointer = pointer; }
 	void * getUserPointer(void){ return m_userPointer; }
+
+	MGuiWindow *getWindow(void) { return m_window; }
 };
 
 #endif

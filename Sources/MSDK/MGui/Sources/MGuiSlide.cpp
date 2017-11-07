@@ -140,7 +140,7 @@ void MGuiSlide::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 		{
 			MVector2 localMousePos = getPointLocalPosition(rootWindow->getMousePosition());
 	
-			if(parent->isHighLight() && m_button.isPointInside(localMousePos) &&
+			if(parent->isHighLight() && m_button.isPointInside(localMousePos, getSelectionMargin()) &&
 			   (! rootWindow->isMouseButtonPressed(0)) &&
 			   (! rootWindow->isMouseButtonPressed(1)) &&
 			   (! rootWindow->isMouseButtonPressed(2)))
@@ -231,6 +231,7 @@ void MGuiSlide::setDirection(const MVector2 & direction)
 {
 	m_direction = direction;
 	setScale(getDirection() + m_button.getScale());
+	updatePosition();
 }
 
 float MGuiSlide::getValueFromPoint(const MVector2 & point)
