@@ -146,6 +146,12 @@ void MWindow::unHighLightAllWindows(void)
 		m_windows[i]->setHighLight(false);
 }
 
+unsigned long MWindow::getCurrentClicElapsedTime(void)
+{
+	MSystemContext *system = MEngine::getInstance()->getSystemContext();
+	return system->getSystemTick() - m_currentClicTick;
+}
+
 void MWindow::onEvent(MWIN_EVENT_TYPE event)
 {
 	MSystemContext *system = MEngine::getInstance()->getSystemContext();

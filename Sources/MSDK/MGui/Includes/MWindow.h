@@ -120,6 +120,7 @@ public:
 	inline MGuiWindow * getWindow(unsigned int id){ return m_windows[id]; }
 
 	// previous clic
+	unsigned long getCurrentClicElapsedTime(void);
 	inline unsigned long getPreviousClicElapsedTime(void){ return m_currentClicTick - m_previousClicTick; }
 
 	// events

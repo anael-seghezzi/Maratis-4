@@ -94,7 +94,6 @@ void MGuiSlide::sendVariable(void)
 		}
 	}
 
-	// send on change gui event
 	if(m_eventCallback)
 		m_eventCallback(this, MGUI_EVENT_SEND_VARIABLE);
 }
@@ -109,19 +108,19 @@ void MGuiSlide::updateFromVariable(void)
 	case M_VARIABLE_INT:
 		{
 			int * value = (int *)getVariablePointer();
-			setValue((float)*value);
+			setValueInternal((float)*value);
 		}
 		break;
 	case M_VARIABLE_UINT:
 		{
 			unsigned int * value = (unsigned int *)getVariablePointer();
-			setValue((float)*value);
+			setValueInternal((float)*value);
 		}
 		break;
 	case M_VARIABLE_FLOAT:
 		{
 			float * value = (float *)getVariablePointer();
-			setValue(*value);
+			setValueInternal(*value);
 		}
 		break;
 	default:
@@ -207,10 +206,8 @@ void MGuiSlide::onChange(void)
 		m_eventCallback(this, MGUI_EVENT_ON_CHANGE);
 }
 
-void MGuiSlide::setValue(float value)
+void MGuiSlide::setValueInternal(float value)
 {
-	float old = m_value;
-
 	m_value = value;
 
 	// clamp value
@@ -222,6 +219,13 @@ void MGuiSlide::setValue(float value)
 	{
 		m_value = m_maxValue;
 	}
+}
+
+void MGuiSlide::setValue(float value)
+{
+	float old = m_value;
+
+	setValueInternal(value);
 
 	if(m_value != old)
 		onChange();

@@ -38,6 +38,7 @@ private:
 
 	bool m_isSingleLine;
 	bool m_fullWindowScale;
+	bool m_requireSendVariable;
 
 	// text
 	unsigned int m_charId; // edited character position

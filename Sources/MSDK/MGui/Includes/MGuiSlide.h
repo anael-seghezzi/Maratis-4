@@ -47,6 +47,8 @@ private:
 	// events
 	void (* m_eventCallback)(MGuiSlide * slide, MGUI_EVENT_TYPE event);
 
+	void setValueInternal(float value);
+
 public:
 
 	// constructor

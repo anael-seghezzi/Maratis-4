@@ -37,6 +37,7 @@
 MGuiEditText::MGuiEditText(void):
 m_isSingleLine(false),
 m_fullWindowScale(false),
+m_requireSendVariable(false),
 m_charId(0),
 m_limitLength(false),
 m_maxLength(0),
@@ -151,9 +152,10 @@ void MGuiEditText::sendVariable(void)
 			setCharId(count);
 	}
 
-	// send on change gui event
 	if(m_eventCallback)
 		m_eventCallback(this, MGUI_EVENT_SEND_VARIABLE);
+
+	m_requireSendVariable = false;
 }
 
 void MGuiEditText::updateFromVariable(void)
@@ -685,6 +687,7 @@ void MGuiEditText::editText(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				setCharId(sStart);
 				autoScaleFromText();
 				onChange();
+				m_requireSendVariable = true;
 			}
 			else if(getCharId() > 0)
 			{
@@ -697,6 +700,7 @@ void MGuiEditText::editText(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				subCharId();
 				autoScaleFromText();
 				onChange();
+				m_requireSendVariable = true;
 			}
 			return;
 
@@ -724,6 +728,7 @@ void MGuiEditText::editText(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				encodeUTF8(strText);
 				autoScaleFromText();
 				onChange();
+				m_requireSendVariable = true;
 			}
 			return;
 		}
@@ -761,7 +766,7 @@ void MGuiEditText::editText(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				setHighLight(false);
 				autoScaleFromText();
 				setSelection(0, 0);
-				sendVariable();
+				if (m_requireSendVariable) sendVariable();
 			}
 			return;
 			
@@ -800,6 +805,7 @@ void MGuiEditText::editText(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 			addCharId();
 			autoScaleFromText();
 			onChange();
+			m_requireSendVariable = true;
 		}
 	}
 }
@@ -869,7 +875,7 @@ void MGuiEditText::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 			if(isPressed() && rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
 			{
 				setPressed(false);
-				sendVariable();
+				if (m_requireSendVariable) sendVariable();
 			}
 		}
 		break;
