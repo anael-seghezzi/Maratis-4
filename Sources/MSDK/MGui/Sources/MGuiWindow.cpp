@@ -460,6 +460,20 @@ int MGuiWindow::onWindowMenusEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 	return 0;
 }
 
+void MGuiWindow::zoom(float factor)
+{
+	float prevZoom = m_zoom;
+			
+	if(factor > 0)
+		m_zoom = CLAMP(m_zoom*(1+factor), m_minZoom, m_maxZoom);
+	else
+		m_zoom = CLAMP(m_zoom/(1-factor), m_minZoom, m_maxZoom);
+	
+	float size = m_zoom/prevZoom;
+	MVector2 center = m_scale*0.5f;
+	m_scroll = center + (m_scroll - center)*size;
+}
+
 void MGuiWindow::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 {
 	switch(event)
@@ -574,17 +588,8 @@ void MGuiWindow::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 		{
 			if(m_isFreeView)
 			{
-				float prevZoom = m_zoom;
 				float factor = rootWindow->getMouseScroll().y*0.1f;
-				
-				if(factor > 0)
-					m_zoom = CLAMP(m_zoom*(1+factor), m_minZoom, m_maxZoom);
-				else
-					m_zoom = CLAMP(m_zoom/(1-factor), m_minZoom, m_maxZoom);
-	
-				float size = m_zoom/prevZoom;
-				MVector2 center = m_scale*0.5f;
-				m_scroll = center + (m_scroll - center)*size;
+				zoom(factor);
 			}
 			else
 			{

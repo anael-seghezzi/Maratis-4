@@ -208,6 +208,8 @@ void MGuiSlide::onChange(void)
 
 void MGuiSlide::setValueInternal(float value)
 {
+	bool changed = value != m_value;
+
 	m_value = value;
 
 	// clamp value
@@ -219,6 +221,8 @@ void MGuiSlide::setValueInternal(float value)
 	{
 		m_value = m_maxValue;
 	}
+
+	if (changed) updatePosition();
 }
 
 void MGuiSlide::setValue(float value)

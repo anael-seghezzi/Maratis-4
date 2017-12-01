@@ -132,7 +132,9 @@ public:
 	inline void setMinZoom(float minZoom){ m_minZoom = minZoom; }
 	inline void setMaxZoom(float maxZoom){ m_maxZoom = maxZoom; }
 	inline float getZoom(void){ return m_zoom; }
-	
+	inline void setZoom(float zoom){ m_zoom = M_CLAMP(zoom, m_minZoom, m_maxZoom); }
+	void zoom(float factor);
+
 	// scrolling
 	inline bool isScrolled(void){ return m_isScrolled; }
 	inline void setScrolled(bool scroll){ m_isScrolled = scroll; }
