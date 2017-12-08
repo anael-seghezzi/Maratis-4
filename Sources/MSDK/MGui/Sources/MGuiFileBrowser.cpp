@@ -376,21 +376,24 @@ void MGuiFileBrowser::updateMainWin(void)
 
 void MGuiFileBrowser::resize(const MVector2 & position, const MVector2 & scale)
 {
+	MVector2 dirScale = MVector2(scale.x - m_fileButtonsWidth - m_margin*3, m_fileButtonsHeight);
+
+	m_okButton->setXPosition(dirScale.x + m_margin*2);
+	m_cancelButton->setXPosition(dirScale.x + m_margin*2);
+	
 	m_headWin->setPosition(position);
 	m_headWin->setScale(MVector2(scale.x, m_fileButtonsHeight*2 + m_margin*3));
-	
+	m_headWin->resizeScroll();
+
 	m_dirWin->setPosition(position + MVector2(m_margin));
-	m_dirWin->setScale(MVector2(scale.x - m_fileButtonsWidth - m_margin*3, m_fileButtonsHeight));
+	m_dirWin->setScale(dirScale);
 	
 	m_fileWin->setPosition(position + MVector2(m_margin) + MVector2(0, m_fileButtonsHeight + m_margin));
-	m_fileWin->setScale(MVector2(scale.x - m_fileButtonsWidth - m_margin*3, m_fileButtonsHeight));
-	
+	m_fileWin->setScale(dirScale);
+
 	m_mainWin->setPosition(position + MVector2(0, m_headWin->getScale().y));
 	m_mainWin->setScale(MVector2(scale.x, scale.y - m_headWin->getScale().y));
-	
-	m_okButton->setXPosition(m_dirWin->getScale().x + m_margin*2);
-	m_cancelButton->setXPosition(m_dirWin->getScale().x + m_margin*2);
-	
+
 	if(m_mainWin->isVisible())
 		updateMainWin();
 }
