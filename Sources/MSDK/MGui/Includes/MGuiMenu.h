@@ -32,11 +32,18 @@
 #define _M_GUI_MENU_H
 
 
+enum MGUI_MENU_MODES
+{
+	MGUI_MENU_SELECTOR,
+	MGUI_MENU_LIST
+};
+
 class M_GUI_EXPORT MGuiMenu : public MGui2d
 {
 private:
 
 	// menu
+	MGUI_MENU_MODES m_mode;
 	unsigned int m_menuId;
 
 	// pointer event
@@ -60,6 +67,9 @@ private:
 
 public:
 
+	// mode
+	inline void setMode(MGUI_MENU_MODES mode){ m_mode = mode; }
+
 	// linked variable
 	void sendVariable(void);
 
@@ -82,6 +92,9 @@ public:
 	inline void onWindowMenuEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event){ if(m_window.isVisible()) m_window.onEvent(rootWindow, event); }
 	inline bool isWindowMenuHighLight(void){ return m_window.isHighLight(); }
 	inline bool isWindowMenuScrollBarPressed(void){ return m_window.isScrollBarPressed(); }
+
+	// text
+	inline void setText(const char * text){ m_textObject.setText(text); autoScaleFromText(); }
 
 	// pointer event
 	inline void setEventCallback(void (* eventCallback)(MGuiMenu * menu, MGUI_EVENT_TYPE event)){ m_eventCallback = eventCallback; }

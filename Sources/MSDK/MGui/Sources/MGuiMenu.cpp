@@ -34,6 +34,7 @@
 
 // constructor
 MGuiMenu::MGuiMenu(MWindow * rootWindow):
+m_mode(MGUI_MENU_SELECTOR),
 m_menuId(0),
 m_eventCallback(NULL),
 m_window(rootWindow)
@@ -50,8 +51,7 @@ MGuiMenu::~MGuiMenu(void)
 void MGuiMenu::setMenuId(unsigned int id)
 {
 	m_menuId = id;
-	updateText();
-	autoScaleFromText();
+	if (m_mode == MGUI_MENU_SELECTOR) updateText();
 }
 
 void MGuiMenu::sendVariable(void)
@@ -92,8 +92,6 @@ void MGuiMenu::updateFromVariable(void)
 		{
 			int * value = (int *)getVariablePointer();
 			setMenuId(*value);
-			updateText();
-			autoScaleFromText();
 			break;
 		}
 		
@@ -101,8 +99,6 @@ void MGuiMenu::updateFromVariable(void)
 		{
 			unsigned int * value = (unsigned int *)getVariablePointer();
 			setMenuId(*value);
-			updateText();
-			autoScaleFromText();
 			break;
 		}
 		
@@ -190,8 +186,7 @@ void MGuiMenu::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 					if(isPressed())
 					{
 						setPressed(false);
-						updateText();
-						autoScaleFromText();
+						if (m_mode == MGUI_MENU_SELECTOR) updateText();
 					}
 					else {
 						setPressed(true);
@@ -209,8 +204,7 @@ void MGuiMenu::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				if(rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT) // left mouse button
 				{
 					setPressed(false);
-					updateText();
-					autoScaleFromText();
+					if (m_mode == MGUI_MENU_SELECTOR) updateText();
 				}
 			}
 			break;
@@ -230,8 +224,7 @@ void MGuiMenu::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 					if(m_window.isMouseInside())
 						updateSelection();
 						
-					updateText();
-					autoScaleFromText();
+					if (m_mode == MGUI_MENU_SELECTOR) updateText();
 				}
 			}
 			break;
@@ -245,7 +238,10 @@ void MGuiMenu::updateText(void)
 {
 	unsigned int bSize = m_window.getButtonsNumber();
 	if(m_menuId < bSize)
+	{
 		m_textObject.setText(m_window.getButton(m_menuId)->getText());
+		autoScaleFromText();
+	}
 }
 
 void MGuiMenu::rescaleWindowMenu(void)
@@ -366,8 +362,7 @@ void MGuiMenu::addSimpleButton(const char * text, void (* buttoneventCallback)(M
 	btn->setHighLightColor(getHighLightColor());
 	btn->setEventCallback(buttoneventCallback);
 	
-	updateText();
-	autoScaleFromText();
+	if (m_mode == MGUI_MENU_SELECTOR) updateText();
 }
 
 void MGuiMenu::clearWindowMenu(void)
