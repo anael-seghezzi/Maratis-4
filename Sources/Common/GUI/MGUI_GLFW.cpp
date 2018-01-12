@@ -41,6 +41,44 @@
 #include "MGUI.h"
 
 
+#if defined(WIN32) && M_TABLET
+extern "C" {
+GLFWAPI HWND glfwGetWin32Window(GLFWwindow* handle);
+
+#include "wintab/wintab.h"
+#define PACKETDATA (PK_X | PK_Y | PK_Z | PK_BUTTONS | PK_NORMAL_PRESSURE | PK_ORIENTATION | PK_CURSOR | PK_STATUS | PK_CHANGED)
+#define PACKETMODE 0
+#include "wintab/pktdef.h"
+#include "wintab/msgpack.h"
+#include "wintab/Utils.c"
+}
+
+static HCTX hTab = NULL; // Handle for Tablet Context
+#define NPACKETQSIZE 32
+
+void initTablet(HWND hWnd)
+{
+	if(hTab == NULL)
+	{
+		LOGCONTEXT lcMine;
+
+		// default system context
+		gpWTInfoA(WTI_DEFSYSCTX, 0, &lcMine);
+
+		lcMine.lcPktData = PACKETDATA;
+		lcMine.lcPktMode = PACKETMODE;
+		lcMine.lcMoveMask = PACKETDATA;
+		lcMine.lcBtnUpMask = lcMine.lcBtnDnMask;
+		lcMine.lcOptions |= CXO_MESSAGES;
+		
+		// open context
+		hTab = gpWTOpenA(hWnd, &lcMine, TRUE);
+		gpWTQueueSizeSet(hTab, NPACKETQSIZE);
+	}
+}
+#endif
+
+
 // thread window
 class MGLFWWindow : public MWindow
 {
@@ -291,6 +329,11 @@ bool MGUI_init(void)
 	}
 
 	running = true;*/
+
+#if defined(WIN32) && M_TABLET
+	LoadWintab();
+#endif
+
 	return true;
 }
 
@@ -329,6 +372,11 @@ MWindow * MGUI_createWindow(const char * title, int x, int y, unsigned int width
 		glfwSetCharCallback(glfwWindow, char_callback);
 		glfwSetWindowCloseCallback(glfwWindow, close_callback);
 		glfwSetWindowSizeCallback(glfwWindow, size_callback);
+
+#if defined(WIN32) && M_TABLET
+		HWND hWnd = glfwGetWin32Window(glfwWindow);
+		initTablet(hWnd);
+#endif
 
 		return window;
 	}
