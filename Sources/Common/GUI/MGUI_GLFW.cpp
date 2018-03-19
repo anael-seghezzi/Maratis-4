@@ -394,6 +394,12 @@ unsigned int MGUI_getWindowsNumber(void)
 	return windows.size();
 }
 
+void MGUI_setTitle(MWindow * window, const char * title)
+{
+	MGLFWWindow * thWin = (MGLFWWindow *)window;
+	glfwSetWindowTitle(thWin->glfwWindow, title);
+}
+
 void MGUI_hideWindow(MWindow * window)
 {
 	MGLFWWindow * thWin = (MGLFWWindow *)window;
