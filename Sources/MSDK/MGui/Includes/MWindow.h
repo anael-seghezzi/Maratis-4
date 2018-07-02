@@ -75,6 +75,7 @@ protected:
 
 	// pointer event
 	void (* m_eventCallback)(MWindow * rootWindow, MWIN_EVENT_TYPE event);
+	void (* m_preEventCallback)(MWindow * rootWindow, MWIN_EVENT_TYPE event);
 
 	// draw callback
 	void (* m_drawCallback)(MWindow * rootWindow);
@@ -140,6 +141,7 @@ public:
 
 	// pointer event
 	inline void setEventCallback(void (* eventCallback)(MWindow * rootWindow, MWIN_EVENT_TYPE event)){ m_eventCallback = eventCallback; }
+	inline void setPreEventCallback(void (* eventCallback)(MWindow * rootWindow, MWIN_EVENT_TYPE event)){ m_preEventCallback = eventCallback; }
 
 	// draw callback
 	inline void setDrawCallback(void (* drawCallback)(MWindow * rootWindow)){ m_drawCallback = drawCallback; }

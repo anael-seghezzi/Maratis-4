@@ -37,6 +37,7 @@ MWindow::MWindow(int x, int y, unsigned int width, unsigned int height)
 	m_colorSpace = MWIN_COLSPACE_SRGB;
 	m_drawCallback = NULL;
 	m_eventCallback = NULL;
+	m_preEventCallback = NULL;
 	m_currentKey = 0;
 	m_currentMouseButton = 0;
 	m_pos[0] = x;
@@ -168,6 +169,9 @@ void MWindow::onEvent(MWIN_EVENT_TYPE event)
 	{
 		m_currentClicTick = 0;
 	}
+
+	if(m_preEventCallback)
+		m_preEventCallback(this, event);
 
 	if(wSize == 0)
 		goto end;

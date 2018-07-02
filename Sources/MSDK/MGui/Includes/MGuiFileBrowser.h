@@ -101,6 +101,8 @@ public:
 	void open(const char * startDirectory = NULL, const char * startFile = NULL, const char * okName = "ok", void (* eventCallback)(MGuiFileBrowser * fileBrowser, MGUI_FILE_BROWSER_EVENT_TYPE event) = NULL);
 	void close(void);
 	
+	bool isOpened(void) { return m_mainWin->isVisible(); }
+
 	const char * getCurrentDirectory(void){ return m_currentDirectory.getData(); }
 	const char * getCurrentFile(void){ return m_currentFile.getData(); }
 	vector <string> * getDirectoryFiles(void){ return &m_files; }
