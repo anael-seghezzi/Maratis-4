@@ -81,7 +81,7 @@ void MGuiEditText::encodeUTF8(const vector <unsigned int> & text32)
 
 void MGuiEditText::sendVariable(void)
 {
-	if(getVariablePointer())
+	if(getVariablePointer() && strlen(getText()) > 0)
 	{
 		switch(getVariableType())
 		{
@@ -855,7 +855,13 @@ void MGuiEditText::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 				unsigned int i;
 				unsigned int size = parent->getEditTextsNumber();
 				for(i=0; i<size; i++)
-					parent->getEditText(i)->setPressed(false);
+				{
+					MGuiEditText *editxt = parent->getEditText(i);
+					if (editxt->m_requireSendVariable)
+						editxt->sendVariable();
+
+					editxt->setPressed(false);
+				}
 
 				setPressed(true);
 
