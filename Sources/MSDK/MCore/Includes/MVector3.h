@@ -216,6 +216,18 @@ public:
 		y = 0.0f;
 		z = 0.0f;
 	}
+
+	inline void toSRBG(void)
+	{
+		m_linear_to_sRGB(&x, &x, 3);
+	}
+
+	inline MVector3 getSRBG(void)
+	{
+		MVector3 copy(*this);
+		copy.toSRBG();
+		return copy;
+	}
 	
 	inline MVector3 crossProduct(const MVector3 & vec) const
 	{	

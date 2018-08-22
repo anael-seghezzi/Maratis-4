@@ -35,7 +35,8 @@
 enum MGUI_COLOR_PICKER_EVENT_TYPE
 {
 	MGUI_COLOR_PICKER_EVENT_OPEN = 0,
-	MGUI_COLOR_PICKER_EVENT_CLOSE
+	MGUI_COLOR_PICKER_EVENT_CLOSE,
+	MGUI_COLOR_PICKER_EVENT_ON_CHANGE
 };
 
 class M_GUI_EXPORT MGuiColorPicker
@@ -65,6 +66,7 @@ private:
 	void updateRGBColor(void);
 	void updateHSVColor(void);
 	static void onValueEvents(MGuiEditText * editText, MGUI_EVENT_TYPE event);
+	static void onAlphaEvents(MGuiEditText * editText, MGUI_EVENT_TYPE event);
 	static void winColorEvents(MGuiWindow * window, MGUI_EVENT_TYPE event);
 	static void winColorDraw(MGuiWindow * window);
 	
