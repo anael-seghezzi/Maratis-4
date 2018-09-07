@@ -80,7 +80,7 @@ void MGuiColorPicker::winColorEvents(MGuiWindow * window, MGUI_EVENT_TYPE event)
 		
 		case MGUI_EVENT_MOUSE_BUTTON_DOWN:
 		{
-			if(! window->isMouseInside() && !colorPicker->m_parentButton->isMouseInside())
+			if(! window->isMouseInside() && colorPicker->m_parentButton && !colorPicker->m_parentButton->isMouseInside() && colorPicker->isPopup())
 				colorPicker->close();
 			break;
 		}
@@ -104,7 +104,7 @@ void MGuiColorPicker::winColorDraw(MGuiWindow * window)
 }
 
 
-MGuiColorPicker::MGuiColorPicker(MWindow * rootWindow, MFontRef * font):
+MGuiColorPicker::MGuiColorPicker(MWindow * rootWindow, MFontRef * font, bool isPopup):
 m_parentButton(NULL),
 m_colorSel(NULL),
 m_tintSel(NULL),
@@ -116,14 +116,15 @@ m_G(NULL),
 m_B(NULL),
 m_A(NULL),
 m_userPointer(NULL),
-m_eventCallback(NULL)
+m_eventCallback(NULL),
+m_isPopup(isPopup)
 {
 	m_window = rootWindow->addNewWindow();
 
 	m_window->setShadow(true);
 	m_window->setUserPointer(this);
 	m_window->setColor(MVector4(0.25f, 0.25f, 0.25f, 0.75f));
-	m_window->setVisible(false);
+	if (isPopup) m_window->setVisible(false);
 }
 
 MGuiColorPicker::~MGuiColorPicker(void)

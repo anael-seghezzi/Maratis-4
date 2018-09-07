@@ -58,6 +58,8 @@ private:
 	float * m_G;
 	float * m_B;
 	float * m_A;
+
+	bool m_isPopup;
 	
 	void * m_userPointer;
 	void (* m_eventCallback)(MGuiColorPicker * fileBrowser, MGUI_COLOR_PICKER_EVENT_TYPE event);
@@ -74,7 +76,7 @@ private:
 	
 public:
 	
-	MGuiColorPicker(MWindow * rootWindow, MFontRef * font);
+	MGuiColorPicker(MWindow * rootWindow, MFontRef * font, bool isPopup = true);
 	~MGuiColorPicker(void);
 	
 	void open(MGuiButton * parentButton, float * R, float * G, float * B, float * A, void (* eventCallback)(MGuiColorPicker * colorPicker, MGUI_COLOR_PICKER_EVENT_TYPE event) = NULL);
@@ -83,6 +85,8 @@ public:
 	
 	void setUserPointer(void * pointer){ m_userPointer = pointer; }
 	void * getUserPointer(void){ return m_userPointer; }
+
+	bool isPopup(void) { return m_isPopup; }
 
 	MGuiWindow *getWindow(void) { return m_window; }
 };
