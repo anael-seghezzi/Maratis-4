@@ -36,6 +36,9 @@
 
 #define _GLFW_KEY_INVALID -2
 
+// custom WinProc function pointer
+void (*_glfwCustomWinProc)(HWND, UINT, WPARAM, LPARAM) = NULL;
+
 
 // Updates the cursor clip rect
 //
@@ -717,6 +720,8 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg,
         }
     }
 
+	if (_glfwCustomWinProc) _glfwCustomWinProc(hWnd, uMsg, wParam, lParam);
+
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
@@ -1138,3 +1143,7 @@ GLFWAPI HWND glfwGetWin32Window(GLFWwindow* handle)
     return window->win32.handle;
 }
 
+GLFWAPI void glfwSetCustomWinProc(void (*glfwCustomWinProc)(HWND, UINT, WPARAM, LPARAM))
+{
+    _glfwCustomWinProc = glfwCustomWinProc;
+}

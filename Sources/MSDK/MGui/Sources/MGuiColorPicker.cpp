@@ -262,7 +262,7 @@ void MGuiColorPicker::draw(MGuiWindow * window)
 		for(int i=0; i<(int)scale.y; i++)
 		{
 			float factor = 1 - (i/scale.y);
-						
+			
 			colors[0] = colors[1] = MVector3(factor).getSRBG();
 			colors[2] = colors[3] = (color*factor).getSRBG();
 						

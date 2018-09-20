@@ -108,6 +108,11 @@ extern "C" {
  *  @ingroup native
  */
 GLFWAPI HWND glfwGetWin32Window(GLFWwindow* window);
+
+/*! @brief Sets a custom WinProc function pointer.
+ *  @ingroup native
+ */
+GLFWAPI void glfwSetCustomWinProc(void (*glfwCustomWinProc)(HWND, UINT, WPARAM, LPARAM));
 #endif
 
 #if defined(GLFW_EXPOSE_NATIVE_WGL)

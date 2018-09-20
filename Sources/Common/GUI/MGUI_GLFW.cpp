@@ -246,6 +246,11 @@ static void size_callback(GLFWwindow * window, int width, int height)
 	rootWindow->onResize(width, height);
 }
 
+static void pos_callback(GLFWwindow * window, int x, int y)
+{
+	MGLFWWindow * rootWindow = (MGLFWWindow *)glfwGetWindowUserPointer(window);
+	rootWindow->onMove(x, y);
+}
 
 
 
@@ -372,6 +377,7 @@ MWindow * MGUI_createWindow(const char * title, int x, int y, unsigned int width
 		glfwSetCharCallback(glfwWindow, char_callback);
 		glfwSetWindowCloseCallback(glfwWindow, close_callback);
 		glfwSetWindowSizeCallback(glfwWindow, size_callback);
+		glfwSetWindowPosCallback(glfwWindow, pos_callback);
 
 #if defined(WIN32) && M_TABLET
 		HWND hWnd = glfwGetWin32Window(glfwWindow);
