@@ -214,4 +214,13 @@ void MWindow::onEvent(MWIN_EVENT_TYPE event)
 	end:
 	if(m_eventCallback)
 		m_eventCallback(this, event);
+
+	if (event == MWIN_EVENT_CREATE)
+	{
+		wSize = (int)m_windows.size();
+		for(i=0; i<wSize; i++)
+		{
+			if(m_windows[i]->m_eventCallback) m_windows[i]->m_eventCallback(m_windows[i], MGUI_EVENT_CREATE);
+		}
+	}
 }

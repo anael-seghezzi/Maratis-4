@@ -44,6 +44,8 @@ class M_GUI_EXPORT MGuiWindow : public MGui2d
 {
 private:
 
+	friend class MWindow;
+
 	// free view (the view can be scrolled and zoom freely)
 	bool m_isFreeView;
 	float m_zoom;
