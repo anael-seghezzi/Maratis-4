@@ -39,7 +39,6 @@
 // custom WinProc function pointer
 void (*_glfwCustomWinProc)(HWND, UINT, WPARAM, LPARAM) = NULL;
 
-
 // Updates the cursor clip rect
 //
 static void updateClipRect(_GLFWwindow* window)

@@ -108,7 +108,6 @@ extern "C" {
  *  @ingroup native
  */
 GLFWAPI HWND glfwGetWin32Window(GLFWwindow* window);
-
 /*! @brief Sets a custom WinProc function pointer.
  *  @ingroup native
  */
@@ -150,6 +149,10 @@ GLFWAPI Display* glfwGetX11Display(void);
  *  @ingroup native
  */
 GLFWAPI Window glfwGetX11Window(GLFWwindow* window);
+/*! @brief Sets a custom XEvent function pointer.
+ *  @ingroup native
+ */
+GLFWAPI void glfwSetCustomEvent(void (glfwCustomEvent)(XEvent *));
 #endif
 
 #if defined(GLFW_EXPOSE_NATIVE_GLX)

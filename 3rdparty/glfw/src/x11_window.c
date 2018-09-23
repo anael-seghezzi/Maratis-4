@@ -57,6 +57,8 @@ typedef struct
 
 #define MWM_HINTS_DECORATIONS (1L << 1)
 
+// custom WinProc function pointer
+void (*_glfwCustomEvent)(XEvent *) = NULL;
 
 // Translates an X event modifier state mask
 //
@@ -1091,6 +1093,7 @@ void _glfwPlatformPollEvents(void)
         XEvent event;
         XNextEvent(_glfw.x11.display, &event);
         processEvent(&event);
+        if (_glfwCustomEvent) _glfwCustomEvent(&event);
     }
 
     // Check whether the cursor has moved inside an focused window that has
@@ -1180,3 +1183,7 @@ GLFWAPI Window glfwGetX11Window(GLFWwindow* handle)
     return window->x11.handle;
 }
 
+GLFWAPI void glfwSetCustomEvent(void (glfwCustomEvent)(XEvent *))
+{
+    _glfwCustomEvent = glfwCustomEvent;
+}
