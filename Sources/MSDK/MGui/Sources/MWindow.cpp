@@ -137,6 +137,21 @@ bool MWindow::isSomethingEditing(void)
 	return false;
 }
 
+bool MWindow::isAnyWindowPressed(void)
+{
+	unsigned int i;
+
+	// windows
+	unsigned int wSize = m_windows.size();
+	for(i=0; i<wSize; i++)
+	{
+		if(m_windows[i]->isPressed())
+			return true;
+	}
+
+	return false;
+}
+
 void MWindow::unHighLightAllWindows(void)
 {
 	unsigned int i;

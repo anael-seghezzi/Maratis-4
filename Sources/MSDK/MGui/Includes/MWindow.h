@@ -115,6 +115,7 @@ public:
 	// windows
 	void unHighLightAllWindows(void);
 	bool isSomethingEditing(void);
+	bool isAnyWindowPressed(void);
 	
 	MGuiWindow * addNewWindow(void);
 	inline unsigned int getWindowsNumber(void){ return m_windows.size(); }

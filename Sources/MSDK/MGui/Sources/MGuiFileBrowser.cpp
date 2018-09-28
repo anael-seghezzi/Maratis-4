@@ -310,7 +310,7 @@ void MGuiFileBrowser::updateMainWin(void)
 	m_files.clear();
 	m_files.push_back(string(".."));
 	
-	if(readDirectory(m_currentDirectory.getData(), &m_files))
+	if(m_currentDirectory.getData() && readDirectory(m_currentDirectory.getData(), &m_files))
 	{
 		char filename[256];
 		
@@ -408,7 +408,7 @@ void MGuiFileBrowser::selectFile(unsigned int id)
 		if(id == 0) // go up in the hierarchy
 		{
 			char filename[256];
-			getGlobalFilename(filename, m_currentDirectory.getData(), "../");
+			getGlobalFilename(filename, m_currentDirectory.getSafeString(), "../");
 			
 			m_currentDirectory.set(filename);
 			updateMainWin();
@@ -420,7 +420,7 @@ void MGuiFileBrowser::selectFile(unsigned int id)
 				name = name+1;
 			
 			char filename[256];
-			getGlobalFilename(filename, m_currentDirectory.getData(), name);
+			getGlobalFilename(filename, m_currentDirectory.getSafeString(), name);
 			
 			if(isDir) // navigate
 			{
