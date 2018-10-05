@@ -222,10 +222,22 @@ public:
 		m_linear_to_sRGB(&x, &x, 3);
 	}
 
+	inline void toLinear(void)
+	{
+		m_sRGB_to_linear(&x, &x, 3);
+	}
+
 	inline MVector3 getSRBG(void)
 	{
 		MVector3 copy(*this);
 		copy.toSRBG();
+		return copy;
+	}
+
+	inline MVector3 getLinear(void)
+	{
+		MVector3 copy(*this);
+		copy.toLinear();
 		return copy;
 	}
 	

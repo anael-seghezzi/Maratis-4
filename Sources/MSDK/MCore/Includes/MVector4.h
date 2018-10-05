@@ -205,6 +205,30 @@ public:
 
 public:
 
+	inline void toSRBG(void)
+	{
+		m_linear_to_sRGB(&x, &x, 3);
+	}
+
+	inline void toLinear(void)
+	{
+		m_sRGB_to_linear(&x, &x, 3);
+	}
+
+	inline MVector4 getSRBG(void)
+	{
+		MVector4 copy(*this);
+		copy.toSRBG();
+		return copy;
+	}
+
+	inline MVector4 getLinear(void)
+	{
+		MVector4 copy(*this);
+		copy.toLinear();
+		return copy;
+	}
+
 	inline void set(float newX, float newY, float newZ, float newW)
 	{
 		x = newX;
