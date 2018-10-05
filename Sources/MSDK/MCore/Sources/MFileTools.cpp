@@ -264,9 +264,16 @@ bool readDirectory(const char * filename, vector<string> * files, bool hiddenFil
 		if(strcmp(pent->d_name, "..") == 0)
 			continue;
 
+		char file[256];
+		getGlobalFilename(file, filename, pent->d_name);
+
 		if(! hiddenFiles && strlen(pent->d_name) > 0)
 		{
-			#ifndef _WIN32
+			#ifdef _WIN32
+			DWORD attributes = GetFileAttributes(file);
+			if (attributes & FILE_ATTRIBUTE_HIDDEN)
+				continue;
+			#else
 			if(pent->d_name[0] == '.')
 				continue;
 			#endif
@@ -274,9 +281,6 @@ bool readDirectory(const char * filename, vector<string> * files, bool hiddenFil
 		   
 		if(recursive)
 		{
-			char file[256];
-			getGlobalFilename(file, filename, pent->d_name);
-			
 			if(isDirectory(file))
 				readDirectory(file, files, hiddenFiles, recursive);
 			else

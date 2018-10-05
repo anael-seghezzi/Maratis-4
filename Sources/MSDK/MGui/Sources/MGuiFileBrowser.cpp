@@ -97,6 +97,26 @@ void MGuiFileBrowser::mainWinEvents(MGuiWindow * window, MGUI_EVENT_TYPE event)
 
 	switch(event)
 	{
+		case MGUI_EVENT_KEY_DOWN:
+		if (rootWindow->getKey() == 'A' && (rootWindow->isKeyPressed(MKEY_RCONTROL) || rootWindow->isKeyPressed(MKEY_LCONTROL)))
+		{
+			MGuiFileBrowser * fileBrowser = (MGuiFileBrowser *)window->getUserPointer();
+
+			int b, bSize = window->getButtonsNumber();
+			for(b=1; b<bSize; b++)
+			{
+				const char * name = fileBrowser->m_files[b].c_str();
+		
+				if(strlen(name) > 0 && name[0] != '/')
+				{
+					MGuiButton * button = window->getButton(b);
+					button->setPressed(true);
+					fileBrowser->selectFile(b);
+				}
+			}
+		}
+		break;
+
         case MGUI_EVENT_MOUSE_BUTTON_UP:
 		{
 			if(rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT && !window->isScrollBarPressed())
@@ -150,12 +170,11 @@ void MGuiFileBrowser::mainWinEvents(MGuiWindow * window, MGUI_EVENT_TYPE event)
 					}
 				}
 			}
-			
-            break;
 		}
+		break;
 			
         default:
-			break;
+		break;
 	}
 }
 
