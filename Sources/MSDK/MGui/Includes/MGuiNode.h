@@ -76,6 +76,8 @@ public:
 	inline const char * getName(void){ return m_name.getSafeString(); }
 	inline unsigned int getLinksNumber(void){ return m_links.size(); }
 	inline MGuiNodeLink * getLink(unsigned int id){ return &m_links[id]; }
+
+	vector<MGuiNodeLink> & getLinks() { return m_links; }
 	
 	void unlink(void);
 	void addLinkWith(MGuiNode * node, MGuiNodeBranch * branch);
@@ -113,6 +115,10 @@ public:
 	inline unsigned int getOutputsNumber(void){ return m_outputs.size(); }
 	inline MGuiNodeBranch * getInput(unsigned int id){ return &m_inputs[id]; }
 	inline MGuiNodeBranch * getOutput(unsigned int id){ return &m_outputs[id]; }
+
+	vector<MGuiNodeBranch> & getInputs() { return m_inputs; }
+	vector<MGuiNodeBranch> & getOutputs() { return m_outputs; }
+
 	MGuiNodeBranch * getMouseOverBranch(void);
 	MVector2 getBranchPosition(MGuiNodeBranch * branch);
 	bool isInputConnectedTo(MGuiNode * node);
