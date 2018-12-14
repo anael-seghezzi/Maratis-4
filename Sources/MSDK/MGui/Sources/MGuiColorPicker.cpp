@@ -263,8 +263,8 @@ void MGuiColorPicker::draw(MGuiWindow * window)
 		{
 			float factor = 1 - (i/scale.y);
 			
-			colors[0] = colors[1] = MVector3(factor).getSRBG();
-			colors[2] = colors[3] = (color*factor).getSRBG();
+			colors[0] = colors[1] = MVector3(factor);//.getSRBG();
+			colors[2] = colors[3] = (color*factor);//.getSRBG();
 						
 			vertices[0] = pos + MVector2(0, i);
 			vertices[1] = pos + MVector2(0, i+1);
@@ -384,7 +384,7 @@ void MGuiColorPicker::updateRGBColor(void)
 	*m_B = RGBColor.z;
 	
 	if(m_parentButton)
-		m_parentButton->setColor(MVector3(*m_R, *m_G, *m_B).getSRBG());
+		m_parentButton->setColor(MVector3(*m_R, *m_G, *m_B)/*.getSRBG()*/);
 
 	updateTargets();
 
@@ -398,7 +398,7 @@ void MGuiColorPicker::updateHSVColor(void)
 	m_RGB_to_HSV(m_HSVColor, RGBColor);
 
 	if(m_parentButton)
-		m_parentButton->setColor(MVector3(*m_R, *m_G, *m_B).getSRBG());
+		m_parentButton->setColor(MVector3(*m_R, *m_G, *m_B)/*.getSRBG()*/);
 	
 	updateTargets();
 
