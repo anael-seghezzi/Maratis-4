@@ -168,7 +168,7 @@ void MGuiColorPicker::open(MGuiButton * parentButton, float * R, float * G, floa
 	m_tintTarget->setColor(MVector4(0, 0, 0, 0));
 
 	// RGB and HSV color
-	MVector3 RGBColor(*R, *G, *B);
+	MVector3 RGBColor = MVector3(*R, *G, *B).getSRBG();
 	m_RGB_to_HSV(m_HSVColor, RGBColor);
 
 	
@@ -376,15 +376,17 @@ void MGuiColorPicker::updateTargets(void)
 
 void MGuiColorPicker::updateRGBColor(void)
 {
-	MVector3 RGBColor;
+	MVector3 RGBColor, RGBColor_lin;
 	
 	m_HSV_to_RGB(RGBColor, m_HSVColor);
-	*m_R = RGBColor.x;
-	*m_G = RGBColor.y;
-	*m_B = RGBColor.z;
+	RGBColor_lin = RGBColor.getLinear();
+
+	*m_R = RGBColor_lin.x;
+	*m_G = RGBColor_lin.y;
+	*m_B = RGBColor_lin.z;
 	
 	if(m_parentButton)
-		m_parentButton->setColor(MVector3(*m_R, *m_G, *m_B)/*.getSRBG()*/);
+		m_parentButton->setColor(RGBColor);
 
 	updateTargets();
 
@@ -394,11 +396,11 @@ void MGuiColorPicker::updateRGBColor(void)
 
 void MGuiColorPicker::updateHSVColor(void)
 {
-	MVector3 RGBColor = MVector3(CLAMP(*m_R, 0, 1), CLAMP(*m_G, 0, 1), CLAMP(*m_B, 0, 1));
+	MVector3 RGBColor = MVector3(CLAMP(*m_R, 0, 1), CLAMP(*m_G, 0, 1), CLAMP(*m_B, 0, 1)).getSRBG();
 	m_RGB_to_HSV(m_HSVColor, RGBColor);
 
 	if(m_parentButton)
-		m_parentButton->setColor(MVector3(*m_R, *m_G, *m_B)/*.getSRBG()*/);
+		m_parentButton->setColor(RGBColor);
 	
 	updateTargets();
 
