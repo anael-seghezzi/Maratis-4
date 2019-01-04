@@ -66,7 +66,6 @@ private:
 	
 	void updateTargets(void);
 	void updateRGBColor(void);
-	void updateHSVColor(void);
 	static void onValueEvents(MGuiEditText * editText, MGUI_EVENT_TYPE event);
 	static void onAlphaEvents(MGuiEditText * editText, MGUI_EVENT_TYPE event);
 	static void winColorEvents(MGuiWindow * window, MGUI_EVENT_TYPE event);
@@ -86,9 +85,12 @@ public:
 	void setUserPointer(void * pointer){ m_userPointer = pointer; }
 	void * getUserPointer(void){ return m_userPointer; }
 
+	void updateHSVColor(void);
+
 	bool isPopup(void) { return m_isPopup; }
 
 	MGuiWindow *getWindow(void) { return m_window; }
+	MGuiButton *getParentButton(void) { return m_parentButton; }
 };
 
 #endif

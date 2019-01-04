@@ -396,16 +396,19 @@ void MGuiColorPicker::updateRGBColor(void)
 
 void MGuiColorPicker::updateHSVColor(void)
 {
-	MVector3 RGBColor = MVector3(CLAMP(*m_R, 0, 1), CLAMP(*m_G, 0, 1), CLAMP(*m_B, 0, 1)).getSRBG();
-	m_RGB_to_HSV(m_HSVColor, RGBColor);
+	if (m_R && m_G && m_B)
+	{
+		MVector3 RGBColor = MVector3(CLAMP(*m_R, 0, 1), CLAMP(*m_G, 0, 1), CLAMP(*m_B, 0, 1)).getSRBG();
+		m_RGB_to_HSV(m_HSVColor, RGBColor);
 
-	if(m_parentButton)
-		m_parentButton->setColor(RGBColor);
+		if(m_parentButton)
+			m_parentButton->setColor(RGBColor);
 	
-	updateTargets();
+		updateTargets();
 
-	if(m_eventCallback)
-		m_eventCallback(this, MGUI_COLOR_PICKER_EVENT_ON_CHANGE);
+		if(m_eventCallback)
+			m_eventCallback(this, MGUI_COLOR_PICKER_EVENT_ON_CHANGE);
+	}
 }
 	
 void MGuiColorPicker::addValue(MGuiWindow * window, MVector2 * position, const char * name, MFontRef * font, M_VARIABLE_TYPE varType, void * pointer, void (* eventCallback)(MGuiEditText * editText, MGUI_EVENT_TYPE event))
