@@ -410,10 +410,10 @@ void MGuiWindow::internalEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 	int i, oSize = m_objects.size();
 	
 	// scolling slides
-	if(isHorizontalScroll())
+	if(m_hScrollSlide.isVisible() && isHorizontalScroll())
 		m_hScrollSlide.onEvent(rootWindow, event);
 
-	if(isVerticalScroll())
+	if(m_vScrollSlide.isVisible() && isVerticalScroll())
 		m_vScrollSlide.onEvent(rootWindow, event);
 
 	if(isScrollBarPressed()) // disable gui events if scroll bar pressed
