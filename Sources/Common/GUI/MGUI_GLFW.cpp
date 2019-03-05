@@ -72,9 +72,19 @@ void initTablet(HWND hWnd)
 		lcMine.lcOptions |= CXO_MESSAGES;
 		
 		// open context
-		hTab = gpWTOpenA(hWnd, &lcMine, TRUE);
+		for (int i = 0; i < 8; i++) {
+			hTab = gpWTOpenA(hWnd, &lcMine, TRUE);
+			if (hTab) break;
+			SLEEP(1);
+		}
+
 		gpWTQueueSizeSet(hTab, NPACKETQSIZE);
 	}
+}
+
+void releaseTablet(void)
+{
+	if(hTab) gpWTClose(hTab);
 }
 #endif
 
@@ -582,6 +592,9 @@ void MGUI_close(void)
 		SAFE_DELETE(windows[0]);
 	}
 
+#if defined(WIN32) && M_TABLET
+	releaseTablet();
+#endif
 	glfwTerminate();
 }
 
