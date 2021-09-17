@@ -259,6 +259,14 @@ public:
 	{	
 		return (x*x) + (y*y) + (z*z) + (w*w);
 	}
+
+	inline void clamp(float min, float max)
+	{	
+		x = M_CLAMP(x, min, max);
+		y = M_CLAMP(y, min, max);
+		z = M_CLAMP(z, min, max);
+		w = M_CLAMP(w, min, max);
+	}
 };
 
 #endif

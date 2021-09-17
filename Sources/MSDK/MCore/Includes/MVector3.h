@@ -279,6 +279,13 @@ public:
 	{	
 		return ((*this) * (1.0f - factor)) + (vec * factor);
 	}
+
+	inline void clamp(float min, float max)
+	{	
+		x = M_CLAMP(x, min, max);
+		y = M_CLAMP(y, min, max);
+		z = M_CLAMP(z, min, max);
+	}
 };
 
 #endif
