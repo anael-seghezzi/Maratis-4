@@ -40,7 +40,7 @@ public:
 	MGuiText(void);
 
 	// text
-	inline void setText(const char * text){ m_textObject.setText(text); autoScaleFromText(); }
+	inline void setText(const char * text){ m_textObject.setText(text); if(m_autoScaleFromText) autoScaleFromText(); }
 
 	// virtual
 	int getType(void){ return M_GUI_TEXT; }
