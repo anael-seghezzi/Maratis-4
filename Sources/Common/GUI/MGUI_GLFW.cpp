@@ -263,7 +263,12 @@ static void pos_callback(GLFWwindow * window, int x, int y)
 }
 
 
+bool s_always_focus = false;
 
+void MGUI_setAlwaysFocus(bool alwaysFocus)
+{
+	s_always_focus = alwaysFocus;
+}
 
 // thread main
 static void drawWindow(MGLFWWindow * window)
@@ -271,7 +276,7 @@ static void drawWindow(MGLFWWindow * window)
 	MEngine * engine = MEngine::getInstance();
 	MRenderingContext * render = engine->getRenderingContext();
 
-	if(! MGUI_isFocused() && window->init)
+	if(!MGUI_isFocused() && window->init && !s_always_focus)
 	{
 		window->paused = window->pause;
 		thrd_yield();
