@@ -138,9 +138,8 @@ void MGuiButton::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 		{
 			if(rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
 			{
-				if(! isCheckButton() && ! isGroupButton())
+				if(m_mode == MGUI_BUTTON_SIMPLE)
 				{
-					
                     press(true);
 				}
 
@@ -180,7 +179,7 @@ void MGuiButton::onEvent(MWindow * rootWindow, MWIN_EVENT_TYPE event)
 
 			if(rootWindow->getMouseButton() == MMOUSE_BUTTON_LEFT)
 			{
-				if((! isCheckButton()) && (! isGroupButton()))
+				if(m_mode == MGUI_BUTTON_SIMPLE)
 					press(false);
 			}
 		}
