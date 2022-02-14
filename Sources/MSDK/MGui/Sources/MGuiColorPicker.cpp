@@ -31,6 +31,25 @@
 #include "../Includes/MGui.h"
 
 
+void MGuiColorPicker::onValueHSVEvents(MGuiEditText * editText, MGUI_EVENT_TYPE event)
+{
+	switch(event)
+	{
+		default:
+			break;
+			
+		case MGUI_EVENT_SEND_VARIABLE:
+		{
+			if(editText->getUserPointer())
+			{
+				MGuiColorPicker * colorPicker = (MGuiColorPicker*)editText->getUserPointer();
+				colorPicker->updateRGBColor();
+			}
+			break;
+		}
+	}
+}
+
 void MGuiColorPicker::onValueEvents(MGuiEditText * editText, MGUI_EVENT_TYPE event)
 {
 	switch(event)
@@ -206,16 +225,25 @@ void MGuiColorPicker::open(MGuiButton * parentButton, float * R, float * G, floa
 	// update color
 	updateHSVColor();
 	
+	// RGBA
 	MVector2 position(0, m_colorSel->getScale().y + 16);
 	addValue(m_window, &position, "r", m_font, M_VARIABLE_FLOAT, R, onValueEvents);
 	addValue(m_window, &position, "g", m_font, M_VARIABLE_FLOAT, G, onValueEvents);
 	addValue(m_window, &position, "b", m_font, M_VARIABLE_FLOAT, B, onValueEvents);
 	if(A) addValue(m_window, &position, "a", m_font, M_VARIABLE_FLOAT, A, onAlphaEvents);
 	
+	// HSV
+	position.x = m_colorSel->getScale().x / 2;
+	position.y = m_colorSel->getScale().y + 16;
+	addValue(m_window, &position, "h", m_font, M_VARIABLE_FLOAT, &m_HSVColor.x, onValueHSVEvents);
+	addValue(m_window, &position, "s", m_font, M_VARIABLE_FLOAT, &m_HSVColor.y, onValueHSVEvents);
+	addValue(m_window, &position, "v", m_font, M_VARIABLE_FLOAT, &m_HSVColor.z, onValueHSVEvents);
+
 	// callbacks
 	m_window->setEventCallback(winColorEvents);
 	m_window->setDrawCallback(winColorDraw);
 	m_window->setUserPointer(this);
+	m_window->resizeScroll();
 	
 	if(m_eventCallback)
 		m_eventCallback(this, MGUI_COLOR_PICKER_EVENT_OPEN);

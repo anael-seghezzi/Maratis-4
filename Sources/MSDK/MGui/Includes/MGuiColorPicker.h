@@ -66,6 +66,7 @@ private:
 	
 	void updateTargets(void);
 	void updateRGBColor(void);
+	static void onValueHSVEvents(MGuiEditText * editText, MGUI_EVENT_TYPE event);
 	static void onValueEvents(MGuiEditText * editText, MGUI_EVENT_TYPE event);
 	static void onAlphaEvents(MGuiEditText * editText, MGUI_EVENT_TYPE event);
 	static void winColorEvents(MGuiWindow * window, MGUI_EVENT_TYPE event);
