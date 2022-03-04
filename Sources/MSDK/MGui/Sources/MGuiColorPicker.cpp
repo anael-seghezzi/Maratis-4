@@ -81,7 +81,7 @@ void MGuiColorPicker::onAlphaEvents(MGuiEditText * editText, MGUI_EVENT_TYPE eve
 			if(editText->getUserPointer())
 			{
 				MGuiColorPicker * colorPicker = (MGuiColorPicker*)editText->getUserPointer();
-				colorPicker->updateRGBColor();
+				colorPicker->updateSRGBColor();
 			}
 			break;
 		}
@@ -193,9 +193,9 @@ void MGuiColorPicker::open(MGuiButton * parentButton, float * R, float * G, floa
 	
 	// window
 	if(A == NULL)
-		m_window->setScale(MVector2(200, m_colorSel->getScale().y + 70));
+		m_window->setScale(MVector2(200, m_colorSel->getScale().y + 70 + 48));
 	else
-		m_window->setScale(MVector2(200, m_colorSel->getScale().y + 86));
+		m_window->setScale(MVector2(200, m_colorSel->getScale().y + 86 + 48));
 	
 	if(parentButton)
 	{
@@ -233,9 +233,8 @@ void MGuiColorPicker::open(MGuiButton * parentButton, float * R, float * G, floa
 	if(A) addValue(m_window, &position, "a", m_font, M_VARIABLE_FLOAT, A, onAlphaEvents);
 	
 	// HSV
-	position.x = m_colorSel->getScale().x / 2;
-	position.y = m_colorSel->getScale().y + 16;
-	addValue(m_window, &position, "h", m_font, M_VARIABLE_FLOAT, &m_HSVColor.x, onValueHSVEvents);
+	position.y += 4;
+	addValue(m_window, &position, "h", m_font, M_VARIABLE_FLOAT, &m_HSVColor.x, onValueHSVEvents, 360);
 	addValue(m_window, &position, "s", m_font, M_VARIABLE_FLOAT, &m_HSVColor.y, onValueHSVEvents);
 	addValue(m_window, &position, "v", m_font, M_VARIABLE_FLOAT, &m_HSVColor.z, onValueHSVEvents);
 
@@ -402,6 +401,21 @@ void MGuiColorPicker::updateTargets(void)
 		m_colorTarget->setNormalColor(MVector3(1.0f));
 }
 
+void MGuiColorPicker::updateSRGBColor(void)
+{
+	MVector3 RGBColor;
+	
+	m_HSV_to_RGB(RGBColor, m_HSVColor);
+
+	if(m_parentButton)
+		m_parentButton->setColor(RGBColor);
+
+	updateTargets();
+
+	if(m_eventCallback)
+		m_eventCallback(this, MGUI_COLOR_PICKER_EVENT_ON_CHANGE);
+}
+
 void MGuiColorPicker::updateRGBColor(void)
 {
 	MVector3 RGBColor, RGBColor_lin;
@@ -438,8 +452,10 @@ void MGuiColorPicker::updateHSVColor(void)
 			m_eventCallback(this, MGUI_COLOR_PICKER_EVENT_ON_CHANGE);
 	}
 }
-	
-void MGuiColorPicker::addValue(MGuiWindow * window, MVector2 * position, const char * name, MFontRef * font, M_VARIABLE_TYPE varType, void * pointer, void (* eventCallback)(MGuiEditText * editText, MGUI_EVENT_TYPE event))
+
+void MGuiColorPicker::addValue(
+	MGuiWindow * window, MVector2 * position, const char * name, MFontRef * font, M_VARIABLE_TYPE varType,
+	void * pointer, void (* eventCallback)(MGuiEditText * editText, MGUI_EVENT_TYPE event), float range)
 {
 	float size = 16;
 	float ySpace = 15;
@@ -471,6 +487,28 @@ void MGuiColorPicker::addValue(MGuiWindow * window, MVector2 * position, const c
 	editText->setEventCallback(eventCallback);
 	editText->enableVariable(pointer, varType);
 	editText->setUserPointer(this);
-	
+
+	// slider
+	MGuiImage *image;
+	MGuiSlide *slide;
+
+	image = window->addNewImage();
+	image->setPosition((*position) + MVector2(16 * 5, 4));
+	image->setScale(MVector2(window->getScale().x - image->getPosition().x - 8, 11));
+	image->setColor(MVector4(0, 0, 0, 0.25f));
+
+	void (* sliderEvent)(MGuiSlide * slide, MGUI_EVENT_TYPE event) = (void (*)(MGuiSlide * slide, MGUI_EVENT_TYPE event)) eventCallback;
+
+	slide = window->addNewSlide();
+	slide->setEventCallback(sliderEvent);
+	slide->setUserPointer(this);
+	slide->enableVariable(pointer, varType);
+	slide->setPosition(image->getPosition());
+	slide->setSelectionMargin(MVector2(6, 3));
+	slide->setColor(MVector4(1, 1, 1, 0.75));
+	slide->setButtonScale(MVector2(3, 11));
+	slide->setDirection(MVector2(window->getScale().x - slide->getPosition().x - slide->getButtonScale().x - 8, 0));
+	slide->setMaxValue(range);
+
 	*position += MVector2(0, ySpace);
 }

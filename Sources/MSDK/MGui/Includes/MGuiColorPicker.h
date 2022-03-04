@@ -65,6 +65,7 @@ private:
 	void (* m_eventCallback)(MGuiColorPicker * fileBrowser, MGUI_COLOR_PICKER_EVENT_TYPE event);
 	
 	void updateTargets(void);
+	void updateSRGBColor(void);
 	void updateRGBColor(void);
 	static void onValueHSVEvents(MGuiEditText * editText, MGUI_EVENT_TYPE event);
 	static void onValueEvents(MGuiEditText * editText, MGUI_EVENT_TYPE event);
@@ -72,7 +73,9 @@ private:
 	static void winColorEvents(MGuiWindow * window, MGUI_EVENT_TYPE event);
 	static void winColorDraw(MGuiWindow * window);
 	
-	void addValue(MGuiWindow * window, MVector2 * position, const char * name, MFontRef * font, M_VARIABLE_TYPE varType, void * pointer, void (* eventCallback)(MGuiEditText * editText, MGUI_EVENT_TYPE event));
+	void addValue(
+		MGuiWindow * window, MVector2 * position, const char * name, MFontRef * font, M_VARIABLE_TYPE varType,
+		void * pointer, void (* eventCallback)(MGuiEditText * editText, MGUI_EVENT_TYPE event), float range = 1);
 	
 public:
 	

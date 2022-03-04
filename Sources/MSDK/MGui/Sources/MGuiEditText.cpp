@@ -198,9 +198,15 @@ void MGuiEditText::updateFromVariable(void)
 	case M_VARIABLE_FLOAT:
 		{
 			float * value = (float *)getVariablePointer();
+			float absVal = M_ABS(*value);
 
 			char text[256];
-			sprintf(text, "%0.3f", *value);
+			if (absVal >= 100)
+				sprintf(text, "%0.1f", *value);
+			else if (absVal >= 10)
+				sprintf(text, "%0.2f", *value);
+			else
+				sprintf(text, "%0.3f", *value);
 
 			setTextInternal(text);
 		}
