@@ -170,11 +170,11 @@ void MGuiColorPicker::open(MGuiButton * parentButton, float * R, float * G, floa
 	m_tintSel = m_window->addNewButton();
 		
 	m_colorSel->setPosition(MVector2(10, 10));
-	m_colorSel->setScale(MVector2(150, 150));
+	m_colorSel->setScale(MVector2(150+50, 150+50));
 	m_colorSel->setColor(MVector4(0, 0, 0, 0));
 		
-	m_tintSel->setPosition(MVector2(170, 10));
-	m_tintSel->setScale(MVector2(20, 150));
+	m_tintSel->setPosition(MVector2(170+50, 10));
+	m_tintSel->setScale(MVector2(20, 150+50));
 	m_tintSel->setColor(MVector4(0, 0, 0, 0));
 	
 	// targets
@@ -193,9 +193,9 @@ void MGuiColorPicker::open(MGuiButton * parentButton, float * R, float * G, floa
 	
 	// window
 	if(A == NULL)
-		m_window->setScale(MVector2(200, m_colorSel->getScale().y + 70 + 48));
+		m_window->setScale(MVector2(250, m_colorSel->getScale().y + 70 + 48));
 	else
-		m_window->setScale(MVector2(200, m_colorSel->getScale().y + 86 + 48));
+		m_window->setScale(MVector2(250, m_colorSel->getScale().y + 86 + 48));
 	
 	if(parentButton)
 	{
