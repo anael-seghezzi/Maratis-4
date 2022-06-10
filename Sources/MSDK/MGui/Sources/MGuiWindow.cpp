@@ -888,30 +888,30 @@ void MGuiWindow::drawNodeInfo(void)
 	}
 }
 
+inline static float smoothstep(float x)
+{
+	return x * x * (3 - 2 * x);
+}
+
 void MGuiWindow::drawNodesLink(void)
 {
 	MEngine * engine = MEngine::getInstance();
 	MRenderingContext * render = engine->getRenderingContext();
 	
-	MVector2 vertices[2];
-	MVector4 colors[2];
-				
-	colors[0] = MVector4(0, 0, 0, 0.35f);
-	colors[1] = MVector4(0, 0, 0, 0.18f);
-	
+	MVector2 vertices[32];
+
 	render->disableTexture();
 	render->disableCullFace();
 	render->disableNormalArray();
 	render->disableTexCoordArray();
-	render->enableColorArray();
+	render->disableColorArray();
 	render->enableVertexArray();
 	render->enableLineAntialiasing();
 				
 	render->setVertexPointer(M_FLOAT, 2, vertices);
-	render->setColorPointer(M_FLOAT, 4, colors);
 	
 	MVector2 offset = MVector2(2, 2);
-	
+
 	// all links
 	{
 		unsigned int n, nSize = getNodesNumber();
@@ -932,10 +932,21 @@ void MGuiWindow::drawNodesLink(void)
 					MGuiNode * node2 = link->getNode();
 					MGuiNodeBranch * branch2 = link->getBranch();
 					
-					vertices[0] = node->getBranchPosition(branch) + offset;
-					vertices[1] = node2->getBranchPosition(branch2) + offset;
-					
-					render->drawArray(M_PRIMITIVE_LINES, 0, 2);
+					MVector2 vec = node2->getBranchPosition(branch2) - node->getBranchPosition(branch);
+
+					for (int i = 0; i < 32; i++) {
+						float mu = i / 31.0f;
+						float y = node->getBranchPosition(branch).y + vec.y * mu;
+						float x = node->getBranchPosition(branch).x + vec.x * smoothstep(mu);
+						vertices[i] = MVector2(x, y) + offset;
+					}
+
+					if (!node->isPressed())
+						render->setColor4(MVector4(0, 0, 0, 0.25f));
+					else
+						render->setColor4(MVector4(0, 1.0, 0, 0.5f));
+						
+					render->drawArray(M_PRIMITIVE_LINE_STRIP, 0, 32);
 				}
 			}
 		}
@@ -946,8 +957,6 @@ void MGuiWindow::drawNodesLink(void)
 	{
 		if(m_currentNode->isVisible())
 		{
-			render->disableColorArray();
-
 			vertices[0] = m_currentNode->getBranchPosition(m_currentBranch) + offset;
 			vertices[1] = m_currentNode->getPointLocalPosition(m_rootWindow->getMousePosition());
 	
